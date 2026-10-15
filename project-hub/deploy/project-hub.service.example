@@ -1,0 +1,20 @@
+[Unit]
+Description=Project Hub public website
+Wants=network-online.target
+After=network-online.target
+
+[Service]
+Type=simple
+User=projecthub
+Group=projecthub
+WorkingDirectory=/opt/project-hub
+EnvironmentFile=-/etc/project-hub.env
+ExecStart=/opt/project-hub/.venv/bin/uvicorn hub_api:app --host 127.0.0.1 --port 8030 --proxy-headers --forwarded-allow-ips=127.0.0.1
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+
+[Install]
+WantedBy=multi-user.target

@@ -1,0 +1,20 @@
+{
+  "name": "农业传感器分析与巡检演示",
+  "start": "analyze",
+  "max_steps": 20,
+  "initial_state": {
+    "temperatures": [28.5, 30.2, 31.8, 32.1, 29.4],
+    "threshold": 30,
+    "checks": 0,
+    "note": "示例数据；只生成建议，不连接真实传感器或控制设备。"
+  },
+  "nodes": [
+    {"id": "analyze", "kind": "tool", "tool": "numeric_stats", "arguments": {"values": {"$ref": "temperatures"}}, "output": "temperature_stats", "next": "too_hot"},
+    {"id": "too_hot", "kind": "condition", "left": {"$ref": "temperature_stats.mean"}, "op": "gt", "right": {"$ref": "threshold"}, "then": "advise_cooling", "otherwise": "keep_observing"},
+    {"id": "advise_cooling", "kind": "set", "values": {"recommendation": "平均温度高于示例阈值，建议检查通风与降温。", "alert": true}, "next": "check_loop"},
+    {"id": "keep_observing", "kind": "set", "values": {"recommendation": "平均温度未超过示例阈值，继续观察。", "alert": false}, "next": "check_loop"},
+    {"id": "check_loop", "kind": "condition", "left": {"$ref": "checks"}, "op": "lt", "right": 3, "then": "count_check", "otherwise": "finish"},
+    {"id": "count_check", "kind": "set", "values": {"checks": {"$add": [{"$ref": "checks"}, 1]}}, "next": "check_loop"},
+    {"id": "finish", "kind": "set", "values": {"report": "分析完成；循环计数演示完成 3 次。"}, "next": null}
+  ]
+}

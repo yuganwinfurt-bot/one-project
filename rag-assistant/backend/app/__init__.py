@@ -1,0 +1,1 @@
+"""FastAPI backend for the local RAG knowledge assistant."""

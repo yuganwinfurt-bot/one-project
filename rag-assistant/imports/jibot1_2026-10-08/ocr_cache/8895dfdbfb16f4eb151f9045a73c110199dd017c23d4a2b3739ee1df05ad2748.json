@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\8895dfdbfb16f4eb151f9045a73c110199dd017c23d4a2b3739ee1df05ad2748.png",
+  "rows": [
+    {
+      "text": "M3*6螺丝",
+      "score": 0.98157,
+      "box": [
+        [
+          615.0,
+          619.0
+        ],
+        [
+          767.0,
+          619.0
+        ],
+        [
+          767.0,
+          655.0
+        ],
+        [
+          615.0,
+          655.0
+        ]
+      ]
+    }
+  ]
+}

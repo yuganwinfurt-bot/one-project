@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\0ba997fb9a2e5b44e6eb6c4cd7f7d1da8fce582b3a4d532fa0ad78e38afebc24.png",
+  "rows": [
+    {
+      "text": "VCCOOSLSDA",
+      "score": 0.76247,
+      "box": [
+        [
+          1347.0,
+          677.0
+        ],
+        [
+          1408.0,
+          668.0
+        ],
+        [
+          1410.0,
+          682.0
+        ],
+        [
+          1349.0,
+          691.0
+        ]
+      ]
+    }
+  ]
+}

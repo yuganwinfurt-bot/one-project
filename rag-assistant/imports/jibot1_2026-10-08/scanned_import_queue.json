@@ -1,0 +1,26 @@
+[
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\C和指针（扫描件OCR文字层）.pdf",
+    "original_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\01cdc9e433_C和指针.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52",
+    "pages": 470,
+    "chars": 432155,
+    "bytes": 17208270
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\嵌入式c编程语言入门与深入（扫描件OCR文字层）.pdf",
+    "original_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\b20291b54d_嵌入式c编程语言入门与深入.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52",
+    "pages": 378,
+    "chars": 304314,
+    "bytes": 8743628
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\STM32时钟图（扫描件OCR文字层）.pdf",
+    "original_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\659fc9575f_STM32时钟图.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52",
+    "pages": 1,
+    "chars": 763,
+    "bytes": 50745
+  }
+]

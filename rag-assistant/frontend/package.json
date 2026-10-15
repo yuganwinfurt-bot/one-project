@@ -1,0 +1,9 @@
+{
+  "name": "rag-assistant-web",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": { "dev": "vite --host 127.0.0.1", "build": "vite build", "preview": "vite preview" },
+  "dependencies": { "vite": "8.3.0", "vue": "3.5.42", "micromark": "4.0.2", "micromark-extension-gfm": "3.0.0" },
+  "devDependencies": {}
+}

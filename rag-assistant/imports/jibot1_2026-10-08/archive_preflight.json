@@ -1,0 +1,458 @@
+[
+  {
+    "name": "附带说明_e3b0c442_1.16、本节暂无视频教程.md",
+    "bytes": 256
+  },
+  {
+    "name": "附带说明_4ef90757_readme.md",
+    "bytes": 415
+  },
+  {
+    "name": "附带说明_3a13862a_更新说明.md",
+    "bytes": 250
+  },
+  {
+    "name": "2fa1d98888_HEX快速下载方法.pdf",
+    "pages": 2,
+    "chars": 311,
+    "sparse": 0
+  },
+  {
+    "name": "0cee7a9eba_HEX快速下载方法.docx",
+    "bytes": 362551
+  },
+  {
+    "name": "附带说明_03d9fda2_boards.md",
+    "bytes": 17000
+  },
+  {
+    "name": "附带说明_8f6f2f28_体感手套编译环境.md",
+    "bytes": 412
+  },
+  {
+    "name": "附带说明_daf9238e_编译环境Mixly2软件下载链接.md",
+    "bytes": 401
+  },
+  {
+    "name": "附带说明_f00e2e8a_CMakeLists.md",
+    "bytes": 749
+  },
+  {
+    "name": "附带说明_d11ea3a2_websocket.md",
+    "bytes": 12854
+  },
+  {
+    "name": "附带说明_67e76a27_CMakeLists.md",
+    "bytes": 8125
+  },
+  {
+    "name": "附带说明_64d546fd_README.md",
+    "bytes": 7927
+  },
+  {
+    "name": "附带说明_9b761e89_README_en.md",
+    "bytes": 7687
+  },
+  {
+    "name": "附带说明_e900c2ed_README_ja.md",
+    "bytes": 8509
+  },
+  {
+    "name": "附带说明_863172df_README.md",
+    "bytes": 2601
+  },
+  {
+    "name": "附带说明_85cb9d03_requirements.md",
+    "bytes": 381
+  },
+  {
+    "name": "keil5软件安装及程序编译（PPT文字提取）.md",
+    "bytes": 5756
+  },
+  {
+    "name": "附带说明_e4e0b683_stm32开发环境下载链接.md",
+    "bytes": 278
+  },
+  {
+    "name": "3f72e05274_舵机简介.docx",
+    "bytes": 704293
+  },
+  {
+    "name": "e7983c6484_STM32固件库使用手册的中文翻译版.pdf",
+    "pages": 368,
+    "chars": 619391,
+    "sparse": 0
+  },
+  {
+    "name": "221a20b837_022525_STM32F10x_USB_学习培训资料.pdf",
+    "pages": 86,
+    "chars": 19351,
+    "sparse": 6
+  },
+  {
+    "name": "bf9d18b412_CD00158241.pdf",
+    "pages": 85,
+    "chars": 149909,
+    "sparse": 0
+  },
+  {
+    "name": "1e933c3f43_STM32 USB Mass Storage学习资料.pdf",
+    "pages": 15,
+    "chars": 7769,
+    "sparse": 1
+  },
+  {
+    "name": "c317dda908_STM32的USB详解.pdf",
+    "pages": 30,
+    "chars": 10523,
+    "sparse": 1
+  },
+  {
+    "name": "73b53ca48a_MCD-ST Liberty SW License Agreement V2.pdf",
+    "pages": 3,
+    "chars": 9382,
+    "sparse": 0
+  },
+  {
+    "name": "附带说明_bceecba0_readme.md",
+    "bytes": 7921
+  },
+  {
+    "name": "附带说明_b6ca022d_readme.md",
+    "bytes": 9256
+  },
+  {
+    "name": "附带说明_f937f25b_readme.md",
+    "bytes": 9185
+  },
+  {
+    "name": "附带说明_46f1b187_readme.md",
+    "bytes": 8901
+  },
+  {
+    "name": "附带说明_82382287_readme.md",
+    "bytes": 8454
+  },
+  {
+    "name": "附带说明_941500d3_readme.md",
+    "bytes": 8635
+  },
+  {
+    "name": "附带说明_d497132f_readme.md",
+    "bytes": 9274
+  },
+  {
+    "name": "附带说明_6f4f1b1e_readme.md",
+    "bytes": 11666
+  },
+  {
+    "name": "f22dd3e368_USB培训_Part1_协议.pdf",
+    "pages": 75,
+    "chars": 18122,
+    "sparse": 7
+  },
+  {
+    "name": "44a450fd3e_USB培训_Part2_USB_IP及其库的使用.pdf",
+    "pages": 97,
+    "chars": 57465,
+    "sparse": 9
+  },
+  {
+    "name": "8889e710f9_USB培训_Part3_USB_OTG_IP及其库的使用.pdf",
+    "pages": 60,
+    "chars": 29540,
+    "sparse": 5
+  },
+  {
+    "name": "8bb06a4b7e_基于STM32的USB程序开发笔记.pdf",
+    "pages": 66,
+    "chars": 40934,
+    "sparse": 10
+  },
+  {
+    "name": "e049979bf6_AN2594.pdf",
+    "pages": 16,
+    "chars": 27180,
+    "sparse": 0
+  },
+  {
+    "name": "244eb326e6_STM32F10xxx闪存编程参考手册.pdf",
+    "pages": 22,
+    "chars": 24165,
+    "sparse": 0
+  },
+  {
+    "name": "9c698fb946_STM32模拟EEPROM的使用和优化.pdf",
+    "pages": 4,
+    "chars": 4313,
+    "sparse": 0
+  },
+  {
+    "name": "5428e7e1f6_关于STM32的IAP总结.pdf",
+    "pages": 2,
+    "chars": 1751,
+    "sparse": 0
+  },
+  {
+    "name": "f48bedf923_STM32F107_Errata_CH_V1.pdf",
+    "pages": 11,
+    "chars": 8138,
+    "sparse": 0
+  },
+  {
+    "name": "fb19fd3598_STM32F10xx46_Errata_CH_V2.pdf",
+    "pages": 12,
+    "chars": 8939,
+    "sparse": 0
+  },
+  {
+    "name": "9d0199b31b_STM32F10xx8B_Errata_CH_V6.pdf",
+    "pages": 15,
+    "chars": 10873,
+    "sparse": 0
+  },
+  {
+    "name": "76a5fd44a6_STM32F10xxCDE_Errata_CH_V5.pdf",
+    "pages": 17,
+    "chars": 12435,
+    "sparse": 0
+  },
+  {
+    "name": "65f6244e46_STM32F101x46_DS_CH_V2.pdf",
+    "pages": 49,
+    "chars": 53234,
+    "sparse": 0
+  },
+  {
+    "name": "c1efefeaeb_STM32F101x8B_DS_CH_V11.pdf",
+    "pages": 54,
+    "chars": 56747,
+    "sparse": 0
+  },
+  {
+    "name": "8a0a3f5012_STM32F101xCDE_DS_CH_V5.pdf",
+    "pages": 74,
+    "chars": 77451,
+    "sparse": 0
+  },
+  {
+    "name": "cc4583cf67_STM32F102x46_DS_CH_V2.pdf",
+    "pages": 49,
+    "chars": 52914,
+    "sparse": 0
+  },
+  {
+    "name": "6c6fc8f1c5_STM32F102x8B_DS_CH_V2.pdf",
+    "pages": 49,
+    "chars": 53171,
+    "sparse": 0
+  },
+  {
+    "name": "7e5db2b0ab_STM32F103x46_DS_CH_V2.pdf",
+    "pages": 59,
+    "chars": 59481,
+    "sparse": 0
+  },
+  {
+    "name": "032070b812_STM32F103x8B_DS_CH_V10.pdf",
+    "pages": 62,
+    "chars": 63845,
+    "sparse": 0
+  },
+  {
+    "name": "bb87341aa6_STM32F103xCDE_DS_CH_V5.pdf",
+    "pages": 87,
+    "chars": 90007,
+    "sparse": 0
+  },
+  {
+    "name": "fc19d173c0_(经典,非常详细).pdf",
+    "pages": 29,
+    "chars": 12877,
+    "sparse": 0
+  },
+  {
+    "name": "01cdc9e433_C和指针.pdf",
+    "pages": 470,
+    "chars": 0,
+    "sparse": 470
+  },
+  {
+    "name": "c06f86c245_C精华.pdf",
+    "pages": 164,
+    "chars": 189281,
+    "sparse": 0
+  },
+  {
+    "name": "e68eac0b50_C语言深度解剖.pdf",
+    "pages": 131,
+    "chars": 128864,
+    "sparse": 1
+  },
+  {
+    "name": "b20291b54d_嵌入式c编程语言入门与深入.pdf",
+    "pages": 378,
+    "chars": 50,
+    "sparse": 377
+  },
+  {
+    "name": "d0b757d7e1_高质量C编程指南—林锐.pdf",
+    "pages": 101,
+    "chars": 95298,
+    "sparse": 0
+  },
+  {
+    "name": "7fcf4baace_ARM Cotrex-M3权威指南(英文).PDF",
+    "bytes": 5932023
+  },
+  {
+    "name": "8783f5ad7d_CM3技术参考手册.pdf",
+    "pages": 246,
+    "chars": 237491,
+    "sparse": 0
+  },
+  {
+    "name": "11d2e60a61_Cortex-M3权威指南(中文).pdf",
+    "pages": 298,
+    "chars": 295524,
+    "sparse": 13
+  },
+  {
+    "name": "bd16736196_ST MCU 最新选型手册_201508.pdf",
+    "pages": 56,
+    "chars": 119240,
+    "sparse": 1
+  },
+  {
+    "name": "828dd9e6ee_STM32F103RC_Datasheet.pdf",
+    "pages": 123,
+    "chars": 201541,
+    "sparse": 0
+  },
+  {
+    "name": "b3a815d430_STM32F10xxx参考手册.pdf",
+    "pages": 524,
+    "chars": 547964,
+    "sparse": 0
+  },
+  {
+    "name": "513188a688_STM32F10x常见应用解析.pdf",
+    "pages": 101,
+    "chars": 42029,
+    "sparse": 0
+  },
+  {
+    "name": "a471a011f2_STM32中文参考手册_V10.pdf",
+    "pages": 754,
+    "chars": 900730,
+    "sparse": 0
+  },
+  {
+    "name": "9db0fafcdd_STM32中断优先级与相关使用概念.pdf",
+    "pages": 8,
+    "chars": 12685,
+    "sparse": 0
+  },
+  {
+    "name": "350e0d9801_STM32固件库使用手册.pdf",
+    "pages": 368,
+    "chars": 619391,
+    "sparse": 0
+  },
+  {
+    "name": "659fc9575f_STM32时钟图.pdf",
+    "pages": 1,
+    "chars": 0,
+    "sparse": 1
+  },
+  {
+    "name": "12f0c3de37_STM32英文参考手册_V15.pdf",
+    "pages": 1128,
+    "chars": 2216378,
+    "sparse": 0
+  },
+  {
+    "name": "附带说明_4c17a21a_升级说明.md",
+    "bytes": 1071
+  },
+  {
+    "name": "附带说明_74f01699_labels.md",
+    "bytes": 197
+  },
+  {
+    "name": "附带说明_f8ec533a_STM32赠送资料链接.md",
+    "bytes": 578
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+    "bytes": 357227
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-光控弯曲.md",
+    "bytes": 86047
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-按键夹取.md",
+    "bytes": 40694
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-摇杆控制.md",
+    "bytes": 43397
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-智能栏杆.md",
+    "bytes": 37636
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-测距夹取.md",
+    "bytes": 38053
+  },
+  {
+    "name": "Jibot1源码_Jibot1-32出厂程序-触摸夹取.md",
+    "bytes": 5065
+  },
+  {
+    "name": "Jibot1源码_ZGloveR_J1.md",
+    "bytes": 28843
+  },
+  {
+    "name": "Jibot1源码_001-ZF_J1_J2_K1_K2_RC-20230425.md",
+    "bytes": 153901
+  },
+  {
+    "name": "Jibot1源码_01-OpenMV颜色跟随代码.md",
+    "bytes": 9368
+  },
+  {
+    "name": "Jibot1源码_02-OpenMV颜色识别夹取代码.md",
+    "bytes": 11730
+  },
+  {
+    "name": "Jibot1源码_01-视觉K210颜色跟随代码.md",
+    "bytes": 38178
+  },
+  {
+    "name": "Jibot1源码_02-视觉K210颜色识别夹取代码.md",
+    "bytes": 38354
+  },
+  {
+    "name": "Jibot1源码_03-视觉K210颜色识别点头摇头代码.md",
+    "bytes": 15683
+  },
+  {
+    "name": "Jibot1源码_ZL_AI_ZHIKONG_RoboticArm_V1.0.0.md",
+    "bytes": 679016
+  },
+  {
+    "name": "Jibot1源码_2，STM32 USB 学习资料.md",
+    "bytes": 6786636
+  },
+  {
+    "name": "Jibot1源码_开源上位机代码.md",
+    "bytes": 391501
+  },
+  {
+    "name": "Jibot1源码_openmv plus代码.md",
+    "bytes": 7342
+  }
+]

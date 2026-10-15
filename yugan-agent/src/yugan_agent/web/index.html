@@ -1,0 +1,218 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>yugan-agent · 控制台</title>
+  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/static/style.css?v=identity-control-unified-1">
+  <link rel="stylesheet" href="/static/project-lab-theme.css?v=identity-control-unified-1">
+  <script type="module" src="/static/knowledge-disclosure.js?v=1"></script>
+  <script src="/static/vue.global.prod.js?v=3.5.42" defer></script>
+  <script src="/static/vue-mount.js?v=vue3-shell-1" defer></script>
+  <script src="/static/app.js?v=identity-control-unified-1" defer></script>
+</head>
+<body>
+  <div class="app" id="agent-app">
+    <aside class="sidebar">
+      <div class="sidebar-scroll">
+        <div class="brand">
+          <div class="brand-switcher">
+            <button id="brand-switcher-toggle" class="mark brand-switcher-toggle" type="button" aria-label="打开项目菜单" aria-expanded="false" aria-controls="brand-switcher-menu"><svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></button>
+            <nav id="brand-switcher-menu" class="brand-switcher-menu" aria-label="项目入口" hidden>
+              <span class="brand-switcher-heading">项目入口</span>
+              <span class="brand-switcher-current">Agent 控制台 <small>当前页面</small></span>
+              <a id="brand-rag-link" class="brand-switcher-link">RAG 知识库 <span aria-hidden="true">→</span></a>
+              <a id="brand-home-link" class="brand-switcher-link">项目主页 <span aria-hidden="true">→</span></a>
+            </nav>
+          </div>
+          <div><b>yugan-agent</b><small>YOUR LOCAL AGENT</small></div>
+        </div>
+        <button id="sidebar-new-session" type="button" class="sidebar-new-chat"><span>＋</span> 新会话</button>
+        <nav class="sidebar-primary" aria-label="聊天导航"><button class="nav active" data-view="chat"><span>◈</span> 当前聊天</button></nav>
+        <section class="workspace-list-section" aria-label="工作区">
+          <div class="workspace-list-heading"><strong>工作区</strong><span>拖入对话可移动</span><button id="create-workspace" type="button" title="创建工作区" aria-label="创建工作区">+</button></div>
+          <div id="workspace-list" class="workspace-list"></div>
+        </section>
+        <div class="sidebar-conversations"><div class="sidebar-conversations-head"><strong>最近会话</strong></div><div id="sidebar-session-list" class="sidebar-session-list" aria-label="最近会话"></div></div>
+      </div>
+      <details class="sidebar-tools"><summary>功能与设置 <span>⌄</span></summary><nav aria-label="全部页面"><button class="nav active" data-view="chat"><span>◈</span> 智能体会话</button><button class="nav" data-view="tools"><span>⌘</span> 工具系统</button><button class="nav" data-view="workflow"><span>◇</span> 工作流</button><button class="nav" data-view="context"><span>▤</span> 上下文</button><button class="nav" data-view="workspaces"><span>▰</span> 工作区</button><button class="nav" data-view="settings"><span>⚙</span> 模型设置</button></nav></details>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div class="topbar-left">
+          <div class="breadcrumb"><span id="breadcrumb-parent">工作区</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg><strong id="page-name">新会话</strong></div>
+          <div id="chat-top-title" class="topbar-subtitle"><span class="tiny-live" aria-hidden="true"></span><span id="session-label">正在创建会话…</span></div>
+        </div>
+        <div class="top-right">
+          <button id="auth-control" class="identity-control-button" type="button" aria-live="polite" aria-label="身份与登录">正在读取身份…</button>
+          <button id="rag-open" class="secondary rag-open" type="button" aria-haspopup="dialog"><span aria-hidden="true">▤</span><span id="rag-label">连接 RAG</span></button>
+          <a id="home-link" class="secondary home-link" href="/" aria-label="返回项目主页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-7h6v7"/></svg><span>返回主页</span></a>
+          <a href="/docs" target="_blank" rel="noopener">API 文档 ↗</a>
+        </div>
+      </header>
+
+      <section id="view-chat" class="view active">
+        <div id="messages" class="messages" aria-live="polite"><div class="empty"><div class="empty-icon">◇</div><b>从一个电脑任务开始</b><p>例如：打开记事本，写入“我的第一个电脑 Agent 任务”。</p></div></div>
+        <div class="composer">
+          <label for="prompt" class="sr-only">输入任务</label>
+          <textarea id="prompt" rows="1" maxlength="12000" placeholder="描述你要完成的电脑任务… 例如：打开记事本并写一段文字"></textarea>
+          <div class="composer-foot">
+            <div class="approval-mode-picker"><button class="approval-mode-button" type="button" aria-expanded="false" aria-controls="approval-mode-menu-chat">审批方式：逐项确认 <span>⌃</span></button><div id="approval-mode-menu-chat" class="approval-mode-menu" hidden aria-label="选择审批方式"><button type="button" data-approval-mode="manual" aria-pressed="true">逐项确认<small>每项操作由你决定</small></button><button type="button" data-approval-mode="auto" aria-pressed="false">本次任务全部批准<small>下一轮任务自动通过，结束后恢复默认</small></button></div></div>
+            <div class="model-controls">
+              <button id="model-control-button" class="model-control-button" type="button" aria-expanded="false" aria-controls="effort-control-popover" aria-label="选择模型和思考强度"><span id="model-control-name">选择模型</span><strong id="model-effort-label">默认</strong><span class="model-control-chevron">⌃</span></button>
+              <div id="model-control-popover" class="model-control-popover" hidden>
+                <div class="model-popover-heading">选择模型</div>
+                <input id="model-search" class="model-search" type="search" placeholder="搜索已配置的 API 或服务器模型" aria-label="搜索模型" hidden>
+                <div id="chat-model-list" class="chat-model-list"></div>
+                <button id="manage-models" class="model-manage-link" type="button">管理模型 →</button>
+              </div>
+              <div id="effort-control-popover" class="effort-control-popover" hidden>
+                <div class="effort-popover-head">
+                  <button id="popover-model-button" class="effort-current" type="button" aria-expanded="false" aria-controls="model-control-popover" aria-label="选择模型">
+                    <strong id="model-effort-value">默认</strong>
+                    <span class="effort-model-line"><span id="popover-model-name">选择模型</span> ›</span>
+                  </button>
+                  <button id="reset-effort" type="button" title="恢复默认强度" aria-label="恢复默认强度">↶</button>
+                </div>
+                <div id="effort-slider" class="effort-slider">
+                  <input id="chat-effort" type="range" min="0" max="4" step="1" value="0" aria-label="模型思考强度" aria-valuetext="默认">
+                  <div class="effort-slider-track" aria-hidden="true"><span class="effort-slider-fill"></span><span class="effort-slider-thumb"></span></div>
+                </div>
+                <div class="model-effort-ticks"><span>默认</span><span>低</span><span>中</span><span>高</span><span>极高</span></div>
+                <p id="model-effort-hint">强度取决于模型接口支持情况，较高强度可能更慢、费用更高。</p>
+              </div>
+            </div>
+            <button id="send" class="primary">开始执行 <span>→</span></button>
+          </div>
+        </div>
+      </section>
+
+      <section id="view-tools" class="view">
+        <div class="section-hero"><span class="eyebrow">CAPABILITY / 02</span><h1>工具系统</h1><p>工具是模型能实际调用的函数，不是 Skill。这里包含编程、Git、工作区文件、桌面和数据工具；你也可以启停内置工具或添加固定 HTTP 接口。</p></div>
+        <details class="card tool-add-panel admin-only">
+          <summary>＋ 添加自定义 HTTP 工具</summary>
+          <form id="custom-tool-form" class="tool-form">
+            <label>工具名称<input name="name" required maxlength="64" pattern="[A-Za-z_][A-Za-z0-9_]*" placeholder="例如：weather_query"></label>
+            <label>模型如何使用它<textarea name="description" required maxlength="500" rows="2" placeholder="例如：查询指定城市的天气预报"></textarea></label>
+            <label>固定接口地址<input name="endpoint" type="url" required maxlength="2048" placeholder="https://api.example.com/weather"></label>
+            <div class="tool-form-row"><label>请求方式<select name="method"><option>GET</option><option>POST</option></select></label><label>Bearer API Key（可选）<input name="api_key" type="password" maxlength="4096" autocomplete="new-password" placeholder="保存在本机，不会显示在列表"></label></div>
+            <label>参数定义（JSON 数组）<textarea name="parameters" rows="4" placeholder='[{"name":"city","kind":"string","description":"城市名称","required":true}]'></textarea></label>
+            <p class="tool-form-note">参数类型支持 string、number、integer、boolean。GET 参数放在查询字符串，POST 参数作为 JSON。只接受 HTTPS；本机地址可用 HTTP。响应最多读取 12 KB，超时 8 秒。工具 Key 保存在项目 .yugan/tools.json。</p>
+            <div class="tool-form-actions"><button class="primary" type="submit">保存工具</button></div>
+            <div id="custom-tool-status" class="settings-status" role="status" aria-live="polite"></div>
+          </form>
+        </details>
+        <div id="tool-list" class="tool-grid"></div>
+      </section>
+
+      <section id="view-workflow" class="view">
+        <div class="section-hero"><span class="eyebrow">AUTOMATION / 03</span><h1>电脑任务工作流</h1><p>将复杂任务拆分为有序步骤，并结合当前模型与可用工具连续执行。</p></div>
+        <p id="workflow-guest-note" class="role-note" hidden>游客也可以编辑并运行工作流；可用工具会按游客权限过滤，需确认的操作仍会等待审批。</p>
+        <div class="workflow-layout"><div class="card workflow-main"><div class="card-head"><div><span class="kicker">TASK STEPS</span><h2>任务步骤</h2></div><button id="add-workflow-step" class="secondary small" type="button">＋ 添加步骤</button></div><div id="workflow-steps" class="workflow-steps"></div><div class="flow-action"><p>步骤保存在当前浏览器；运行时按顺序执行，失败或拒绝后停止。</p><div class="approval-mode-picker"><button class="approval-mode-button" type="button" aria-expanded="false" aria-controls="approval-mode-menu-workflow">审批方式：逐项确认 <span>⌃</span></button><div id="approval-mode-menu-workflow" class="approval-mode-menu" hidden aria-label="选择审批方式"><button type="button" data-approval-mode="manual" aria-pressed="true">逐项确认<small>每项操作由你决定</small></button><button type="button" data-approval-mode="auto" aria-pressed="false">本次任务全部批准<small>下一轮任务自动通过，结束后恢复默认</small></button></div></div><button id="run-workflow" class="primary" type="button">运行工作流 →</button></div></div><div class="card result-card"><span class="kicker">RUN RESULT</span><h2>执行记录</h2><div id="workflow-result" class="result-placeholder" role="status" aria-live="polite">填写步骤后运行，结果会显示在这里。</div></div></div>
+      </section>
+
+      <section id="view-context" class="view">
+        <div class="section-hero"><span class="eyebrow">MEMORY / 04</span><h1>上下文记忆</h1><p>对话与会话状态保存在本机 SQLite；执行明细只保存在当前浏览器，用于查看模型、知识库检索和工具调用结果，不包含模型内部推理文本。</p></div>
+        <div class="context-layout"><div class="card"><div class="card-head"><div><span class="kicker">SESSIONS</span><h2>会话列表</h2></div><button id="refresh-sessions" class="secondary small">刷新</button></div><div id="session-list" class="session-list"></div></div><div class="card context-detail-card"><span class="kicker">SELECTED SESSION</span><div class="context-detail-header"><h2>会话详情</h2><div id="context-session-actions" class="detail-actions" hidden><button id="continue-session" class="secondary small" type="button">继续此会话</button><button id="delete-session" class="secondary small danger" type="button">删除会话</button></div></div><div id="session-detail" class="detail-placeholder">选择左侧会话查看内容。</div></div></div>
+      </section>
+      <section id="view-workspaces" class="view">
+        <div class="section-hero workspace-page-heading"><div><span class="eyebrow">WORKSPACES / 06</span><h1>工作区</h1><p>查看工作区及其关联会话；管理操作仅对管理员开放。</p></div><div class="workspace-page-actions"><button id="refresh-workspaces" class="secondary" type="button">刷新</button><button id="workspace-page-create" class="primary" type="button">＋ 创建工作区</button></div></div>
+        <div id="workspace-overview" class="workspace-overview" aria-live="polite"></div>
+      </section>
+      <section id="view-settings" class="view">
+        <div class="section-hero"><span class="eyebrow">MODEL / 05</span><h1>连接模型</h1><p>在这里保存当前浏览器的 API 模型。聊天菜单会读取已保存的 API 模型和 Agent 服务器部署的 Ollama 对话模型。</p></div>
+        <div class="settings-layout"><form id="model-form" class="card settings-card">
+          <div class="model-field"><label for="model-name">配置名称（可选）</label><input id="model-name" type="text" maxlength="80" placeholder="例如：DeepSeek 日常任务"></div>
+          <div id="model-key-field" class="model-field"><label id="model-key-label" for="model-key">API Key</label><input id="model-key" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴你的 API Key" required></div>
+          <div id="model-endpoint-field" class="model-field"><label id="model-endpoint-label" for="model-endpoint">接口地址 Base URL（可选）</label><input id="model-endpoint" type="url" spellcheck="false" placeholder="留空默认 https://api.deepseek.com"></div>
+          <div class="model-field"><label id="model-id-label" for="model-id">模型 ID（DeepSeek 可留空）</label><input id="model-id" type="text" spellcheck="false" placeholder="例如 kimi-k3、deepseek-flash；填写账户可用的模型 ID"></div>
+          <p id="model-settings-help" class="settings-help">API Key 保存在当前浏览器的本地存储中，模型请求从浏览器直连所填接口，不经过 Agent 服务。</p>
+          <div class="model-form-actions"><button id="save-model" class="primary" type="submit">保存并启用 →</button><button id="cancel-model-edit" class="secondary" type="button" hidden>取消编辑</button></div>
+          <p id="model-settings-status" role="status"></p>
+        </form><div class="card saved-models"><div class="card-head"><div><span class="kicker">SAVED MODELS</span><h2>已保存的模型</h2></div></div><p class="saved-model-hint">模型配置只保存在当前浏览器；聊天请求直接发送到所选模型接口。密钥不会显示在列表中。</p><div id="saved-model-list" class="saved-model-list" aria-live="polite"></div></div></div>
+      </section>
+      <footer><span>yugan-agent · 本地优先的 Python Agent 项目</span></footer>
+    </main>
+  </div>
+  <dialog id="auth-dialog" class="auth-dialog" aria-labelledby="auth-dialog-title">
+    <div class="auth-dialog-panel">
+      <button id="auth-close" class="dialog-close" type="button" aria-label="关闭"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button>
+      <p class="kicker">ADMINISTRATOR ACCESS</p>
+      <h2 id="auth-dialog-title">管理员登录</h2>
+      <p class="auth-dialog-description">登录后可管理工作区、工具与会话。</p>
+      <form id="auth-form">
+        <label for="auth-username">账号</label><input id="auth-username" name="username" type="text" autocomplete="username" maxlength="80" required>
+        <label for="auth-password">密码</label><input id="auth-password" name="password" type="password" autocomplete="current-password" maxlength="512" required>
+        <p id="auth-error" class="auth-error" role="alert" hidden></p>
+        <div class="auth-dialog-actions"><button id="auth-cancel" class="secondary" type="button">取消</button><button id="auth-submit" class="primary" type="submit">登录</button></div>
+      </form>
+    </div>
+  </dialog>
+  <dialog id="rag-dialog" class="rag-dialog" aria-labelledby="rag-dialog-title">
+    <div class="rag-dialog-head"><div><span class="kicker">RAG KNOWLEDGE</span><h2 id="rag-dialog-title">连接项目知识库</h2></div><button id="rag-close" class="dialog-close" type="button" aria-label="关闭"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg></button></div>
+    <p class="rag-dialog-intro">为当前 Agent 会话选择检索范围。选项目会自动使用它关联的知识库；也可以手动勾选多个知识库。检索命中的资料片段会发送给当前配置的 Agent 模型。</p>
+    <div id="rag-options" class="rag-options"></div>
+    <p id="rag-status" class="rag-status" role="status"></p>
+    <div class="rag-dialog-actions"><button id="rag-cancel" class="secondary" type="button">取消</button><button id="rag-save" class="primary" type="button">应用到当前会话</button></div>
+  </dialog>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <div id="session-context-menu" class="session-context-menu" role="menu" hidden>
+    <button id="rename-session-action" type="button" role="menuitem">重命名会话</button>
+  </div>
+  <div id="workspace-context-menu" class="session-context-menu" role="menu" aria-label="工作区操作" hidden>
+    <button id="remove-workspace-action" type="button" role="menuitem">从列表移除工作区</button>
+  </div>
+  <dialog id="rename-session-dialog" class="approval-dialog delete-dialog rename-session-dialog" aria-labelledby="rename-session-title">
+    <form id="rename-session-form">
+      <span class="kicker">本地会话</span>
+      <h2 id="rename-session-title">重命名会话</h2>
+      <label for="rename-session-input">会话名称</label>
+      <input id="rename-session-input" maxlength="80" required autocomplete="off" placeholder="输入会话名称">
+      <div class="delete-dialog-actions"><button id="cancel-rename-session" class="secondary" type="button">取消</button><button id="save-rename-session" class="primary" type="submit">保存</button></div>
+    </form>
+  </dialog>
+  <dialog id="delete-session-dialog" class="approval-dialog delete-dialog" aria-labelledby="delete-dialog-title" aria-describedby="delete-dialog-warning">
+    <span class="kicker">本地会话</span>
+    <h2 id="delete-dialog-title">删除这条会话？</h2>
+    <p>将删除以下会话保存在本机的消息和状态：</p>
+    <div id="delete-session-name" class="delete-session-name"></div>
+    <p id="delete-dialog-warning" class="delete-warning">删除后无法恢复。</p>
+    <form method="dialog" class="delete-dialog-actions">
+      <button class="secondary" type="submit" value="cancel">取消</button>
+      <button class="danger-primary" type="submit" value="delete">删除会话</button>
+    </form>
+  </dialog>
+  <dialog id="delete-model-dialog" class="approval-dialog delete-dialog" aria-labelledby="delete-model-title">
+    <span class="kicker">本地模型配置</span>
+    <h2 id="delete-model-title">删除这条模型配置？</h2>
+    <p id="delete-model-name" class="delete-session-name"></p>
+    <p class="delete-warning">这会从本机移除保存的密钥；删除后无法恢复。</p>
+    <form method="dialog" class="delete-dialog-actions"><button class="secondary" type="submit" value="cancel">取消</button><button class="danger-primary" type="submit" value="delete">删除模型</button></form>
+  </dialog>
+  <dialog id="workspace-dialog" class="workspace-dialog" aria-labelledby="workspace-dialog-title">
+    <form id="workspace-form">
+      <div class="workspace-dialog-head"><div><span class="kicker">WORKSPACE</span><h2 id="workspace-dialog-title">创建工作区</h2></div><button id="close-workspace-dialog" type="button" class="dialog-close" aria-label="关闭">×</button></div>
+      <label for="workspace-name-input">工作区名称</label>
+      <input id="workspace-name-input" name="name" maxlength="80" required placeholder="例如：yugan-agent">
+      <label for="workspace-path-input">文件夹路径</label>
+      <div class="workspace-path-control"><input id="workspace-path-input" name="path" maxlength="4096" required placeholder="例如：D:\项目\yugan-agent"><button id="pick-workspace-path" type="button" class="secondary">浏览…</button></div>
+      <p class="workspace-dialog-note">文件夹不存在时会自动创建。创建后会切换到新工作区；对话可拖到左侧工作区进行归类。</p>
+      <div class="workspace-dialog-actions"><button id="cancel-workspace" type="button" class="secondary">取消</button><button id="save-workspace" type="submit" class="primary">创建工作区</button></div>
+    </form>
+  </dialog>
+  <dialog id="computer-approval" class="approval-dialog">
+    <span class="kicker">CONFIRM ACTION</span>
+    <h2>Agent 请求执行操作</h2>
+    <p id="approval-description"></p>
+    <p class="approval-hint">请检查文件内容、命令参数或电脑操作细节。命令确认不构成系统沙箱；获批脚本仍可能访问工作区外资源。“本次任务全部批准”会自动允许本轮后续操作，任务结束即失效。</p>
+    <pre id="approval-arguments"></pre>
+    <div class="approval-actions">
+      <button id="reject-computer-action" class="secondary" type="button">拒绝</button>
+      <button id="approve-computer-action" class="primary" type="button">允许这一次</button>
+      <button id="approve-run-actions" class="primary" type="button">本次任务全部批准</button>
+    </div>
+  </dialog>
+</body>
+</html>

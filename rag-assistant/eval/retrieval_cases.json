@@ -1,0 +1,32 @@
+[
+  {
+    "question": "六轴机械臂J1 PS2手柄怎样切换红灯模式？L2和R2有什么作用？",
+    "knowledge_base": "机械臂",
+    "expected_files": ["六轴机械臂J1（爪子版）快速上手指南（图片转录）.md"]
+  },
+  {
+    "question": "KPZ32 PWM舵机接口0到5分别对应哪些STM32引脚？",
+    "knowledge_base": "机械臂",
+    "expected_files": ["KPZ32引脚分布图（图片转录）.md"]
+  },
+  {
+    "question": "Jibot1-32 逆运动学函数 kinematics_analysis 在哪里，如何计算？",
+    "knowledge_base": "机械臂",
+    "expected_files": ["Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md"]
+  },
+  {
+    "question": "Jibot1-32出厂程序 loop_uart 动作组串口指令解析函数在哪里？",
+    "knowledge_base": "机械臂",
+    "expected_files": ["Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md"]
+  },
+  {
+    "question": "莎士比亚四大悲剧分别叫什么？",
+    "knowledge_base": "机械臂",
+    "expected_files": []
+  },
+  {
+    "question": "下周巴黎的天气和足球比分是多少？",
+    "knowledge_base": "机械臂",
+    "expected_files": []
+  }
+]

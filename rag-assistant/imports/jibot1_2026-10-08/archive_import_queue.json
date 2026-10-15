@@ -1,0 +1,462 @@
+[
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e3b0c442_1.16、本节暂无视频教程.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\002-视频教程\\1.16、本节暂无视频教程.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_4ef90757_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/readme.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_3a13862a_更新说明.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/更新说明.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\2fa1d98888_HEX快速下载方法.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/HEX快速下载方法.pdf",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\0cee7a9eba_HEX快速下载方法.docx",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/HEX快速下载方法.docx",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_03d9fda2_boards.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/boards.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_8f6f2f28_体感手套编译环境.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\02-体感手套程序源码\\体感手套编译环境.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_daf9238e_编译环境Mixly2软件下载链接.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\07-视觉K210(sentry2)拓展\\00-视觉K210(sentry2)开发环境\\编译环境Mixly2软件下载链接.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f00e2e8a_CMakeLists.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/CMakeLists.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_d11ea3a2_websocket.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/docs/websocket.md",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_67e76a27_CMakeLists.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/main/CMakeLists.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_64d546fd_README.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README.md",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_9b761e89_README_en.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README_en.md",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e900c2ed_README_ja.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README_ja.md",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_863172df_README.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/scripts/p3_tools/README.md",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_85cb9d03_requirements.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/scripts/p3_tools/requirements.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\keil5软件安装及程序编译（PPT文字提取）.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\02-stm32开发工具\\keil5软件安装及程序编译.pptx",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e4e0b683_stm32开发环境下载链接.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\02-stm32开发工具\\stm32开发环境下载链接.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\3f72e05274_舵机简介.docx",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\0 , 舵机知识.zip!/0 , 舵机知识/舵机简介.docx",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e7983c6484_STM32固件库使用手册的中文翻译版.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/STM32固件库使用手册的中文翻译版.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\221a20b837_022525_STM32F10x_USB_学习培训资料.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/022525_STM32F10x_USB_学习培训资料.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bf9d18b412_CD00158241.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/CD00158241.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\1e933c3f43_STM32 USB Mass Storage学习资料.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STM32 USB Mass Storage学习资料.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c317dda908_STM32的USB详解.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STM32的USB详解.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\73b53ca48a_MCD-ST Liberty SW License Agreement V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/MCD-ST Liberty SW License Agreement V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_bceecba0_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Audio_Speaker/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_b6ca022d_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Composite_Example/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f937f25b_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Custom_HID/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_46f1b187_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Device_Firmware_Upgrade/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_82382287_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/JoyStickMouse/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_941500d3_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Mass_Storage/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_d497132f_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/VirtualComport_Loopback/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_6f4f1b1e_readme.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Virtual_COM_Port/readme.txt",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\f22dd3e368_USB培训_Part1_协议.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part1_协议.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\44a450fd3e_USB培训_Part2_USB_IP及其库的使用.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part2_USB_IP及其库的使用.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8889e710f9_USB培训_Part3_USB_OTG_IP及其库的使用.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part3_USB_OTG_IP及其库的使用.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8bb06a4b7e_基于STM32的USB程序开发笔记.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/基于STM32的USB程序开发笔记.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e049979bf6_AN2594.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/AN2594.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\244eb326e6_STM32F10xxx闪存编程参考手册.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/STM32F10xxx闪存编程参考手册.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9c698fb946_STM32模拟EEPROM的使用和优化.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/STM32模拟EEPROM的使用和优化.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\5428e7e1f6_关于STM32的IAP总结.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/关于STM32的IAP总结.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\f48bedf923_STM32F107_Errata_CH_V1.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F107_Errata_CH_V1.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\fb19fd3598_STM32F10xx46_Errata_CH_V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xx46_Errata_CH_V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9d0199b31b_STM32F10xx8B_Errata_CH_V6.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xx8B_Errata_CH_V6.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\76a5fd44a6_STM32F10xxCDE_Errata_CH_V5.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xxCDE_Errata_CH_V5.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\65f6244e46_STM32F101x46_DS_CH_V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101x46_DS_CH_V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c1efefeaeb_STM32F101x8B_DS_CH_V11.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101x8B_DS_CH_V11.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8a0a3f5012_STM32F101xCDE_DS_CH_V5.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101xCDE_DS_CH_V5.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\cc4583cf67_STM32F102x46_DS_CH_V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F102x46_DS_CH_V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\6c6fc8f1c5_STM32F102x8B_DS_CH_V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F102x8B_DS_CH_V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\7e5db2b0ab_STM32F103x46_DS_CH_V2.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103x46_DS_CH_V2.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\032070b812_STM32F103x8B_DS_CH_V10.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103x8B_DS_CH_V10.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bb87341aa6_STM32F103xCDE_DS_CH_V5.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103xCDE_DS_CH_V5.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\fc19d173c0_(经典,非常详细).pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/(经典,非常详细).pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\01cdc9e433_C和指针.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/C和指针.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c06f86c245_C精华.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/C精华.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e68eac0b50_C语言深度解剖.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/C语言深度解剖.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\b20291b54d_嵌入式c编程语言入门与深入.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/嵌入式c编程语言入门与深入.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\d0b757d7e1_高质量C编程指南—林锐.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/高质量C编程指南—林锐.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\7fcf4baace_ARM Cotrex-M3权威指南(英文).PDF",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ARM Cotrex-M3权威指南(英文).zip!/ARM Cotrex-M3权威指南(英文).PDF",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8783f5ad7d_CM3技术参考手册.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\CM3技术参考手册.zip!/CM3技术参考手册.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\11d2e60a61_Cortex-M3权威指南(中文).pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\Cortex-M3权威指南(中文).zip!/Cortex-M3权威指南(中文).pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bd16736196_ST MCU 最新选型手册_201508.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ST MCU 最新选型手册_201508.zip!/ST MCU 最新选型手册_201508.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\828dd9e6ee_STM32F103RC_Datasheet.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F103RC_Datasheet.zip!/STM32F103RC_Datasheet.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\b3a815d430_STM32F10xxx参考手册.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10xxx参考手册.zip!/STM32F10xxx参考手册.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\513188a688_STM32F10x常见应用解析.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10x常见应用解析.zip!/STM32F10x常见应用解析.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\a471a011f2_STM32中文参考手册_V10.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中文参考手册_V10.zip!/STM32中文参考手册_V10.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9db0fafcdd_STM32中断优先级与相关使用概念.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中断优先级与相关使用概念.zip!/STM32中断优先级与相关使用概念.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\350e0d9801_STM32固件库使用手册.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32固件库使用手册.zip!/STM32固件库使用手册.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\659fc9575f_STM32时钟图.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32时钟图.zip!/STM32时钟图.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\12f0c3de37_STM32英文参考手册_V15.pdf",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32英文参考手册_V15.zip!/STM32英文参考手册_V15.pdf",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_4c17a21a_升级说明.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\03-开源上位机代码\\开源上位机代码.zip!/开源上位机代码/001-QT源代码/ZideMini源码QT.zip!/coding/升级说明.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_74f01699_labels.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\04-气泵拓展openmv案例\\openmv plus代码.zip!/openmvplus代码/labels.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f8ec533a_STM32赠送资料链接.md",
+    "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\STM32赠送资料链接.txt",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+    "source": "Jibot1-32+逆运动学-基础版-250508",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-光控弯曲.md",
+    "source": "Jibot1-32出厂程序-光控弯曲",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-按键夹取.md",
+    "source": "Jibot1-32出厂程序-按键夹取",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-摇杆控制.md",
+    "source": "Jibot1-32出厂程序-摇杆控制",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-智能栏杆.md",
+    "source": "Jibot1-32出厂程序-智能栏杆",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-测距夹取.md",
+    "source": "Jibot1-32出厂程序-测距夹取",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-触摸夹取.md",
+    "source": "Jibot1-32出厂程序-触摸夹取",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_ZGloveR_J1.md",
+    "source": "ZGloveR_J1",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_001-ZF_J1_J2_K1_K2_RC-20230425.md",
+    "source": "001-ZF_J1_J2_K1_K2_RC-20230425",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_01-OpenMV颜色跟随代码.md",
+    "source": "01-OpenMV颜色跟随代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_02-OpenMV颜色识别夹取代码.md",
+    "source": "02-OpenMV颜色识别夹取代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_01-视觉K210颜色跟随代码.md",
+    "source": "01-视觉K210颜色跟随代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_02-视觉K210颜色识别夹取代码.md",
+    "source": "02-视觉K210颜色识别夹取代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_03-视觉K210颜色识别点头摇头代码.md",
+    "source": "03-视觉K210颜色识别点头摇头代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_ZL_AI_ZHIKONG_RoboticArm_V1.0.0.md",
+    "source": "ZL_AI_ZHIKONG_RoboticArm_V1.0.0",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_2，STM32 USB 学习资料.md",
+    "source": "2，STM32 USB 学习资料",
+    "knowledge_base_id": "c0077d246def4753bc5465e919510b52"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_开源上位机代码.md",
+    "source": "开源上位机代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  },
+  {
+    "path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_openmv plus代码.md",
+    "source": "openmv plus代码",
+    "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"
+  }
+]

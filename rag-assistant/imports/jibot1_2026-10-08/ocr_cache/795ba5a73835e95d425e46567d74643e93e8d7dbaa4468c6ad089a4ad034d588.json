@@ -1,0 +1,313 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\795ba5a73835e95d425e46567d74643e93e8d7dbaa4468c6ad089a4ad034d588.png",
+  "rows": [
+    {
+      "text": "参考文献",
+      "score": 0.99635,
+      "box": [
+        [
+          112.0,
+          371.0
+        ],
+        [
+          327.0,
+          371.0
+        ],
+        [
+          327.0,
+          429.0
+        ],
+        [
+          112.0,
+          429.0
+        ]
+      ]
+    },
+    {
+      "text": "[ANSI 90j1990. American National Standard for Programming Languages-C. ANSIISO",
+      "score": 0.97121,
+      "box": [
+        [
+          151.0,
+          555.0
+        ],
+        [
+          970.0,
+          561.0
+        ],
+        [
+          970.0,
+          587.0
+        ],
+        [
+          151.0,
+          581.0
+        ]
+      ]
+    },
+    {
+      "text": "9899-1990. New York, NY: American National Standars Institution.",
+      "score": 0.98944,
+      "box": [
+        [
+          108.0,
+          587.0
+        ],
+        [
+          694.0,
+          592.0
+        ],
+        [
+          694.0,
+          615.0
+        ],
+        [
+          108.0,
+          610.0
+        ]
+      ]
+    },
+    {
+      "text": "[KERN 89]Kernighan, Brian 和i Dennis Ritchie.1989.The C Programming Language, Sencond",
+      "score": 0.97938,
+      "box": [
+        [
+          150.0,
+          620.0
+        ],
+        [
+          971.0,
+          627.0
+        ],
+        [
+          971.0,
+          654.0
+        ],
+        [
+          150.0,
+          647.0
+        ]
+      ]
+    },
+    {
+      "text": "Edition. Englewood Cliffs, NJ:Prentice Hall.",
+      "score": 0.97775,
+      "box": [
+        [
+          108.0,
+          652.0
+        ],
+        [
+          493.0,
+          654.0
+        ],
+        [
+          493.0,
+          680.0
+        ],
+        [
+          108.0,
+          678.0
+        ]
+      ]
+    },
+    {
+      "text": "[KERN 78] Kernighan, Brian 和 Dennis Ritchie.1978.The C Programming Language,",
+      "score": 0.96772,
+      "box": [
+        [
+          149.0,
+          684.0
+        ],
+        [
+          968.0,
+          692.0
+        ],
+        [
+          968.0,
+          721.0
+        ],
+        [
+          149.0,
+          713.0
+        ]
+      ]
+    },
+    {
+      "text": "Englewood Cliffs, NJ:Prentice Hall.",
+      "score": 0.99836,
+      "box": [
+        [
+          108.0,
+          717.0
+        ],
+        [
+          421.0,
+          719.0
+        ],
+        [
+          421.0,
+          745.0
+        ],
+        [
+          108.0,
+          743.0
+        ]
+      ]
+    },
+    {
+      "text": "[REEK 89] ReeK, Kenneth A. 1989. “The TRY System—or—How to Avoid Testing Student",
+      "score": 0.98237,
+      "box": [
+        [
+          150.0,
+          752.0
+        ],
+        [
+          968.0,
+          759.0
+        ],
+        [
+          968.0,
+          785.0
+        ],
+        [
+          150.0,
+          778.0
+        ]
+      ]
+    },
+    {
+      "text": "Programs.\" Proceedings of the Twentieth SIGCSE Technical Symposium on Computer Science",
+      "score": 0.98173,
+      "box": [
+        [
+          107.0,
+          783.0
+        ],
+        [
+          968.0,
+          791.0
+        ],
+        [
+          968.0,
+          818.0
+        ],
+        [
+          107.0,
+          810.0
+        ]
+      ]
+    },
+    {
+      "text": "Education Volume 21: 112~116.",
+      "score": 0.97595,
+      "box": [
+        [
+          108.0,
+          815.0
+        ],
+        [
+          388.0,
+          817.0
+        ],
+        [
+          388.0,
+          841.0
+        ],
+        [
+          108.0,
+          839.0
+        ]
+      ]
+    },
+    {
+      "text": "[REEK 96] Reek, Kenneth A. 1996. “A Software Infrastructure to Support Introductory",
+      "score": 0.98133,
+      "box": [
+        [
+          149.0,
+          848.0
+        ],
+        [
+          966.0,
+          857.0
+        ],
+        [
+          966.0,
+          884.0
+        ],
+        [
+          149.0,
+          875.0
+        ]
+      ]
+    },
+    {
+      "text": "Computer Science Courses.\"Proceddings of the Twenty Seventh SIGCSE Technical Symposium on",
+      "score": 0.98916,
+      "box": [
+        [
+          107.0,
+          880.0
+        ],
+        [
+          967.0,
+          889.0
+        ],
+        [
+          967.0,
+          915.0
+        ],
+        [
+          107.0,
+          906.0
+        ]
+      ]
+    },
+    {
+      "text": "Computer Science Education Volume 28: 125-129.",
+      "score": 0.96236,
+      "box": [
+        [
+          109.0,
+          911.0
+        ],
+        [
+          549.0,
+          916.0
+        ],
+        [
+          549.0,
+          943.0
+        ],
+        [
+          109.0,
+          938.0
+        ]
+      ]
+    },
+    {
+      "text": "448",
+      "score": 0.99974,
+      "box": [
+        [
+          128.0,
+          1286.0
+        ],
+        [
+          164.0,
+          1286.0
+        ],
+        [
+          164.0,
+          1309.0
+        ],
+        [
+          128.0,
+          1309.0
+        ]
+      ]
+    }
+  ]
+}

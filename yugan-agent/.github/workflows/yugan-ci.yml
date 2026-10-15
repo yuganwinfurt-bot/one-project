@@ -1,0 +1,32 @@
+name: yugan-agent CI
+on:
+  push:
+    paths:
+      - 'src/yugan_agent/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/yugan-ci.yml'
+  pull_request:
+    paths:
+      - 'src/yugan_agent/**'
+      - 'tests/**'
+      - 'examples/**'
+      - 'pyproject.toml'
+      - 'uv.lock'
+      - '.github/workflows/yugan-ci.yml'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.11', '3.13']
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked --extra dev --python ${{ matrix.python-version }}
+      - run: uv run --locked --extra dev ruff check src/yugan_agent tests examples
+      - run: uv run --locked --extra dev ruff format --check src/yugan_agent tests examples
+      - run: uv run --locked --extra dev pytest -q tests
+      - run: uv build --wheel

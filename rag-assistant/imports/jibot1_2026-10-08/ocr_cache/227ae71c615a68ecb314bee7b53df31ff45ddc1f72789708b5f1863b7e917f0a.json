@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\227ae71c615a68ecb314bee7b53df31ff45ddc1f72789708b5f1863b7e917f0a.png",
+  "rows": [
+    {
+      "text": "设置开机动作组成功！SSavePreCmdOK！",
+      "score": 0.9653,
+      "box": [
+        [
+          7.0,
+          11.0
+        ],
+        [
+          258.0,
+          11.0
+        ],
+        [
+          258.0,
+          24.0
+        ],
+        [
+          7.0,
+          25.0
+        ]
+      ]
+    }
+  ]
+}

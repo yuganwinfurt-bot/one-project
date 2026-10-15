@@ -1,0 +1,31 @@
+
+> rag-assistant-web@1.0.0 dev
+> vite --host 127.0.0.1
+
+
+  VITE v8.3.0  ready in 183 ms
+
+  ➜  Local:   http://127.0.0.1:4173/
+  ➜  press h + enter to show help
+19:58:36 [vite] (client) page reload src/App.vue.jsx
+21:02:35 [vite] (client) page reload src/api.js
+21:03:10 [vite] (client) page reload src/App.vue.jsx
+21:03:38 [vite] (client) page reload src/App.vue.jsx
+21:04:05 [vite] (client) page reload src/App.vue.jsx
+21:04:17 [vite] (client) page reload src/App.vue.jsx
+21:04:28 [vite] (client) page reload src/App.vue.jsx
+21:05:03 [vite] (client) page reload src/App.vue.jsx
+21:05:48 [vite] (client) page reload src/App.vue.jsx
+21:06:11 [vite] (client) page reload src/App.vue.jsx
+21:06:33 [vite] (client) page reload src/App.vue.jsx
+21:06:56 [vite] (client) page reload src/App.vue.jsx
+21:07:04 [vite] (client) page reload src/App.vue.jsx
+21:07:23 [vite] (client) page reload src/App.vue.jsx
+21:09:35 [vite] (client) page reload src/api.js
+21:09:36 [vite] (client) page reload src/App.vue.jsx
+21:11:44 [vite] (client) page reload src/App.vue.jsx
+21:21:09 [vite] (client) page reload src/App.vue.jsx
+22:08:43 [vite] (client) page reload src/App.vue.jsx
+22:09:17 [vite] (client) page reload src/App.vue.jsx
+22:09:32 [vite] (client) hmr update /src/project-lab-theme.css
+22:14:43 [vite] (client) page reload src/App.vue.jsx

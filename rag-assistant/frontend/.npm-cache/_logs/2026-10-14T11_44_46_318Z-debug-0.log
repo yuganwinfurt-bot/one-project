@@ -1,0 +1,63 @@
+0 verbose cli D:\node\node.exe D:\node\node_modules\npm\bin\npm-cli.js
+1 info using npm@11.19.0
+2 info using node@v24.21.0
+3 silly config load:file:D:\node\node_modules\npm\npmrc
+4 silly config load:file:D:\one project\rag-assistant\frontend\.npmrc
+5 silly config load:file:C:\Users\yugan\.npmrc
+6 silly config load:file:C:\Users\yugan\AppData\Roaming\npm\etc\npmrc
+7 verbose title npm install
+8 verbose argv "install" "--package-lock-only" "--ignore-scripts" "--cache" ".\\.npm-cache" "--no-audit" "--no-fund"
+9 verbose logfile logs-max:10 dir:D:\one project\rag-assistant\frontend\.npm-cache\_logs\2026-10-14T11_44_46_318Z-
+10 verbose logfile D:\one project\rag-assistant\frontend\.npm-cache\_logs\2026-10-14T11_44_46_318Z-debug-0.log
+11 silly logfile done cleaning log files
+12 http fetch GET https://registry.npmmirror.com/npm attempt 1 failed with EACCES
+13 silly packumentCache heap:4496293888 maxSize:1124073472 maxEntrySize:562036736
+14 silly idealTree buildDeps
+15 silly fetch manifest vue@3.5.42
+16 silly packumentCache full:https://registry.npmmirror.com/vue cache-miss
+17 http fetch GET https://registry.npmmirror.com/vue attempt 1 failed with EACCES
+18 http fetch GET https://registry.npmmirror.com/npm attempt 2 failed with EACCES
+19 http fetch GET https://registry.npmmirror.com/vue attempt 2 failed with EACCES
+20 http fetch GET https://registry.npmmirror.com/npm attempt 3 failed with EACCES
+21 http fetch GET https://registry.npmmirror.com/vue attempt 3 failed with EACCES
+22 silly placeDep ROOT vue@ OK for: rag-assistant-web@1.0.0 want: 3.5.42
+23 verbose type system
+24 verbose stack FetchError: request to https://registry.npmmirror.com/vue failed, reason: connect EACCES 111.12.25.193:443
+24 verbose stack     at ClientRequest.<anonymous> (D:\node\node_modules\npm\node_modules\minipass-fetch\lib\index.js:130:14)
+24 verbose stack     at ClientRequest.emit (node:events:514:28)
+24 verbose stack     at emitErrorEvent (node:_http_client:114:11)
+24 verbose stack     at _destroy (node:_http_client:1167:9)
+24 verbose stack     at onSocketNT (node:_http_client:1188:5)
+24 verbose stack     at process.processTicksAndRejections (node:internal/process/task_queues:91:21)
+25 error code EACCES
+26 error syscall connect
+27 error errno EACCES
+28 error FetchError: request to https://registry.npmmirror.com/vue failed, reason: connect EACCES 111.12.25.193:443
+28 error     at ClientRequest.<anonymous> (D:\node\node_modules\npm\node_modules\minipass-fetch\lib\index.js:130:14)
+28 error     at ClientRequest.emit (node:events:514:28)
+28 error     at emitErrorEvent (node:_http_client:114:11)
+28 error     at _destroy (node:_http_client:1167:9)
+28 error     at onSocketNT (node:_http_client:1188:5)
+28 error     at process.processTicksAndRejections (node:internal/process/task_queues:91:21) {
+28 error   code: 'EACCES',
+28 error   errno: 'EACCES',
+28 error   syscall: 'connect',
+28 error   address: '111.12.25.193',
+28 error   port: 443,
+28 error   type: 'system',
+28 error   requiredBy: '.'
+28 error }
+29 error
+29 error The operation was rejected by your operating system.
+29 error It's possible that the file was already in use (by a text editor or antivirus), or that you lack permissions to access it.
+29 error
+29 error If you believe this might be a permissions issue, please double-check the permissions of the file and its containing directories, or try running the command again as root/Administrator.
+30 silly unfinished npm timer reify 1791978286873
+31 silly unfinished npm timer reify:loadTrees 1791978286873
+32 verbose cwd D:\one project\rag-assistant\frontend
+33 verbose os Windows_NT 10.0.26200
+34 verbose node v24.21.0
+35 verbose npm  v11.19.0
+36 verbose exit 1
+37 verbose code 1
+38 error A complete log of this run can be found in: D:\one project\rag-assistant\frontend\.npm-cache\_logs\2026-10-14T11_44_46_318Z-debug-0.log

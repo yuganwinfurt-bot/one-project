@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\1f6b78b48968504cefd9e3dad302311178bdd454428a6bec694582d12ed8b795.png",
+  "rows": [
+    {
+      "text": "Think different.",
+      "score": 0.95073,
+      "box": [
+        [
+          78.0,
+          229.0
+        ],
+        [
+          181.0,
+          230.0
+        ],
+        [
+          181.0,
+          247.0
+        ],
+        [
+          78.0,
+          246.0
+        ]
+      ]
+    }
+  ]
+}

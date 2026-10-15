@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\0d39b4d8915e5dc63896947d050ef1c928ba6535fd52b4ab1653127ab83adc6c.png",
+  "rows": [
+    {
+      "text": "口",
+      "score": 0.88143,
+      "box": [
+        [
+          219.0,
+          394.0
+        ],
+        [
+          313.0,
+          394.0
+        ],
+        [
+          313.0,
+          479.0
+        ],
+        [
+          219.0,
+          479.0
+        ]
+      ]
+    }
+  ]
+}

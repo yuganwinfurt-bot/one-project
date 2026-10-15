@@ -1,0 +1,382 @@
+{"position": 1, "total": 127, "starting": "KPZ32引脚分布图（图片转录）.md"}
+{"id": "317225e8c6674f43a1c8f2000732db91", "filename": "KPZ32引脚分布图（图片转录）.md", "chunk_count": 2, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\001-文档教程\\KPZ32引脚分布图.png", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\KPZ32引脚分布图（图片转录）.md", "sha256": "1bb68ff37ef9b62cebee62b80cdaa4333668d0d8ee0b450ed2bcf6f034ef3955", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 1, "seconds": 0.0}
+{"position": 2, "total": 127, "starting": "附带说明_e3b0c442_1.16、本节暂无视频教程.md"}
+{"id": "a0b49c6cdd8d4818bbcaee81850e752d", "filename": "附带说明_e3b0c442_1.16、本节暂无视频教程.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\002-视频教程\\1.16、本节暂无视频教程.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e3b0c442_1.16、本节暂无视频教程.md", "sha256": "cae70b945e1dba66f6760ac5b967849855a86de5e9af44e33dd126e6ae9e923e", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 2, "seconds": 0.0}
+{"position": 3, "total": 127, "starting": "附带说明_4ef90757_readme.md"}
+{"id": "952bd9ac3e0c419381999d8c5560ce1e", "filename": "附带说明_4ef90757_readme.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_4ef90757_readme.md", "sha256": "4c0e1b02f9567145a3ae23426e38bc31404b26e1acf30ab6b98489c6ba567ccb", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 3, "seconds": 0.0}
+{"position": 4, "total": 127, "starting": "附带说明_3a13862a_更新说明.md"}
+{"id": "60e881e9cb5e42599672ea63566d513c", "filename": "附带说明_3a13862a_更新说明.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/更新说明.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_3a13862a_更新说明.md", "sha256": "6a56d570321a4ed319dbad90b4183eb84b3e234c6f0d25758be51986b47771db", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 4, "seconds": 0.0}
+{"position": 5, "total": 127, "starting": "2fa1d98888_HEX快速下载方法.pdf"}
+{"id": "fe8c5b5cfeaa481e87cbc6f3b8e92129", "filename": "2fa1d98888_HEX快速下载方法.pdf", "chunk_count": 2, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/HEX快速下载方法.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\2fa1d98888_HEX快速下载方法.pdf", "sha256": "2fa1d988884a17865b04a4a09c31856d25ea57c0c12767be51a090c7cc519cce", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 5, "seconds": 0.0}
+{"position": 6, "total": 127, "starting": "0cee7a9eba_HEX快速下载方法.docx"}
+{"id": "80aca7c896c640389938f6b0ba076345", "filename": "0cee7a9eba_HEX快速下载方法.docx", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/HEX快速下载方法.docx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\0cee7a9eba_HEX快速下载方法.docx", "sha256": "0cee7a9eba108bccda0753d4480eaad916b2a0bef8c182cfeffc89ffac11e7dd", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 6, "seconds": 0.0}
+{"position": 7, "total": 127, "starting": "附带说明_03d9fda2_boards.md"}
+{"id": "5df204ae141a4a108e3d56a07e8a71ff", "filename": "附带说明_03d9fda2_boards.md", "chunk_count": 24, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/boards.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_03d9fda2_boards.md", "sha256": "0a76f22d43c6f23fbc75e5f5fda6262f0d6ea3f0a8812531afd2a8be626a4487", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 7, "seconds": 0.0}
+{"position": 8, "total": 127, "starting": "附带说明_8f6f2f28_体感手套编译环境.md"}
+{"id": "9ef2f22039774d06b4aa5b307849c833", "filename": "附带说明_8f6f2f28_体感手套编译环境.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\02-体感手套程序源码\\体感手套编译环境.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_8f6f2f28_体感手套编译环境.md", "sha256": "e0ab4d4e77e027949ee9f9b54db9a1254487261e3f62bc74f5e747514b185175", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 8, "seconds": 0.0}
+{"position": 9, "total": 127, "starting": "附带说明_daf9238e_编译环境Mixly2软件下载链接.md"}
+{"id": "7ac453be28534d48a8b00673655eb78e", "filename": "附带说明_daf9238e_编译环境Mixly2软件下载链接.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\07-视觉K210(sentry2)拓展\\00-视觉K210(sentry2)开发环境\\编译环境Mixly2软件下载链接.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_daf9238e_编译环境Mixly2软件下载链接.md", "sha256": "57674460f82e757465e9ae4dbb73cd2df604536a4ec77f57ed543f1dfd148466", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 9, "seconds": 0.0}
+{"position": 10, "total": 127, "starting": "附带说明_f00e2e8a_CMakeLists.md"}
+{"id": "b35bca5fea3b4cecb3ee8a3b5662c064", "filename": "附带说明_f00e2e8a_CMakeLists.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/CMakeLists.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f00e2e8a_CMakeLists.md", "sha256": "e96ce397341a616f96df116240b869583e843b5f5478c6d5fe899e2a530e318c", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 10, "seconds": 0.0}
+{"position": 11, "total": 127, "starting": "附带说明_d11ea3a2_websocket.md"}
+{"id": "796b32d1941246e88f004bf925cfb107", "filename": "附带说明_d11ea3a2_websocket.md", "chunk_count": 11, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/docs/websocket.md", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_d11ea3a2_websocket.md", "sha256": "ab4777bb20ddbc029d2682a23a2cf66907a461d06bc7b8bf37df793ca1db7e7e", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 11, "seconds": 0.0}
+{"position": 12, "total": 127, "starting": "附带说明_67e76a27_CMakeLists.md"}
+{"id": "88b71ffa068949aebb2b170609bb9033", "filename": "附带说明_67e76a27_CMakeLists.md", "chunk_count": 11, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/main/CMakeLists.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_67e76a27_CMakeLists.md", "sha256": "dc939fc5c2b2624c2fd0c08413c6d98a9e397f8208865ae949693f77c37062e4", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 12, "seconds": 0.0}
+{"position": 13, "total": 127, "starting": "附带说明_64d546fd_README.md"}
+{"id": "2c0cc58edda14134af5c11857eaeafb8", "filename": "附带说明_64d546fd_README.md", "chunk_count": 9, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README.md", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_64d546fd_README.md", "sha256": "f284cbebc0869e0fcf322c040e1362add3137c0e6d024adab30c43f3f3999240", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 13, "seconds": 0.0}
+{"position": 14, "total": 127, "starting": "附带说明_9b761e89_README_en.md"}
+{"id": "85e25edf823f448cab530e4f11311396", "filename": "附带说明_9b761e89_README_en.md", "chunk_count": 10, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README_en.md", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_9b761e89_README_en.md", "sha256": "7a952e5085ed7de2e922c3efc19e5168ac72403593be450da67eb3c00118e6d3", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 14, "seconds": 0.0}
+{"position": 15, "total": 127, "starting": "附带说明_e900c2ed_README_ja.md"}
+{"id": "04f70dd8902d44ae973c043e0755e159", "filename": "附带说明_e900c2ed_README_ja.md", "chunk_count": 8, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/README_ja.md", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e900c2ed_README_ja.md", "sha256": "9863e27c3310fb0c12359ae686d9154496baddc59e9e1085d4b69c9a918b9383", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 15, "seconds": 0.0}
+{"position": 16, "total": 127, "starting": "附带说明_863172df_README.md"}
+{"id": "31c844b6f9494a3dac9b2e2e352976c2", "filename": "附带说明_863172df_README.md", "chunk_count": 2, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/scripts/p3_tools/README.md", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_863172df_README.md", "sha256": "11f3f2f6e9f196b39d5098dcf47e6792769ce935cabb47ce794c94fe703f24bb", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 16, "seconds": 0.0}
+{"position": 17, "total": 127, "starting": "附带说明_85cb9d03_requirements.md"}
+{"id": "b8aa4854d077454b8d6f5ca9369d79ae", "filename": "附带说明_85cb9d03_requirements.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip!/ZL_AI_ZHIKONG_RoboticArm_V1.0.0/scripts/p3_tools/requirements.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_85cb9d03_requirements.md", "sha256": "20e882a9b21e358d822bc762a1fe003a5f1039b41c8ba5a87c6c587b4ef3732d", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 17, "seconds": 0.0}
+{"position": 18, "total": 127, "starting": "keil5软件安装及程序编译（PPT文字提取）.md"}
+{"id": "dcce81eb98964f4f909d8bdbee349317", "filename": "keil5软件安装及程序编译（PPT文字提取）.md", "chunk_count": 4, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\02-stm32开发工具\\keil5软件安装及程序编译.pptx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\keil5软件安装及程序编译（PPT文字提取）.md", "sha256": "fed9587f949b5244065a42950c69dacf07208d8c1924e6e4c869ae68a16fefae", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 18, "seconds": 0.0}
+{"position": 19, "total": 127, "starting": "附带说明_e4e0b683_stm32开发环境下载链接.md"}
+{"id": "a5b61a85e2614865bb10e3e2e0ec0344", "filename": "附带说明_e4e0b683_stm32开发环境下载链接.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\02-stm32开发工具\\stm32开发环境下载链接.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_e4e0b683_stm32开发环境下载链接.md", "sha256": "5cc573c483b3c0485dea31b715387c1b56210f5770c8759974080d4779250a22", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 19, "seconds": 0.0}
+{"position": 20, "total": 127, "starting": "3f72e05274_舵机简介.docx"}
+{"id": "72ba7fccb27347d388a1fd1f40494d92", "filename": "3f72e05274_舵机简介.docx", "chunk_count": 2, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\0 , 舵机知识.zip!/0 , 舵机知识/舵机简介.docx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\3f72e05274_舵机简介.docx", "sha256": "3f72e052746bbe6cbf11d6d66026dc1aae2a8185e66c55f36cafee60843beed4", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 20, "seconds": 0.0}
+{"position": 21, "total": 127, "starting": "附带说明_4c17a21a_升级说明.md"}
+{"id": "94da31e21df44375ab8e2d95d2fa2a64", "filename": "附带说明_4c17a21a_升级说明.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\03-开源上位机代码\\开源上位机代码.zip!/开源上位机代码/001-QT源代码/ZideMini源码QT.zip!/coding/升级说明.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_4c17a21a_升级说明.md", "sha256": "71a1fec5acedfcbd23f9054d8c9e0db0c82c4116d61c7372f35366426a4ed0d3", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 21, "seconds": 0.0}
+{"position": 22, "total": 127, "starting": "附带说明_74f01699_labels.md"}
+{"id": "ca5ce04c87744b6b8f0fe19a75c41ebc", "filename": "附带说明_74f01699_labels.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\04-气泵拓展openmv案例\\openmv plus代码.zip!/openmvplus代码/labels.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_74f01699_labels.md", "sha256": "07f977ecf8b6c633c448a346b9e64f871691ae22b0f1e4598e59041686375d89", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 22, "seconds": 0.0}
+{"position": 23, "total": 127, "starting": "附带说明_f8ec533a_STM32赠送资料链接.md"}
+{"id": "ab5ab0ceaf8e427eb0d595dc139d98d5", "filename": "附带说明_f8ec533a_STM32赠送资料链接.md", "chunk_count": 1, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\STM32赠送资料链接.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f8ec533a_STM32赠送资料链接.md", "sha256": "1b5c7e16b3032e4f3eb2d6c18e686570d1a2c43414019341aecd4eddec3b3657", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 23, "seconds": 0.0}
+{"position": 24, "total": 127, "starting": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md"}
+{"id": "56f1db92a980440b9f0c5cbc2daa46dd", "filename": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md", "chunk_count": 467, "already_present": true, "source": "Jibot1-32+逆运动学-基础版-250508", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md", "sha256": "7bf338b823fe3efc5103d678c5cc725a8d0f5e04f07dcf14afbe90ac01a9ce9b", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 24, "seconds": 0.0}
+{"position": 25, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-光控弯曲.md"}
+{"id": "b728279df810469ba9f487393753943c", "filename": "Jibot1源码_Jibot1-32出厂程序-光控弯曲.md", "chunk_count": 109, "already_present": true, "source": "Jibot1-32出厂程序-光控弯曲", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-光控弯曲.md", "sha256": "2fb2d810f325b65ac6a9b51edaa00c7bc77f03c2941e1953ed7c0ae2d57e17b6", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 25, "seconds": 0.0}
+{"position": 26, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-按键夹取.md"}
+{"id": "57771a8cf9914f07ab6022ba59c1a1bd", "filename": "Jibot1源码_Jibot1-32出厂程序-按键夹取.md", "chunk_count": 54, "already_present": true, "source": "Jibot1-32出厂程序-按键夹取", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-按键夹取.md", "sha256": "c7879ce1530fcbb81d4dbb6de9227d7680e9e913a5dd16d02dbcd43d828770fa", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 26, "seconds": 0.0}
+{"position": 27, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-摇杆控制.md"}
+{"id": "a016fb412b0f47a79a654b6f4f38d208", "filename": "Jibot1源码_Jibot1-32出厂程序-摇杆控制.md", "chunk_count": 53, "already_present": true, "source": "Jibot1-32出厂程序-摇杆控制", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-摇杆控制.md", "sha256": "9d0b61529d2a1d7343dc0e250da2a6f633dedff0274f955d4ef522fb68e7ec2a", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 27, "seconds": 0.0}
+{"position": 28, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-智能栏杆.md"}
+{"id": "2cb08ab1840b4baeba934b6d6902fa5b", "filename": "Jibot1源码_Jibot1-32出厂程序-智能栏杆.md", "chunk_count": 45, "already_present": true, "source": "Jibot1-32出厂程序-智能栏杆", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-智能栏杆.md", "sha256": "35737351ae9e3f2b835027348f330a9e8c29a8018b9696ba04dceebe6e79ae27", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 28, "seconds": 0.0}
+{"position": 29, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-测距夹取.md"}
+{"id": "a50b2031afa24735995703f51bf3f152", "filename": "Jibot1源码_Jibot1-32出厂程序-测距夹取.md", "chunk_count": 46, "already_present": true, "source": "Jibot1-32出厂程序-测距夹取", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-测距夹取.md", "sha256": "aa4a1b8ef0a66202cef45e9d0fd692862143b46cb6d7e9680b5e29d94b1b7c39", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 29, "seconds": 0.0}
+{"position": 30, "total": 127, "starting": "Jibot1源码_Jibot1-32出厂程序-触摸夹取.md"}
+{"id": "78411919319a49fa82718d644bc76acb", "filename": "Jibot1源码_Jibot1-32出厂程序-触摸夹取.md", "chunk_count": 6, "already_present": true, "source": "Jibot1-32出厂程序-触摸夹取", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_Jibot1-32出厂程序-触摸夹取.md", "sha256": "40479f52a0c391b7e94e0a99ad9ac565c6a325afea34f035336f3323cc541f14", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 30, "seconds": 0.0}
+{"position": 31, "total": 127, "starting": "Jibot1源码_ZGloveR_J1.md"}
+{"id": "26d6d73f300243de96173eb59369ac7c", "filename": "Jibot1源码_ZGloveR_J1.md", "chunk_count": 38, "already_present": true, "source": "ZGloveR_J1", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_ZGloveR_J1.md", "sha256": "208bf2ff264ca9fea1939e6927264fddc68bee9453e8b3c930174552641e71e8", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 31, "seconds": 0.0}
+{"position": 32, "total": 127, "starting": "Jibot1源码_001-ZF_J1_J2_K1_K2_RC-20230425.md"}
+{"id": "c1b0b459c2f2443786b339d074ea73ad", "filename": "Jibot1源码_001-ZF_J1_J2_K1_K2_RC-20230425.md", "chunk_count": 207, "already_present": true, "source": "001-ZF_J1_J2_K1_K2_RC-20230425", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_001-ZF_J1_J2_K1_K2_RC-20230425.md", "sha256": "a80f8bb4d4403accbed9e02f1e03e9e8d68dac429e9bbb93280154113f485096", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 32, "seconds": 0.0}
+{"position": 33, "total": 127, "starting": "Jibot1源码_01-OpenMV颜色跟随代码.md"}
+{"id": "6672c75db4cb4f4094f66cc6cef98ea5", "filename": "Jibot1源码_01-OpenMV颜色跟随代码.md", "chunk_count": 12, "already_present": true, "source": "01-OpenMV颜色跟随代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_01-OpenMV颜色跟随代码.md", "sha256": "3bebcc6449c4808d2bb690cc8054cf5da995a67c0cdf0e71597680a596c8f6eb", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 33, "seconds": 0.0}
+{"position": 34, "total": 127, "starting": "Jibot1源码_02-OpenMV颜色识别夹取代码.md"}
+{"id": "5a9d5488400e4317aed0bf930b18271a", "filename": "Jibot1源码_02-OpenMV颜色识别夹取代码.md", "chunk_count": 14, "already_present": true, "source": "02-OpenMV颜色识别夹取代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_02-OpenMV颜色识别夹取代码.md", "sha256": "08f480ad1d13f6d9f1df65c6b3a277b5d3bcacff5a881bc59d6d9dc655c4da01", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 34, "seconds": 0.0}
+{"position": 35, "total": 127, "starting": "Jibot1源码_01-视觉K210颜色跟随代码.md"}
+{"id": "6e64636ebd0047be91ee718ec27dfa26", "filename": "Jibot1源码_01-视觉K210颜色跟随代码.md", "chunk_count": 49, "already_present": true, "source": "01-视觉K210颜色跟随代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_01-视觉K210颜色跟随代码.md", "sha256": "faf2b7ead01faf6a026ece198b93257cbbc1cc3483457375e13acb91d67a9f98", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 35, "seconds": 0.0}
+{"position": 36, "total": 127, "starting": "Jibot1源码_02-视觉K210颜色识别夹取代码.md"}
+{"id": "805fdfda1eac4debaf57e337b6db4d66", "filename": "Jibot1源码_02-视觉K210颜色识别夹取代码.md", "chunk_count": 46, "already_present": true, "source": "02-视觉K210颜色识别夹取代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_02-视觉K210颜色识别夹取代码.md", "sha256": "ae8479f4fad228b60e898ef90170e7c20c28d2897a6b37317733e228602b09da", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 36, "seconds": 0.0}
+{"position": 37, "total": 127, "starting": "Jibot1源码_03-视觉K210颜色识别点头摇头代码.md"}
+{"id": "e09e43a644f94acea727a4d8550de8a8", "filename": "Jibot1源码_03-视觉K210颜色识别点头摇头代码.md", "chunk_count": 17, "already_present": true, "source": "03-视觉K210颜色识别点头摇头代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_03-视觉K210颜色识别点头摇头代码.md", "sha256": "2bbac7ca87abe5379d1db6fd7d78690dc8d5621af3acb28507cbf92fdd8a8f58", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 37, "seconds": 0.0}
+{"position": 38, "total": 127, "starting": "Jibot1源码_ZL_AI_ZHIKONG_RoboticArm_V1.0.0.md"}
+{"id": "51c70dbeb86646449726b624efb8b408", "filename": "Jibot1源码_ZL_AI_ZHIKONG_RoboticArm_V1.0.0.md", "chunk_count": 950, "already_present": true, "source": "ZL_AI_ZHIKONG_RoboticArm_V1.0.0", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_ZL_AI_ZHIKONG_RoboticArm_V1.0.0.md", "sha256": "cfb0db8e3fe8f7669856a435a907e57d9cac5711da0f90b081eeac0eedf2d62e", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 38, "seconds": 0.0}
+{"position": 39, "total": 127, "starting": "Jibot1源码_开源上位机代码.md"}
+{"id": "04b340bacd0b479aa3c56fcddd778db1", "filename": "Jibot1源码_开源上位机代码.md", "chunk_count": 515, "already_present": true, "source": "开源上位机代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_开源上位机代码.md", "sha256": "18eaa8e9bfe13d88d43e03c96ea9d7230f0c0885b4c18deeac4eac1d06724cd1", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 39, "seconds": 0.0}
+{"position": 40, "total": 127, "starting": "Jibot1源码_openmv plus代码.md"}
+{"id": "2f038eb6127a4850a5cf97c43853cb1c", "filename": "Jibot1源码_openmv plus代码.md", "chunk_count": 9, "already_present": true, "source": "openmv plus代码", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1源码_openmv plus代码.md", "sha256": "02984efa32947d366531c8b0d72df980fe2eae313efe3cdb2a387968b87cfdfb", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 40, "seconds": 0.0}
+{"position": 41, "total": 127, "starting": "e7983c6484_STM32固件库使用手册的中文翻译版.pdf"}
+{"id": "8c57259066cd45ea89a3cf951922408c", "filename": "e7983c6484_STM32固件库使用手册的中文翻译版.pdf", "chunk_count": 921, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/STM32固件库使用手册的中文翻译版.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e7983c6484_STM32固件库使用手册的中文翻译版.pdf", "sha256": "e7983c648445027dd77044becf5e9021e0bf80265c6c4697318fbb86b8db1267", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 41, "seconds": 0.0}
+{"position": 42, "total": 127, "starting": "221a20b837_022525_STM32F10x_USB_学习培训资料.pdf"}
+{"id": "4b9971ac79af4fa38870047ddb668846", "filename": "221a20b837_022525_STM32F10x_USB_学习培训资料.pdf", "chunk_count": 87, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/022525_STM32F10x_USB_学习培训资料.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\221a20b837_022525_STM32F10x_USB_学习培训资料.pdf", "sha256": "221a20b837390f5903a18480ce1d3518dafdcd22b9643de847aaa2aa8e7d64a8", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 42, "seconds": 0.0}
+{"position": 43, "total": 127, "starting": "bf9d18b412_CD00158241.pdf"}
+{"id": "f5fec5be154c4532b5bd52aa1d3459df", "filename": "bf9d18b412_CD00158241.pdf", "chunk_count": 222, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/CD00158241.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bf9d18b412_CD00158241.pdf", "sha256": "bf9d18b412873bb6bfb38ca8db9aeb9db96b67dc9a46977babad1ac45384dc98", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 43, "seconds": 0.0}
+{"position": 44, "total": 127, "starting": "1e933c3f43_STM32 USB Mass Storage学习资料.pdf"}
+{"id": "3432f4943ced42af9762cab06e934a05", "filename": "1e933c3f43_STM32 USB Mass Storage学习资料.pdf", "chunk_count": 16, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STM32 USB Mass Storage学习资料.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\1e933c3f43_STM32 USB Mass Storage学习资料.pdf", "sha256": "1e933c3f43659f49123440a0b9665960c173560a3b98a143b160b3542c621f10", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 44, "seconds": 0.0}
+{"position": 45, "total": 127, "starting": "c317dda908_STM32的USB详解.pdf"}
+{"id": "27faa4fac615490f8ef8814d32637222", "filename": "c317dda908_STM32的USB详解.pdf", "chunk_count": 30, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STM32的USB详解.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c317dda908_STM32的USB详解.pdf", "sha256": "c317dda90804ae6c53108385440e30a62595aa853c81ffeff16564887f8ad5ea", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 45, "seconds": 0.0}
+{"position": 46, "total": 127, "starting": "73b53ca48a_MCD-ST Liberty SW License Agreement V2.pdf"}
+{"id": "87f5180876db4d16a88998af8cfbc217", "filename": "73b53ca48a_MCD-ST Liberty SW License Agreement V2.pdf", "chunk_count": 14, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/MCD-ST Liberty SW License Agreement V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\73b53ca48a_MCD-ST Liberty SW License Agreement V2.pdf", "sha256": "73b53ca48aca9e6a64bfc0369b99cb403a402164aaa91937772f9ad43f2a4291", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 46, "seconds": 0.0}
+{"position": 47, "total": 127, "starting": "附带说明_bceecba0_readme.md"}
+{"id": "c584f1c77857411da175e47018879ee7", "filename": "附带说明_bceecba0_readme.md", "chunk_count": 10, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Audio_Speaker/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_bceecba0_readme.md", "sha256": "c0fe76e87d43f941b92a260c7945088884150a7387a5ef3a2ad177ab51e1ecec", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 47, "seconds": 0.0}
+{"position": 48, "total": 127, "starting": "附带说明_b6ca022d_readme.md"}
+{"id": "6e2a5219403d4cf5adb8299d361f0361", "filename": "附带说明_b6ca022d_readme.md", "chunk_count": 12, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Composite_Example/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_b6ca022d_readme.md", "sha256": "99eb060dca3e92d0fd5238ca93093d1f8e8c6bb99a6d72696f1f38945af4f606", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 48, "seconds": 0.0}
+{"position": 49, "total": 127, "starting": "附带说明_f937f25b_readme.md"}
+{"id": "8d87ab9249aa4378b9eaec8207dc2468", "filename": "附带说明_f937f25b_readme.md", "chunk_count": 12, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Custom_HID/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_f937f25b_readme.md", "sha256": "6d05ab01ae740b108400ca566895773738668f058fd1a816c7dd69df47ed20f1", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 49, "seconds": 0.0}
+{"position": 50, "total": 127, "starting": "附带说明_46f1b187_readme.md"}
+{"id": "1123df88575f41509b7f084f330b9474", "filename": "附带说明_46f1b187_readme.md", "chunk_count": 11, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Device_Firmware_Upgrade/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_46f1b187_readme.md", "sha256": "a3ab464a6661fa434a463be787d71b35c1341f13cc8c09260e02f78ee84b7e60", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 50, "seconds": 0.0}
+{"position": 51, "total": 127, "starting": "附带说明_82382287_readme.md"}
+{"id": "5ca166c5aec349f5ac01c6d59aebd892", "filename": "附带说明_82382287_readme.md", "chunk_count": 11, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/JoyStickMouse/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_82382287_readme.md", "sha256": "0201d64c06df83ac2263ac09e575750b2e008ad4b15615a7465bc6f14b0d2534", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 51, "seconds": 0.0}
+{"position": 52, "total": 127, "starting": "附带说明_941500d3_readme.md"}
+{"id": "03db1983ce9d489695b8030ae90fcd0e", "filename": "附带说明_941500d3_readme.md", "chunk_count": 11, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Mass_Storage/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_941500d3_readme.md", "sha256": "a97fef98bbd4f3fbad2ac11e1cbdf1563c1a77d8cef44ba441b7509ae5e58d01", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 52, "seconds": 0.0}
+{"position": 53, "total": 127, "starting": "附带说明_d497132f_readme.md"}
+{"id": "2c1e05280523478aa21a792e0bc34bda", "filename": "附带说明_d497132f_readme.md", "chunk_count": 12, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/VirtualComport_Loopback/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_d497132f_readme.md", "sha256": "8cdcacddd38146c7c1514ff27904623e6abcdff1e8d6c7372b753234abdbc680", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 53, "seconds": 0.0}
+{"position": 54, "total": 127, "starting": "附带说明_6f4f1b1e_readme.md"}
+{"id": "3e7552c3f75d43dba22343318b1dc7d5", "filename": "附带说明_6f4f1b1e_readme.md", "chunk_count": 15, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/STSW-STM32121.zip!/STM32_USB-FS-Device_Lib_V4.0.0/Projects/Virtual_COM_Port/readme.txt", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\附带说明_6f4f1b1e_readme.md", "sha256": "324a67e8e90389cddaf0817089eec122119a8eef87fc66f61815bbd23ae41544", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 54, "seconds": 0.0}
+{"position": 55, "total": 127, "starting": "f22dd3e368_USB培训_Part1_协议.pdf"}
+{"id": "08242a4b19664c8f96ef4bb616d37bb7", "filename": "f22dd3e368_USB培训_Part1_协议.pdf", "chunk_count": 75, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part1_协议.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\f22dd3e368_USB培训_Part1_协议.pdf", "sha256": "f22dd3e3683663cce01e30eed7915fa6b4daad9a40f5bd63681285589f788784", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 55, "seconds": 0.0}
+{"position": 56, "total": 127, "starting": "44a450fd3e_USB培训_Part2_USB_IP及其库的使用.pdf"}
+{"id": "a2ed5ac191ee4d348485b329d0230939", "filename": "44a450fd3e_USB培训_Part2_USB_IP及其库的使用.pdf", "chunk_count": 123, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part2_USB_IP及其库的使用.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\44a450fd3e_USB培训_Part2_USB_IP及其库的使用.pdf", "sha256": "44a450fd3e3066e78192cb544605ddf5911f39029e03c001fcf7767c26f78367", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 56, "seconds": 0.0}
+{"position": 57, "total": 127, "starting": "8889e710f9_USB培训_Part3_USB_OTG_IP及其库的使用.pdf"}
+{"id": "a83958cc8c044026ba3fd06b3ac7fb08", "filename": "8889e710f9_USB培训_Part3_USB_OTG_IP及其库的使用.pdf", "chunk_count": 69, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/USB培训_Part3_USB_OTG_IP及其库的使用.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8889e710f9_USB培训_Part3_USB_OTG_IP及其库的使用.pdf", "sha256": "8889e710f9417df519397f90d832d788bc410dfa1789c314e948bf29cedf7946", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 57, "seconds": 0.0}
+{"position": 58, "total": 127, "starting": "8bb06a4b7e_基于STM32的USB程序开发笔记.pdf"}
+{"id": "852a41f27da3472693ffd59adb9f25df", "filename": "8bb06a4b7e_基于STM32的USB程序开发笔记.pdf", "chunk_count": 76, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip!/2，STM32 USB 学习资料/基于STM32的USB程序开发笔记.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8bb06a4b7e_基于STM32的USB程序开发笔记.pdf", "sha256": "8bb06a4b7ec54109765f4bd48a3f12233c5a570db8797ee0dec9180347468b61", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 58, "seconds": 0.0}
+{"position": 59, "total": 127, "starting": "e049979bf6_AN2594.pdf"}
+{"id": "97b9f32a9f71431abc5bd18f1b507f87", "filename": "e049979bf6_AN2594.pdf", "chunk_count": 40, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/AN2594.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e049979bf6_AN2594.pdf", "sha256": "e049979bf63698c92ef9bf7cc03538d14b793775545ed869c3b559d151a93227", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 59, "seconds": 0.0}
+{"position": 60, "total": 127, "starting": "244eb326e6_STM32F10xxx闪存编程参考手册.pdf"}
+{"id": "9b637f81799c4cafb5551a60619ab5e0", "filename": "244eb326e6_STM32F10xxx闪存编程参考手册.pdf", "chunk_count": 36, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/STM32F10xxx闪存编程参考手册.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\244eb326e6_STM32F10xxx闪存编程参考手册.pdf", "sha256": "244eb326e6b91a259c28617fbcb1d121dc0a0f3c6848586a971e93e176119048", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 60, "seconds": 0.0}
+{"position": 61, "total": 127, "starting": "9c698fb946_STM32模拟EEPROM的使用和优化.pdf"}
+{"id": "1d27527e3fed4fbeb99aa4ecf697d2dc", "filename": "9c698fb946_STM32模拟EEPROM的使用和优化.pdf", "chunk_count": 7, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip!/3，STM32 FLASH模拟EEPROM资料/STM32模拟EEPROM的使用和优化.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9c698fb946_STM32模拟EEPROM的使用和优化.pdf", "sha256": "9c698fb946a9091334d950d4aa64767ff355b57254b7fe876c946494baa70ce3", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 61, "seconds": 0.0}
+{"position": 62, "total": 127, "starting": "5428e7e1f6_关于STM32的IAP总结.pdf"}
+{"id": "4e6aea73f14e462eb379232a087d9d6d", "filename": "5428e7e1f6_关于STM32的IAP总结.pdf", "chunk_count": 3, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/关于STM32的IAP总结.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\5428e7e1f6_关于STM32的IAP总结.pdf", "sha256": "5428e7e1f6f7b8cc2bb23f7422f6686390ef2bf1a90babade5280ec060e684ed", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 62, "seconds": 0.0}
+{"position": 63, "total": 127, "starting": "f48bedf923_STM32F107_Errata_CH_V1.pdf"}
+{"id": "13126278efac45c9be0e68afcd7713fa", "filename": "f48bedf923_STM32F107_Errata_CH_V1.pdf", "chunk_count": 16, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F107_Errata_CH_V1.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\f48bedf923_STM32F107_Errata_CH_V1.pdf", "sha256": "f48bedf923ed68b39ed117c2584a6faa54ac36a5fb38004f00e3bedf47061aab", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 63, "seconds": 0.0}
+{"position": 64, "total": 127, "starting": "fb19fd3598_STM32F10xx46_Errata_CH_V2.pdf"}
+{"id": "e26b403cd02a44019282788fc617fc73", "filename": "fb19fd3598_STM32F10xx46_Errata_CH_V2.pdf", "chunk_count": 18, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xx46_Errata_CH_V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\fb19fd3598_STM32F10xx46_Errata_CH_V2.pdf", "sha256": "fb19fd35988d447091f4f5f8dfd53f33572dfc6f79f0fed31883e0c22be1e204", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 64, "seconds": 0.0}
+{"position": 65, "total": 127, "starting": "9d0199b31b_STM32F10xx8B_Errata_CH_V6.pdf"}
+{"id": "824981ffcbc243698194b6cd345e9aa2", "filename": "9d0199b31b_STM32F10xx8B_Errata_CH_V6.pdf", "chunk_count": 22, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xx8B_Errata_CH_V6.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9d0199b31b_STM32F10xx8B_Errata_CH_V6.pdf", "sha256": "9d0199b31bd7b8fa74e93bb88f503dd9fa82b6b8675880bf3988bbaf7832cc28", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 65, "seconds": 0.0}
+{"position": 66, "total": 127, "starting": "76a5fd44a6_STM32F10xxCDE_Errata_CH_V5.pdf"}
+{"id": "e83f82c2eae745a59cd00442dbb0c6bf", "filename": "76a5fd44a6_STM32F10xxCDE_Errata_CH_V5.pdf", "chunk_count": 25, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip!/5，STM32勘误资料/STM32F10xxCDE_Errata_CH_V5.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\76a5fd44a6_STM32F10xxCDE_Errata_CH_V5.pdf", "sha256": "76a5fd44a6e324686b868da0240236a9a83e80d1ffc8d2fc0ec647ec9da96f55", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 66, "seconds": 0.0}
+{"position": 67, "total": 127, "starting": "65f6244e46_STM32F101x46_DS_CH_V2.pdf"}
+{"id": "f6c257a704b941dd89b594384cd7216c", "filename": "65f6244e46_STM32F101x46_DS_CH_V2.pdf", "chunk_count": 88, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101x46_DS_CH_V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\65f6244e46_STM32F101x46_DS_CH_V2.pdf", "sha256": "65f6244e466422920d8dc704e820c48d1c9d3fe7fa2d930321d117560ca12ae4", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 67, "seconds": 0.0}
+{"position": 68, "total": 127, "starting": "c1efefeaeb_STM32F101x8B_DS_CH_V11.pdf"}
+{"id": "ec90906e8d774106b5e88f0d94020580", "filename": "c1efefeaeb_STM32F101x8B_DS_CH_V11.pdf", "chunk_count": 91, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101x8B_DS_CH_V11.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c1efefeaeb_STM32F101x8B_DS_CH_V11.pdf", "sha256": "c1efefeaebf12f425a5cc16f2cd96a98cc8ee000b9d10c13d05911cb140445ed", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 68, "seconds": 0.0}
+{"position": 69, "total": 127, "starting": "8a0a3f5012_STM32F101xCDE_DS_CH_V5.pdf"}
+{"id": "0069297413eb42a588d9bfd854706d7f", "filename": "8a0a3f5012_STM32F101xCDE_DS_CH_V5.pdf", "chunk_count": 125, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F101xCDE_DS_CH_V5.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8a0a3f5012_STM32F101xCDE_DS_CH_V5.pdf", "sha256": "8a0a3f501278e57cd642650d6e5b23ec31b0efd1b8a1f24cd280902dd8e318da", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 69, "seconds": 0.0}
+{"position": 70, "total": 127, "starting": "cc4583cf67_STM32F102x46_DS_CH_V2.pdf"}
+{"id": "9ab2e3c438e847e7a5ffc4c46d8fa30b", "filename": "cc4583cf67_STM32F102x46_DS_CH_V2.pdf", "chunk_count": 84, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F102x46_DS_CH_V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\cc4583cf67_STM32F102x46_DS_CH_V2.pdf", "sha256": "cc4583cf6718fa017cbb0921b7c7e6500ec0ab08b48df3ed81e7711a8428a9e2", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 70, "seconds": 0.0}
+{"position": 71, "total": 127, "starting": "6c6fc8f1c5_STM32F102x8B_DS_CH_V2.pdf"}
+{"id": "7eeb9545823d4ad2893fc113ce688c8f", "filename": "6c6fc8f1c5_STM32F102x8B_DS_CH_V2.pdf", "chunk_count": 84, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F102x8B_DS_CH_V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\6c6fc8f1c5_STM32F102x8B_DS_CH_V2.pdf", "sha256": "6c6fc8f1c580ffaf7d5486d24e13b0da809ddf618a546b9faa1fecceb1da0bf6", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 71, "seconds": 0.0}
+{"position": 72, "total": 127, "starting": "7e5db2b0ab_STM32F103x46_DS_CH_V2.pdf"}
+{"id": "4d828bb3e92c41fe81338d1f9300a0a0", "filename": "7e5db2b0ab_STM32F103x46_DS_CH_V2.pdf", "chunk_count": 99, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103x46_DS_CH_V2.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\7e5db2b0ab_STM32F103x46_DS_CH_V2.pdf", "sha256": "7e5db2b0abe632cd1730fbbc373709b9afd9efa4afb272967bd8a61357db677a", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 72, "seconds": 0.0}
+{"position": 73, "total": 127, "starting": "032070b812_STM32F103x8B_DS_CH_V10.pdf"}
+{"id": "ed23cd3ebeb94a41b859dadaab1147f4", "filename": "032070b812_STM32F103x8B_DS_CH_V10.pdf", "chunk_count": 104, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103x8B_DS_CH_V10.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\032070b812_STM32F103x8B_DS_CH_V10.pdf", "sha256": "032070b8128bbe2cd2ea97275df7879caebba13a8336ebc1a8a096b22deab67c", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 73, "seconds": 0.0}
+{"position": 74, "total": 127, "starting": "bb87341aa6_STM32F103xCDE_DS_CH_V5.pdf"}
+{"id": "2a53aa9d2e774ab68d0382915ce29eac", "filename": "bb87341aa6_STM32F103xCDE_DS_CH_V5.pdf", "chunk_count": 147, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip!/6，STM32中文数据手册/STM32F103xCDE_DS_CH_V5.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bb87341aa6_STM32F103xCDE_DS_CH_V5.pdf", "sha256": "bb87341aa6861c5137fc1cf3bfc8ef0e4c60785f9e0678259e6ece65764e3d9a", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 74, "seconds": 0.0}
+{"position": 75, "total": 127, "starting": "fc19d173c0_(经典,非常详细).pdf"}
+{"id": "7b192e64ce374e87ab4c8e0c7851a0fb", "filename": "fc19d173c0_(经典,非常详细).pdf", "chunk_count": 29, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/(经典,非常详细).pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\fc19d173c0_(经典,非常详细).pdf", "sha256": "fc19d173c0905fc19b729756b317ca10385f80004f5f2ea600ba6b637ef69564", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 75, "seconds": 0.0}
+{"position": 76, "total": 127, "starting": "c06f86c245_C精华.pdf"}
+{"id": "70e09ca40d39404fab931c2bb0da9a92", "filename": "c06f86c245_C精华.pdf", "chunk_count": 302, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/C精华.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\c06f86c245_C精华.pdf", "sha256": "c06f86c2452ed25ede75810d7ec9e680ad82372ab49613c2908d15e63c99fb66", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 76, "seconds": 0.0}
+{"position": 77, "total": 127, "starting": "e68eac0b50_C语言深度解剖.pdf"}
+{"id": "746cea000f9745ecbd0abf5ddc6b8262", "filename": "e68eac0b50_C语言深度解剖.pdf", "chunk_count": 209, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/C语言深度解剖.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\e68eac0b50_C语言深度解剖.pdf", "sha256": "e68eac0b5029fc859890dae181ffb385dc9cb711e0fee25d9dde2e232286ad14", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 77, "seconds": 0.0}
+{"position": 78, "total": 127, "starting": "d0b757d7e1_高质量C编程指南—林锐.pdf"}
+{"id": "67699c27efe54d5994938eeaef317ea1", "filename": "d0b757d7e1_高质量C编程指南—林锐.pdf", "chunk_count": 163, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip!/7、C语言学习资料（赠送）/高质量C编程指南—林锐.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\d0b757d7e1_高质量C编程指南—林锐.pdf", "sha256": "d0b757d7e1a919bb7d48a0ce86802a2edae91b0b6ba4052dd792d9985bec2d0c", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 78, "seconds": 0.0}
+{"position": 79, "total": 127, "starting": "7fcf4baace_ARM Cotrex-M3权威指南(英文).PDF"}
+{"id": "e57b9b99e2ea43c0bbdbfd40e4261aa8", "filename": "7fcf4baace_ARM Cotrex-M3权威指南(英文).PDF", "chunk_count": 1016, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ARM Cotrex-M3权威指南(英文).zip!/ARM Cotrex-M3权威指南(英文).PDF", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\7fcf4baace_ARM Cotrex-M3权威指南(英文).PDF", "sha256": "7fcf4baaceb04595bf4824de48532940ee8ed4e846c9180db8882f47d39c4734", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 79, "seconds": 0.0}
+{"position": 80, "total": 127, "starting": "8783f5ad7d_CM3技术参考手册.pdf"}
+{"id": "8f587457dcf448ba853a61e70a5fb351", "filename": "8783f5ad7d_CM3技术参考手册.pdf", "chunk_count": 384, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\CM3技术参考手册.zip!/CM3技术参考手册.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\8783f5ad7d_CM3技术参考手册.pdf", "sha256": "8783f5ad7d8b58ac10eba87a51aca4fd3a869e93773fc5e3b5fff4e54ef73249", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 80, "seconds": 0.0}
+{"position": 81, "total": 127, "starting": "11d2e60a61_Cortex-M3权威指南(中文).pdf"}
+{"id": "16daec5c380d46f08582ffa44afef904", "filename": "11d2e60a61_Cortex-M3权威指南(中文).pdf", "chunk_count": 492, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\Cortex-M3权威指南(中文).zip!/Cortex-M3权威指南(中文).pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\11d2e60a61_Cortex-M3权威指南(中文).pdf", "sha256": "11d2e60a61d2b16c39f8e3ca5ac8e6fc71b167eada39c13f82bd07b0983923bd", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 81, "seconds": 0.0}
+{"position": 82, "total": 127, "starting": "bd16736196_ST MCU 最新选型手册_201508.pdf"}
+{"id": "b4227784c91242dc803004710421745e", "filename": "bd16736196_ST MCU 最新选型手册_201508.pdf", "chunk_count": 172, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ST MCU 最新选型手册_201508.zip!/ST MCU 最新选型手册_201508.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\bd16736196_ST MCU 最新选型手册_201508.pdf", "sha256": "bd167361968e8c498f4bdbbe6159f88d2b93f5f3198d125ebc0d76c31955eeb4", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 82, "seconds": 0.0}
+{"position": 83, "total": 127, "starting": "828dd9e6ee_STM32F103RC_Datasheet.pdf"}
+{"id": "d90e812930b94d03bc82f7dac232c0cb", "filename": "828dd9e6ee_STM32F103RC_Datasheet.pdf", "chunk_count": 303, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F103RC_Datasheet.zip!/STM32F103RC_Datasheet.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\828dd9e6ee_STM32F103RC_Datasheet.pdf", "sha256": "828dd9e6eeec469609935017da3a4a49122993493dc4772bb9420c77a0465bbe", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 83, "seconds": 0.0}
+{"position": 84, "total": 127, "starting": "b3a815d430_STM32F10xxx参考手册.pdf"}
+{"id": "bc6ecded05394268878a9ec504e76375", "filename": "b3a815d430_STM32F10xxx参考手册.pdf", "chunk_count": 891, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10xxx参考手册.zip!/STM32F10xxx参考手册.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\b3a815d430_STM32F10xxx参考手册.pdf", "sha256": "b3a815d430af72657f9845c0feafb5de54a4cb19b7d260f5c618eb15f8978031", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 84, "seconds": 0.0}
+{"position": 85, "total": 127, "starting": "513188a688_STM32F10x常见应用解析.pdf"}
+{"id": "1ddf375b96b74275a712604228f413c9", "filename": "513188a688_STM32F10x常见应用解析.pdf", "chunk_count": 102, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10x常见应用解析.zip!/STM32F10x常见应用解析.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\513188a688_STM32F10x常见应用解析.pdf", "sha256": "513188a68818df77b4c5262e2f25703c5415c302ea14d224bdb848b95636ab49", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 85, "seconds": 0.0}
+{"position": 86, "total": 127, "starting": "a471a011f2_STM32中文参考手册_V10.pdf"}
+{"id": "33fcc9814b404546a608448f9738a583", "filename": "a471a011f2_STM32中文参考手册_V10.pdf", "chunk_count": 1407, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中文参考手册_V10.zip!/STM32中文参考手册_V10.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\a471a011f2_STM32中文参考手册_V10.pdf", "sha256": "a471a011f2f5633eaa687351a65c641ac70264bd05c163af79feaf145437c022", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 86, "seconds": 0.0}
+{"position": 87, "total": 127, "starting": "9db0fafcdd_STM32中断优先级与相关使用概念.pdf"}
+{"id": "72525703912f49a4863cbef33285688a", "filename": "9db0fafcdd_STM32中断优先级与相关使用概念.pdf", "chunk_count": 17, "already_present": true, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中断优先级与相关使用概念.zip!/STM32中断优先级与相关使用概念.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\extracted\\9db0fafcdd_STM32中断优先级与相关使用概念.pdf", "sha256": "9db0fafcdd816457c32532c3478ae7319bd5d02d412fafa9f71934b0a23b07bf", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 87, "seconds": 0.0}
+{"position": 88, "total": 127, "starting": "350e0d9801_STM32固件库使用手册.pdf"}
+{"failed": "350e0d9801_STM32固件库使用手册.pdf", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 88, "seconds": 3.0}
+{"position": 89, "total": 127, "starting": "12f0c3de37_STM32英文参考手册_V15.pdf"}
+{"failed": "12f0c3de37_STM32英文参考手册_V15.pdf", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 89, "seconds": 2.9}
+{"position": 90, "total": 127, "starting": "Jibot1源码_2，STM32 USB 学习资料.md"}
+{"failed": "Jibot1源码_2，STM32 USB 学习资料.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 90, "seconds": 2.9}
+{"position": 91, "total": 127, "starting": "1.10、上位机软件的使用及动作组的编辑（机械臂J1通用）-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.10、上位机软件的使用及动作组的编辑（机械臂J1通用）-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 91, "seconds": 2.9}
+{"position": 92, "total": 127, "starting": "1.11、机械臂J1功能代码学习-STM32-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.11、机械臂J1功能代码学习-STM32-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 92, "seconds": 2.9}
+{"position": 93, "total": 127, "starting": "1.12、机械臂J1传感器应用-STM32-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.12、机械臂J1传感器应用-STM32-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 93, "seconds": 2.9}
+{"position": 94, "total": 127, "starting": "1.13、机械臂J1逆运动学讲解-STM32-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.13、机械臂J1逆运动学讲解-STM32-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 94, "seconds": 2.9}
+{"position": 95, "total": 127, "starting": "1.3、出厂程序下载-STM32-V1.1-250527（截图OCR补充）.md"}
+{"failed": "1.3、出厂程序下载-STM32-V1.1-250527（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 95, "seconds": 2.9}
+{"position": 96, "total": 127, "starting": "1.8、机械臂J1主控板学习-STM32-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.8、机械臂J1主控板学习-STM32-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 96, "seconds": 2.9}
+{"position": 97, "total": 127, "starting": "1.14、机械臂J1视觉OpenMV拓展玩法-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.14、机械臂J1视觉OpenMV拓展玩法-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 97, "seconds": 2.9}
+{"position": 98, "total": 127, "starting": "1.15、机械臂J1视觉K210（sentry2）拓展玩法-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.15、机械臂J1视觉K210（sentry2）拓展玩法-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 98, "seconds": 2.9}
+{"position": 99, "total": 127, "starting": "1.16、机械臂J1视觉K210（触屏版）拓展玩法-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.16、机械臂J1视觉K210（触屏版）拓展玩法-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 99, "seconds": 2.9}
+{"position": 100, "total": 127, "starting": "1.17、常见问题解决办法-机械臂J1-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.17、常见问题解决办法-机械臂J1-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 100, "seconds": 2.9}
+{"position": 101, "total": 127, "starting": "1.1、机械臂J1结构组装-V1.0-250229（截图OCR补充）.md"}
+{"failed": "1.1、机械臂J1结构组装-V1.0-250229（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 101, "seconds": 2.9}
+{"position": 102, "total": 127, "starting": "1.2、电脑安装CH340串口驱动-V1.0-250523（截图OCR补充）.md"}
+{"failed": "1.2、电脑安装CH340串口驱动-V1.0-250523（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 102, "seconds": 2.9}
+{"position": 103, "total": 127, "starting": "1.4.1、修改设备ID-V1.1-250527（截图OCR补充）.md"}
+{"failed": "1.4.1、修改设备ID-V1.1-250527（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 103, "seconds": 2.9}
+{"position": 104, "total": 127, "starting": "1.4.2、机械臂J1设备ID分布及接线-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.4.2、机械臂J1设备ID分布及接线-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 104, "seconds": 2.9}
+{"position": 105, "total": 127, "starting": "1.5、机械臂J1控制板的安装-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.5、机械臂J1控制板的安装-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 105, "seconds": 2.9}
+{"position": 106, "total": 127, "starting": "1.6、机械臂J1偏差调节-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.6、机械臂J1偏差调节-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 106, "seconds": 2.9}
+{"position": 107, "total": 127, "starting": "1.7、机械臂J1玩法介绍-V1.0-250529（截图OCR补充）.md"}
+{"failed": "1.7、机械臂J1玩法介绍-V1.0-250529（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 107, "seconds": 2.9}
+{"position": 108, "total": 127, "starting": "1.9、编译环境搭建-STM32-V1.0-250523（截图OCR补充）.md"}
+{"failed": "1.9、编译环境搭建-STM32-V1.0-250523（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 108, "seconds": 2.9}
+{"position": 109, "total": 127, "starting": "mixly2.0编译环境更新使用说明（截图OCR补充）.md"}
+{"failed": "mixly2.0编译环境更新使用说明（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 109, "seconds": 2.9}
+{"position": 110, "total": 127, "starting": "k210(触屏版)程序下载步骤（截图OCR补充）.md"}
+{"failed": "k210(触屏版)程序下载步骤（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 110, "seconds": 2.9}
+{"position": 111, "total": 127, "starting": "k210(触屏版)程序下载步骤（截图OCR补充）.md"}
+{"failed": "k210(触屏版)程序下载步骤（截图OCR补充）.md", "error": "[WinError 10061] 由于目标计算机积极拒绝，无法连接。"}
+{"completed_position": 111, "seconds": 3.0}
+{"position": 112, "total": 127, "starting": "k210(触屏版)程序下载步骤（截图OCR补充）.md"}
+{"id": "a795cd81869d4ee39b647f585f921850", "filename": "k210(触屏版)程序下载步骤（截图OCR补充）.md", "chunk_count": 14, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\08-视觉K210(触屏版)拓展代码\\03-视觉K210颜色识别点头摇头代码\\k210(触屏版)程序下载步骤.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\k210(触屏版)程序下载步骤（截图OCR补充）.md", "sha256": "d858be8b116d073847dc9edd9b5142a8c8315aad65183184b29ec90f2cbac08a", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 112, "seconds": 8.8}
+{"position": 113, "total": 127, "starting": "CH340串口驱动安装（截图OCR补充）.md"}
+{"id": "ae175e81b6e4425981c6f1b05f97c5c9", "filename": "CH340串口驱动安装（截图OCR补充）.md", "chunk_count": 5, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\01-CH340串口驱动\\CH340串口驱动安装.pdf", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\CH340串口驱动安装（截图OCR补充）.md", "sha256": "301fcec520090b1729573abe896e45916aa44314f76ceb382e6b74d6c61de497", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 113, "seconds": 3.1}
+{"position": 114, "total": 127, "starting": "4387d07ae2_航模舵机控制原理详解（DOC文字提取）.md"}
+{"id": "42fe8f0f459d48d788527d0491b48f20", "filename": "4387d07ae2_航模舵机控制原理详解（DOC文字提取）.md", "chunk_count": 6, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\0 , 舵机知识.zip!/0 , 舵机知识/航模舵机控制原理详解.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\4387d07ae2_航模舵机控制原理详解（DOC文字提取）.md", "sha256": "a3e2222e3650cbea1d1f387fa4ce7fa985fb209a94b3ecc8adcb3a94cd9a61ae", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 114, "seconds": 3.8}
+{"position": 115, "total": 127, "starting": "6bbb23af1f_STM32 V3.4固件库使用方法实例修订版（DOC文字提取）.md"}
+{"id": "2274ae17baf74930bebc0def54d06d4c", "filename": "6bbb23af1f_STM32 V3.4固件库使用方法实例修订版（DOC文字提取）.md", "chunk_count": 9, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/STM32 V3.4固件库使用方法实例修订版.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\6bbb23af1f_STM32 V3.4固件库使用方法实例修订版（DOC文字提取）.md", "sha256": "775b5a651671a5ba961801f8656b70246ee4415e76821dd62bf04748f420905f", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 115, "seconds": 3.7}
+{"position": 116, "total": 127, "starting": "a351a53e05_Stm32寄存器与库函数概览(摘自固件库使用手册)（DOC文字提取）.md"}
+{"id": "b02fb64711ef45e5a80f19b8470018b9", "filename": "a351a53e05_Stm32寄存器与库函数概览(摘自固件库使用手册)（DOC文字提取）.md", "chunk_count": 1, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/Stm32寄存器与库函数概览(摘自固件库使用手册).doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\a351a53e05_Stm32寄存器与库函数概览(摘自固件库使用手册)（DOC文字提取）.md", "sha256": "dcecd1d73c637d86f3b9086fa1a803d15199179112dd2298d33b3ec4b4a05933", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 116, "seconds": 6.1}
+{"position": 117, "total": 127, "starting": "005b5ab7ab_MDk如何生成bin文件（DOC文字提取）.md"}
+{"id": "d318f38d2f6242309f0ed3dc6ae5409c", "filename": "005b5ab7ab_MDk如何生成bin文件（DOC文字提取）.md", "chunk_count": 2, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/MDk如何生成bin文件.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\005b5ab7ab_MDk如何生成bin文件（DOC文字提取）.md", "sha256": "85abf5c887de22754103ccad9728a12293cee5bfa76973027dfc110a9090b54e", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 117, "seconds": 6.6}
+{"position": 118, "total": 127, "starting": "45aa861f04_STM32的IAP方案（DOC文字提取）.md"}
+{"id": "cf86724339bf4bb89c70c5cd8ed75021", "filename": "45aa861f04_STM32的IAP方案（DOC文字提取）.md", "chunk_count": 7, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/STM32的IAP方案.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\45aa861f04_STM32的IAP方案（DOC文字提取）.md", "sha256": "ab2ae25356bca474cc6fbbcca00503a9c470789534531c29546ae1433e2fde0d", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 118, "seconds": 5.8}
+{"position": 119, "total": 127, "starting": "HEX快速下载方法（Office截图OCR补充）.md"}
+{"id": "700ce69c5676469eafb6fcbab1990226", "filename": "HEX快速下载方法（Office截图OCR补充）.md", "chunk_count": 3, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip!/HEX快速下载方法.docx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\HEX快速下载方法（Office截图OCR补充）.md", "sha256": "2ea43e79adcdddaf9c76e9e29387f871bbe155f533e286691385c029165b2294", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 119, "seconds": 5.5}
+{"position": 120, "total": 127, "starting": "舵机简介（Office截图OCR补充）.md"}
+{"id": "97ca4c54bf0445f5842f38a66a5e1167", "filename": "舵机简介（Office截图OCR补充）.md", "chunk_count": 3, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\0 , 舵机知识.zip!/0 , 舵机知识/舵机简介.docx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\舵机简介（Office截图OCR补充）.md", "sha256": "a74ff16fb95f12fbea9db853633ae685be7e061fb0c88c4e18ea495fb4c35044", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 120, "seconds": 5.3}
+{"position": 121, "total": 127, "starting": "STM32 V3.4固件库使用方法实例修订版（Office截图OCR补充）.md"}
+{"id": "439166290f544deb85d981e9abe03acc", "filename": "STM32 V3.4固件库使用方法实例修订版（Office截图OCR补充）.md", "chunk_count": 12, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/STM32 V3.4固件库使用方法实例修订版.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\STM32 V3.4固件库使用方法实例修订版（Office截图OCR补充）.md", "sha256": "088caed2616cd91f6e76b9df0d59cbf7900e599c111a5073baefeacfe42a6b99", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 121, "seconds": 5.4}
+{"position": 122, "total": 127, "starting": "Stm32寄存器与库函数概览(摘自固件库使用手册)（Office截图OCR补充）.md"}
+{"id": "86ac187cead04c7d812b154efd4d7114", "filename": "Stm32寄存器与库函数概览(摘自固件库使用手册)（Office截图OCR补充）.md", "chunk_count": 48, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip!/1，STM32F1xx固件库/Stm32寄存器与库函数概览(摘自固件库使用手册).doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Stm32寄存器与库函数概览(摘自固件库使用手册)（Office截图OCR补充）.md", "sha256": "2453e53bd30ebcb9d7322a1e7dddbbf2665014749de45e3e3ccc62ea36c643bc", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 122, "seconds": 7.0}
+{"position": 123, "total": 127, "starting": "MDk如何生成bin文件（Office截图OCR补充）.md"}
+{"id": "dddb9d87dd1f444dbe1f8274df8aeed9", "filename": "MDk如何生成bin文件（Office截图OCR补充）.md", "chunk_count": 2, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/MDk如何生成bin文件.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\MDk如何生成bin文件（Office截图OCR补充）.md", "sha256": "60d361bd6d76119f12d07eb6e41cdf4c6e213b50d2e11f4adbf9cb0335bf5b59", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 123, "seconds": 5.2}
+{"position": 124, "total": 127, "starting": "STM32的IAP方案（Office截图OCR补充）.md"}
+{"id": "64b4cd50d643402a9e5dae460992e0e2", "filename": "STM32的IAP方案（Office截图OCR补充）.md", "chunk_count": 3, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip!/4，STM32 IAP学习资料/STM32的IAP方案.doc", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\STM32的IAP方案（Office截图OCR补充）.md", "sha256": "b294710ce95ca98218a1af8dd9e691a70a88781b44209a352cc22b06d515ce5c", "knowledge_base_id": "c0077d246def4753bc5465e919510b52"}
+{"completed_position": 124, "seconds": 6.9}
+{"position": 125, "total": 127, "starting": "keil5软件安装及程序编译（Office截图OCR补充）.md"}
+{"id": "4af828526f21409fa6ef59957397f8de", "filename": "keil5软件安装及程序编译（Office截图OCR补充）.md", "chunk_count": 22, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\004-软件工具\\02-stm32开发工具\\keil5软件安装及程序编译.pptx", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\keil5软件安装及程序编译（Office截图OCR补充）.md", "sha256": "bd5e2d083478a2b385c4c4795878ba21e62a6b70f70685e11969faf93aea6d1f", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 125, "seconds": 5.8}
+{"position": 126, "total": 127, "starting": "STM32程序下载步骤（FlyMcu图片转录）.md"}
+{"id": "1c32eccd807d41a7a5cacb38752faa0c", "filename": "STM32程序下载步骤（FlyMcu图片转录）.md", "chunk_count": 1, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\STM32程序下载步骤（FlyMcu图片转录）.md", "sha256": "77321a8906a463fa3a89221d43d5a7aaf6e076f4c4ebf768cdaaa184548a8b81", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 126, "seconds": 5.3}
+{"position": 127, "total": 127, "starting": "Jibot1_Keil工程编译文件索引.md"}
+{"id": "290b400f19894282a5a4f4cc6aa9af02", "filename": "Jibot1_Keil工程编译文件索引.md", "chunk_count": 22, "source": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）", "prepared_path": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\prepared\\Jibot1_Keil工程编译文件索引.md", "sha256": "a0dacb81ad91a4c1c77da8a28612905fb79c6713519a4d845a55c39b2cb96af7", "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8"}
+{"completed_position": 127, "seconds": 5.8}
+{"done": 127, "failures": 24}

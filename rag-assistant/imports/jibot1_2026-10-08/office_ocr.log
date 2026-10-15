@@ -1,0 +1,19 @@
+D:\one project\rag-assistant\backend\.venv\Lib\site-packages\PIL\Image.py:1045: UserWarning: Palette images with Transparency expressed in bytes should be converted to RGBA images
+  warnings.warn(
+{"office_images": 149}
+{"done": 10, "total": 149, "failures": 0}
+{"done": 20, "total": 149, "failures": 0}
+{"done": 30, "total": 149, "failures": 0}
+{"done": 40, "total": 149, "failures": 0}
+{"done": 50, "total": 149, "failures": 0}
+{"done": 60, "total": 149, "failures": 0}
+{"done": 70, "total": 149, "failures": 0}
+{"done": 80, "total": 149, "failures": 0}
+{"done": 90, "total": 149, "failures": 0}
+{"done": 100, "total": 149, "failures": 0}
+{"done": 110, "total": 149, "failures": 0}
+{"done": 120, "total": 149, "failures": 0}
+{"done": 130, "total": 149, "failures": 0}
+{"done": 140, "total": 149, "failures": 0}
+{"done": 149, "total": 149, "failures": 0}
+{"outputs": 7, "failures": []}

@@ -1,0 +1,21 @@
+{
+  "source_directory": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）",
+  "knowledge_bases": [
+    {
+      "knowledge_base": "机械臂",
+      "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+      "new_documents": 95,
+      "new_chunks": 3143
+    },
+    {
+      "knowledge_base": "STM32F103",
+      "knowledge_base_id": "c0077d246def4753bc5465e919510b52",
+      "new_documents": 61,
+      "new_chunks": 23062
+    }
+  ],
+  "documents": 156,
+  "chunks": 26205,
+  "integrity_problems": 0,
+  "orphan_candidates": 0
+}

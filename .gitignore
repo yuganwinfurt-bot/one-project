@@ -1,0 +1,38 @@
+# 本机密钥和配置
+**/.env
+**/.env.*
+!**/.env.example
+
+# Python 缓存和测试临时文件
+**/__pycache__/
+**/.venv/
+**/.pytest_cache/
+**/.pytest-run-*/
+**/.pytest-tmp*/
+**/.testtmp*/
+
+# 前端依赖和构建产物
+**/node_modules/
+**/dist/
+
+# 本机数据库和日志
+**/*.db
+**/*.db-wal
+**/*.db-shm
+**/*.db-journal
+**/logs/
+
+# 本地预览浏览器配置、缓存和日志数据库
+**/.edge-preview/
+**/.chrome-preview/
+**/.browser-qa*/
+
+# Windows 本机启动脚本（不用于 Linux 服务器部署）
+/start_local_projects.py
+/启动本地项目.bat
+
+# SQLite 本机数据库及 WAL 日志
+**/*.sqlite
+**/*.sqlite-*
+**/*.sqlite3
+**/*.sqlite3-*

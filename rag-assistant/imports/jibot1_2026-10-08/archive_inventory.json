@@ -1,0 +1,914 @@
+[
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\01-出厂程序下载\\程序下载工具FlyMcu.zip",
+    "files": 5,
+    "bytes": 2783441,
+    "extensions": {
+      ".exe": 1,
+      ".ini": 1,
+      ".txt": 2,
+      ".png": 1
+    },
+    "sample": [
+      "│╠╨≥╧┬╘╪╣ñ╛▀FlyMcu/ProgramLogs.txt",
+      "│╠╨≥╧┬╘╪╣ñ╛▀FlyMcu/╡π╗≈╧┬╘╪╟░░┤╫íboot░┤╝ⁿ.txt"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip",
+    "files": 387,
+    "bytes": 50732270,
+    "extensions": {
+      ".c": 42,
+      ".h": 49,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".hex": 6,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 30,
+      ".d": 31,
+      ".o": 31,
+      ".axf": 5,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 1,
+      ".dep": 1,
+      ".txt": 3,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1
+    },
+    "sample": [
+      "CMSIS/CM3/CoreSupport/core_cm3.c",
+      "CMSIS/CM3/CoreSupport/core_cm3.h",
+      "CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "CMSIS/License.doc",
+      "Libraries/inc/misc.h",
+      "Libraries/inc/stm32f10x_adc.h",
+      "Libraries/inc/stm32f10x_bkp.h",
+      "Libraries/inc/stm32f10x_can.h",
+      "Libraries/inc/stm32f10x_cec.h",
+      "Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-光控弯曲.zip",
+    "files": 381,
+    "bytes": 50113302,
+    "extensions": {
+      ".c": 40,
+      ".h": 47,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 29,
+      ".d": 30,
+      ".o": 30,
+      ".axf": 5,
+      ".hex": 4,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-╣Γ┐╪═Σ╟·/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-按键夹取.zip",
+    "files": 378,
+    "bytes": 49778244,
+    "extensions": {
+      ".c": 40,
+      ".h": 47,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 29,
+      ".d": 30,
+      ".o": 30,
+      ".axf": 5,
+      ".hex": 1,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-░┤╝ⁿ╝╨╚í/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-摇杆控制.zip",
+    "files": 378,
+    "bytes": 49777408,
+    "extensions": {
+      ".c": 40,
+      ".h": 47,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 29,
+      ".d": 30,
+      ".o": 30,
+      ".axf": 5,
+      ".hex": 1,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-╥í╕╦┐╪╓╞/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-智能栏杆.zip",
+    "files": 378,
+    "bytes": 49790820,
+    "extensions": {
+      ".c": 40,
+      ".h": 47,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 29,
+      ".d": 30,
+      ".o": 30,
+      ".axf": 5,
+      ".hex": 1,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-╓╟─▄└╕╕╦/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-测距夹取.zip",
+    "files": 383,
+    "bytes": 50505456,
+    "extensions": {
+      ".c": 41,
+      ".h": 48,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 30,
+      ".d": 31,
+      ".o": 31,
+      ".axf": 5,
+      ".hex": 1,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-▓Γ╛α╝╨╚í/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-触摸夹取.zip",
+    "files": 381,
+    "bytes": 50118159,
+    "extensions": {
+      ".c": 40,
+      ".h": 47,
+      ".html": 1,
+      ".htm": 9,
+      ".doc": 1,
+      ".exe": 1,
+      ".ini": 1,
+      ".s": 40,
+      ".map": 111,
+      ".lst": 1,
+      ".crf": 29,
+      ".d": 30,
+      ".o": 30,
+      ".axf": 5,
+      ".hex": 4,
+      ".lnp": 5,
+      ".plg": 5,
+      ".sct": 5,
+      ".tra": 4,
+      ".bak": 3,
+      ".dep": 2,
+      ".txt": 1,
+      ".86159": 1,
+      ".administrator": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".png": 1,
+      ".db": 1
+    },
+    "sample": [
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/CMSIS/License.doc",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/misc.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/stm32f10x_adc.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/stm32f10x_bkp.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/stm32f10x_can.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/stm32f10x_cec.h",
+      "Jibot1-32│÷│º│╠╨≥-┤Ñ├■╝╨╚í/Libraries/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\04-右体感手套源码\\01-体感手套程序下载\\Arduloader+驱动+教程.zip",
+    "files": 12,
+    "bytes": 13459797,
+    "extensions": {
+      ".hex": 1,
+      ".txt": 2,
+      ".zip": 1,
+      ".pdf": 1,
+      ".docx": 1,
+      ".exe": 2,
+      ".log": 1,
+      ".conf": 1,
+      ".dll": 1,
+      ".ini": 1
+    },
+    "sample": [
+      "╧┬╘╪hex╬─╝■─┐┬╝▓╗─▄╙╨┐╒╕±.txt",
+      "HEX┐∞╦┘╧┬╘╪╖╜╖¿.pdf",
+      "HEX┐∞╦┘╧┬╘╪╖╜╖¿.docx",
+      "boards.txt"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\05-ZF1示教器源码\\02-示教器程序源码\\001-ZF_J1_J2_K1_K2_RC-20230425.zip",
+    "files": 197,
+    "bytes": 20508620,
+    "extensions": {
+      ".exe": 1,
+      ".ini": 1,
+      ".h": 42,
+      ".c": 39,
+      ".s": 1,
+      ".lst": 1,
+      ".map": 5,
+      ".d": 25,
+      ".o": 25,
+      ".crf": 24,
+      ".axf": 3,
+      ".htm": 3,
+      ".lnp": 3,
+      ".plg": 4,
+      ".sct": 3,
+      ".tra": 1,
+      ".bak": 6,
+      ".hex": 2,
+      ".txt": 1,
+      ".administrator": 1,
+      ".tb": 1,
+      ".techman": 1,
+      ".zl-jq": 1,
+      ".uvopt": 1,
+      ".uvproj": 1,
+      ".dep": 1
+    },
+    "sample": [
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_adc.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_can.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_cec.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_comp.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_crc.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_crs.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_dac.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_dbgmcu.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_dma.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_exti.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_flash.h",
+      "001-ZF_J1_J2_K1_K2_RC-20230425/Libraries/inc/stm32f0xx_gpio.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\003-源码例程\\09-AI智控模块拓展代码\\01-源码\\ZL_AI_ZHIKONG_RoboticArm_V1.0.0.zip",
+    "files": 7678,
+    "bytes": 653282152,
+    "extensions": {
+      ".yml": 75,
+      "": 284,
+      ".json": 67,
+      ".s": 100,
+      ".bin": 131,
+      ".elf": 2,
+      ".map": 2,
+      ".ninja": 4,
+      ".txt": 171,
+      ".cmake": 200,
+      ".out": 4,
+      ".c": 1440,
+      ".cpp": 83,
+      ".obj": 1813,
+      ".check_cache": 2,
+      ".yaml": 4,
+      ".h": 1020,
+      ".env": 2,
+      ".a": 176,
+      ".in": 19,
+      ".bat": 4,
+      ".ld": 3,
+      ".lock": 1,
+      ".jpg": 49,
+      ".md": 129,
+      ".cc": 114,
+      ".p3": 52,
+      ".projbuild": 14,
+      ".sh": 27,
+      ".pl": 1,
+      ".build": 9,
+      ".mk": 13,
+      ".ac": 1,
+      ".py": 270,
+      ".rc": 1,
+      ".ipynb": 4,
+      ".m4": 4,
+      ".am": 1,
+      ".mips": 1,
+      ".unix": 1,
+      ".draft": 1,
+      ".sha2": 1,
+      ".png": 1002,
+      ".html": 5,
+      ".ttf": 14,
+      ".ls_manually": 1,
+      ".defaults": 24,
+      ".pm": 1,
+      ".csv": 12,
+      ".gif": 17,
+      ".wav": 16,
+      ".dat": 4,
+      ".new": 1,
+      ".ini": 1,
+      ".ref": 1,
+      ".model": 1,
+      ".gc9b71": 1,
+      ".sh8601": 1,
+      ".esp32s3": 2,
+      ".asm_render": 1,
+      ".sh__": 1,
+      ".txt__": 1,
+      ".json__": 2,
+      ".h__": 1,
+      ".c__": 1,
+      ".toml": 1,
+      ".otf": 1,
+      ".fnt": 14,
+      ".rst": 223,
+      ".back": 1,
+      ".pdf": 1,
+      ".css": 2,
+      ".js": 2,
+      ".pack": 1,
+      ".pdsc": 1,
+      ".pidx": 1,
+      ".patch": 1,
+      ".pyi": 1,
+      ".ino": 1,
+      ".bmp": 4,
+      ".mp4": 1,
+      ".properties": 1,
+      ".woff": 2,
+      ".hbs": 1,
+      ".cfg": 1,
+      ".rb": 3,
+      ".erb": 1,
+      ".esp32c3": 1,
+      ".old": 1
+    },
+    "sample": [
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/CMakeCache.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/CMakeFiles/3.30.2/CompilerIdC/CMakeCCompilerId.c",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/CMakeFiles/3.30.2/CompilerIdCXX/CMakeCXXCompilerId.cpp",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/CMakeFiles/TargetDirectories.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/config/sdkconfig.h",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader/project_elf_src_esp32s3.c",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch-info.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader-prefix/src/bootloader-stamp/bootloader-source_dirinfo.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader-prefix/src/bootloader-stamp/bootloader-update-info.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/bootloader-prefix/tmp/bootloader-cfgcmd.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/CMakeCache.txt",
+      "ZL_AI_ZHIKONG_RoboticArm_V1.0.0/build/CMakeFiles/3.30.2/CompilerIdC/CMakeCCompilerId.c"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\0 , 舵机知识.zip",
+    "files": 2,
+    "bytes": 726309,
+    "extensions": {
+      ".doc": 1,
+      ".docx": 1
+    },
+    "sample": [
+      "0 , 舵机知识/航模舵机控制原理详解.doc",
+      "0 , 舵机知识/舵机简介.docx"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\1，STM32F1xx固件库.zip",
+    "files": 5,
+    "bytes": 40274851,
+    "extensions": {
+      ".doc": 2,
+      ".chm": 1,
+      ".rar": 1,
+      ".pdf": 1
+    },
+    "sample": [
+      "1，STM32F1xx固件库/STM32 V3.4固件库使用方法实例修订版.doc",
+      "1，STM32F1xx固件库/STM32固件库使用手册的中文翻译版.pdf",
+      "1，STM32F1xx固件库/Stm32寄存器与库函数概览(摘自固件库使用手册).doc"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\2，STM32 USB 学习资料.zip",
+    "files": 9,
+    "bytes": 23519891,
+    "extensions": {
+      ".pdf": 8,
+      ".zip": 1
+    },
+    "sample": [
+      "2，STM32 USB 学习资料/022525_STM32F10x_USB_学习培训资料.pdf",
+      "2，STM32 USB 学习资料/CD00158241.pdf",
+      "2，STM32 USB 学习资料/STM32 USB Mass Storage学习资料.pdf",
+      "2，STM32 USB 学习资料/STM32的USB详解.pdf",
+      "2，STM32 USB 学习资料/USB培训_Part1_协议.pdf",
+      "2，STM32 USB 学习资料/USB培训_Part2_USB_IP及其库的使用.pdf",
+      "2，STM32 USB 学习资料/USB培训_Part3_USB_OTG_IP及其库的使用.pdf",
+      "2，STM32 USB 学习资料/基于STM32的USB程序开发笔记.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\3，STM32 FLASH模拟EEPROM资料.zip",
+    "files": 3,
+    "bytes": 921616,
+    "extensions": {
+      ".pdf": 3
+    },
+    "sample": [
+      "3，STM32 FLASH模拟EEPROM资料/AN2594.pdf",
+      "3，STM32 FLASH模拟EEPROM资料/STM32F10xxx闪存编程参考手册.pdf",
+      "3，STM32 FLASH模拟EEPROM资料/STM32模拟EEPROM的使用和优化.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\4，STM32 IAP学习资料.zip",
+    "files": 3,
+    "bytes": 560389,
+    "extensions": {
+      ".doc": 2,
+      ".pdf": 1
+    },
+    "sample": [
+      "4，STM32 IAP学习资料/MDk如何生成bin文件.doc",
+      "4，STM32 IAP学习资料/STM32的IAP方案.doc",
+      "4，STM32 IAP学习资料/关于STM32的IAP总结.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\5，STM32勘误资料.zip",
+    "files": 4,
+    "bytes": 1120396,
+    "extensions": {
+      ".pdf": 4
+    },
+    "sample": [
+      "5，STM32勘误资料/STM32F107_Errata_CH_V1.pdf",
+      "5，STM32勘误资料/STM32F10xx46_Errata_CH_V2.pdf",
+      "5，STM32勘误资料/STM32F10xx8B_Errata_CH_V6.pdf",
+      "5，STM32勘误资料/STM32F10xxCDE_Errata_CH_V5.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\6，STM32中文数据手册.zip",
+    "files": 8,
+    "bytes": 14769651,
+    "extensions": {
+      ".pdf": 8
+    },
+    "sample": [
+      "6，STM32中文数据手册/STM32F101x46_DS_CH_V2.pdf",
+      "6，STM32中文数据手册/STM32F101x8B_DS_CH_V11.pdf",
+      "6，STM32中文数据手册/STM32F101xCDE_DS_CH_V5.pdf",
+      "6，STM32中文数据手册/STM32F102x46_DS_CH_V2.pdf",
+      "6，STM32中文数据手册/STM32F102x8B_DS_CH_V2.pdf",
+      "6，STM32中文数据手册/STM32F103x46_DS_CH_V2.pdf",
+      "6，STM32中文数据手册/STM32F103x8B_DS_CH_V10.pdf",
+      "6，STM32中文数据手册/STM32F103xCDE_DS_CH_V5.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\7、C语言学习资料（赠送）.zip",
+    "files": 8,
+    "bytes": 26469428,
+    "extensions": {
+      ".pdf": 6,
+      ".chm": 1,
+      ".db": 1
+    },
+    "sample": [
+      "7、C语言学习资料（赠送）/(经典,非常详细).pdf",
+      "7、C语言学习资料（赠送）/C和指针.pdf",
+      "7、C语言学习资料（赠送）/C精华.pdf",
+      "7、C语言学习资料（赠送）/C语言深度解剖.pdf",
+      "7、C语言学习资料（赠送）/嵌入式c编程语言入门与深入.pdf",
+      "7、C语言学习资料（赠送）/高质量C编程指南—林锐.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ARM Cotrex-M3权威指南(英文).zip",
+    "files": 1,
+    "bytes": 5932023,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "ARM Cotrex-M3权威指南(英文).PDF"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\CM3技术参考手册.zip",
+    "files": 1,
+    "bytes": 1756240,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "CM3技术参考手册.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\Cortex-M3权威指南(中文).zip",
+    "files": 1,
+    "bytes": 10364695,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "Cortex-M3权威指南(中文).pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ST MCU 最新选型手册_201508.zip",
+    "files": 1,
+    "bytes": 2533089,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "ST MCU 最新选型手册_201508.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\ST3.5.0官方标准库.zip",
+    "files": 1061,
+    "bytes": 60938101,
+    "extensions": {
+      ".c": 348,
+      ".h": 275,
+      ".html": 7,
+      ".s": 44,
+      ".htm": 4,
+      ".doc": 1,
+      ".txt": 114,
+      ".ld": 14,
+      ".ewd": 2,
+      ".ewp": 2,
+      ".eww": 2,
+      ".icf": 7,
+      ".asm": 15,
+      ".lsl": 26,
+      ".lnk": 18,
+      ".scr": 25,
+      ".htp": 8,
+      ".uvopt": 2,
+      ".uvproj": 2,
+      "": 16,
+      ".ini": 1,
+      ".flm": 1,
+      ".admin": 1,
+      ".dep": 1,
+      ".bak": 2,
+      ".crf": 36,
+      ".d": 37,
+      ".o": 37,
+      ".lst": 1,
+      ".axf": 1,
+      ".lnp": 1,
+      ".map": 1,
+      ".plg": 1,
+      ".sct": 1,
+      ".tra": 1,
+      ".rapp": 1,
+      ".rprj": 1,
+      ".chm": 1,
+      ".jpg": 1,
+      ".bmp": 1,
+      ".db": 1
+    },
+    "sample": [
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3.c",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/CoreSupport/core_cm3.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/stm32f10x.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.c",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/CM3/DeviceSupport/ST/STM32F10x/system_stm32f10x.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/CMSIS/License.doc",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/misc.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_adc.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_bkp.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_can.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_cec.h",
+      "ST3.5.0官方标准库/STM32F10x_StdPeriph_Lib_V3.5.0/Libraries/STM32F10x_StdPeriph_Driver/inc/stm32f10x_crc.h"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F103RC_Datasheet.zip",
+    "files": 1,
+    "bytes": 1731878,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32F103RC_Datasheet.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10xxx参考手册.zip",
+    "files": 1,
+    "bytes": 5564712,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32F10xxx参考手册.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32F10x常见应用解析.zip",
+    "files": 1,
+    "bytes": 2170541,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32F10x常见应用解析.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中文参考手册_V10.zip",
+    "files": 1,
+    "bytes": 14306739,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32中文参考手册_V10.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32中断优先级与相关使用概念.zip",
+    "files": 1,
+    "bytes": 142377,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32中断优先级与相关使用概念.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32固件库使用手册.zip",
+    "files": 1,
+    "bytes": 2924487,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32固件库使用手册.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32时钟图.zip",
+    "files": 1,
+    "bytes": 30032,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32时钟图.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\01-技术文档\\STM32英文参考手册_V15.zip",
+    "files": 1,
+    "bytes": 13016697,
+    "extensions": {
+      ".pdf": 1
+    },
+    "sample": [
+      "STM32英文参考手册_V15.pdf"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\02-机械臂结构图纸\\机械臂（Jibot1）-221125.zip",
+    "files": 1,
+    "bytes": 5666687,
+    "extensions": {
+      ".step": 1
+    },
+    "sample": []
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\03-开源上位机代码\\开源上位机代码.zip",
+    "files": 47,
+    "bytes": 33003591,
+    "extensions": {
+      ".zip": 2,
+      "": 1,
+      ".cpp": 7,
+      ".h": 6,
+      ".ui": 2,
+      ".rc": 2,
+      ".png": 20,
+      ".ico": 2,
+      ".qrc": 1,
+      ".pro": 1,
+      ".user": 1,
+      ".7b6d7af": 1,
+      ".txt": 1
+    },
+    "sample": [
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/actiongroup.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/actiongroup.h",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/actiongroupitem.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/actiongroupitem.h",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/dragwidget.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/dragwidget.h",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/formsteerctl.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/formsteerctl.h",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/main.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/mainwindow.cpp",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/mainwindow.h",
+      "┐¬╘┤╔╧╬╗╗·┤·┬δ/001-QT╘┤┤·┬δ/ZideMini╘┤┬δQT/coding/mythread.cpp"
+    ]
+  },
+  {
+    "archive": "E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\005-拓展资料\\04-气泵拓展openmv案例\\openmv plus代码.zip",
+    "files": 3,
+    "bytes": 642302,
+    "extensions": {
+      ".txt": 1,
+      ".py": 1,
+      ".tflite": 1
+    },
+    "sample": [
+      "openmvplus代码/labels.txt",
+      "openmvplus代码/main.py"
+    ]
+  }
+]

@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\9a705f36c411f64ca8dc055b878d1aed66361500ea7a7ee00a2a72e5a20c8170.png",
+  "rows": [
+    {
+      "text": "USB口靠近开关这一侧",
+      "score": 0.99678,
+      "box": [
+        [
+          130.0,
+          434.0
+        ],
+        [
+          457.0,
+          434.0
+        ],
+        [
+          457.0,
+          467.0
+        ],
+        [
+          130.0,
+          467.0
+        ]
+      ]
+    }
+  ]
+}

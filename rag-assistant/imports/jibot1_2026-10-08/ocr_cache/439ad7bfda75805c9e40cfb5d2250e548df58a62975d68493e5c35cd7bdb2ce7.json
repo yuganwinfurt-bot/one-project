@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\439ad7bfda75805c9e40cfb5d2250e548df58a62975d68493e5c35cd7bdb2ce7.png",
+  "rows": [
+    {
+      "text": "From www.geek-workshop.com",
+      "score": 0.97689,
+      "box": [
+        [
+          614.0,
+          546.0
+        ],
+        [
+          855.0,
+          547.0
+        ],
+        [
+          855.0,
+          568.0
+        ],
+        [
+          614.0,
+          567.0
+        ]
+      ]
+    }
+  ]
+}

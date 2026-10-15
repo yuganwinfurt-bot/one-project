@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\3a19acab7d6fc4ee71e089f247e01203d4b2a0bd5e8fdebc2e50ab69ae6743d4.png",
+  "rows": [
+    {
+      "text": "【G0000组用于修改偏差，不能调节PWM，请增加或选择其他组】",
+      "score": 0.98212,
+      "box": [
+        [
+          13.0,
+          11.0
+        ],
+        [
+          389.0,
+          11.0
+        ],
+        [
+          389.0,
+          25.0
+        ],
+        [
+          13.0,
+          26.0
+        ]
+      ]
+    }
+  ]
+}

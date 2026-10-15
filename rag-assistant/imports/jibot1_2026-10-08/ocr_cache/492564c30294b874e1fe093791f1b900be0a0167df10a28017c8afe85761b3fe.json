@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\492564c30294b874e1fe093791f1b900be0a0167df10a28017c8afe85761b3fe.png",
+  "rows": [
+    {
+      "text": "XOTXD GNDYO",
+      "score": 0.6941,
+      "box": [
+        [
+          660.0,
+          784.0
+        ],
+        [
+          700.0,
+          786.0
+        ],
+        [
+          692.0,
+          932.0
+        ],
+        [
+          652.0,
+          930.0
+        ]
+      ]
+    }
+  ]
+}

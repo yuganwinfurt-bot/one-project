@@ -1,0 +1,27 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\c92a746d5e129bb1f2b5e395a7b7514b76dd1ca4ba1ae98cfc12b64728d8a1f9.png",
+  "rows": [
+    {
+      "text": "O",
+      "score": 0.64635,
+      "box": [
+        [
+          69.0,
+          165.0
+        ],
+        [
+          86.0,
+          165.0
+        ],
+        [
+          86.0,
+          184.0
+        ],
+        [
+          69.0,
+          184.0
+        ]
+      ]
+    }
+  ]
+}

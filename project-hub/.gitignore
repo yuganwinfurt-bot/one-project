@@ -1,0 +1,12 @@
+node_modules/
+.testdeps/
+.browser-qa*/
+preview-*.png
+site-deploy.tar.gz
+project-hub-release.zip
+dist/
+.env
+data/
+__pycache__/
+.pytest_cache/
+*.pyc

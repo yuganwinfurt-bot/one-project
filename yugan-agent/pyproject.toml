@@ -1,0 +1,47 @@
+[build-system]
+requires = ["hatchling>=1.26,<2"]
+build-backend = "hatchling.build"
+
+[project]
+name = "yugan-agent"
+version = "0.1.0"
+description = "轻量、模块化的 Python AI Agent 框架：工具调用、工作流、上下文与多模型"
+readme = "README.md"
+requires-python = ">=3.11"
+license = "MIT"
+authors = [{name = "yugan"}]
+keywords = ["agent", "workflow", "iot", "tools"]
+dependencies = [
+  "pydantic>=2.10,<3",
+  "pydantic-settings>=2.7,<3",
+  "openai>=2,<3",
+  "anthropic>=0.70,<1",
+  "httpx>=0.28,<1",
+  "rich>=13.9,<15",
+  "fastapi>=0.115,<1",
+  "uvicorn>=0.34,<1",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8,<10", "pytest-asyncio>=0.25,<2", "ruff>=0.11,<1", "build>=1.2,<2"]
+browser = ["playwright>=1.63,<2"]
+
+[project.scripts]
+yugan-agent = "yugan_agent.cli:main"
+
+[project.urls]
+Upstream = "https://github.com/caizizhen/Cai_Agent"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/yugan_agent"]
+
+[tool.pytest.ini_options]
+asyncio_mode = "auto"
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "ASYNC"]

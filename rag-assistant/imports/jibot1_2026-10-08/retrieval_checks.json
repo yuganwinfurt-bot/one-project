@@ -1,0 +1,142 @@
+[
+  {
+    "question": "六轴机械臂J1 PS2手柄怎样切换红灯模式？L2和R2有什么作用？",
+    "hits": [
+      {
+        "content": "## 六轴机械臂J1（爪子版）：上电及开机成功标志\n来源：E:\\BaiduNetdiskDownload\\001-智能机械臂-Jibot1（25年）\\六轴机械臂J1-快速入门.jpg（单页原图，文字及按键表转录）。\n1. 将电源适配器插到电源插座上。\n2. 电源适配器连接机械臂控制板上的适配器对接线。\n3. 先将机械臂扶至大概直立的状态，然后打开控制板电源开关。\n4. 听到嘀嘀嘀响三声代表开机成功。\n原图标出了控制板的电源开关和连接电源适配器的接头。本指南没有标明适配器电压、电流，不应据此推断供电参数。\n\n## 六轴机械臂J1（爪子版）：PS2 手柄配对、红灯模式及控制模式切换\n来源：E:\\BaiduNetdiskDownload\\001-智能机械臂-Jibot1（25年）\\六轴机械臂J1-快速入门.jpg（单页原图，文字及按键表转录）。\n1. 将 2 节 7 号电池装到 PS2 手柄中。\n2. 将手柄开关拨到 ON。手柄和接收器上的指示灯闪烁表示等待配对；配对成功后指示灯长亮。\n3. 用 MODE 键切换至红灯模式；原图特别说明：红绿灯都亮即为红灯模式。\n4. 完成上述步骤后即可用手柄控制机械臂。\n5. SELECT 键在手动操作模式和自动夹取模式之间切换。MODE 切换红绿灯模式，SELECT 切换操作模式，二者功能不同。\n手柄图标出了方向键上、下、左、右，SELECT、START、MODE、L1、L2、R1、R2、左右摇杆，以及三角形、叉号、方形、圆形按键；本指南没有提供摇杆的动作映射。",
+        "filename": "六轴机械臂J1（爪子版）快速上手指南（图片转录）.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "fd2c0c46de7640f1978064a7ee6463ba-0-19738401",
+        "chunk_index": 1,
+        "score": 0.6326923647168325
+      },
+      {
+        "content": "## 六轴机械臂J1（爪子版）：手动操作模式完整按键表\n来源：E:\\BaiduNetdiskDownload\\001-智能机械臂-Jibot1（25年）\\六轴机械臂J1-快速入门.jpg（单页原图，文字及按键表转录）。\nSELECT 切换模式；手动模式下，按键按下时对应关节动，松开时停止。\n| 按键 | 功能 |\n| --- | --- |\n| SELECT | 模式切换 |\n| START | 直立 |\n| 上 | 1号舵机前 |\n| 下 | 1号舵机后 |\n| 左 | 云台左转 |\n| 右 | 云台右转 |\n| 三角形 △ | 2号舵机前 |\n| 叉号 × | 2号舵机后 |\n| 方形 □ | 3号舵机前 |\n| 圆形 ○ | 3号舵机后 |\n| L1 | 爪子左转 |\n| R1 | 爪子右转 |\n| L2 | 爪子张开 |\n| R2 | 爪子闭合 |\n\n## 六轴机械臂J1（爪子版）：自动夹取模式完整按键表\n来源：E:\\BaiduNetdiskDownload\\001-智能机械臂-Jibot1（25年）\\六轴机械臂J1-快速入门.jpg（单页原图，文字及按键表转录）。\nSELECT 切换至自动夹取模式。原图自动夹取表中：\n| 按键 | 功能 |\n| --- | --- |\n| SELECT | 模式切换 |\n| START | 直立 |\n| 上 | 前抓 |\n| 下 | 蜷缩 |\n| 左 | 左抓 |\n| 右 | 右抓 |\n| 三角形 △ | 前放 |\n| 叉号 × | 蜷缩 |\n| 方形 □ | 左放 |\n| 圆形 ○ | 右放 |\n自动夹取模式表没有列出 L1、L2、R1、R2 的功能，不从手动模式表推断。",
+        "filename": "六轴机械臂J1（爪子版）快速上手指南（图片转录）.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "fd2c0c46de7640f1978064a7ee6463ba-1-41753bc8",
+        "chunk_index": 2,
+        "score": 0.5608345168166688
+      },
+      {
+        "content": "## 六轴机械臂J1（爪子版）：到货检查、休眠唤醒及资料入口\n来源：E:\\BaiduNetdiskDownload\\001-智能机械臂-Jibot1（25年）\\六轴机械臂J1-快速入门.jpg（单页原图，文字及按键表转录）。\n产品拿到手先试上电、配对和上述控制功能，保证硬件到手完好后再继续使用；有问题立即联系客服处理。\n手柄开机状态下长时间未操作会自动休眠，可以通过 START 键或 MODE 键激活。\n原图底部有产品资料二维码和售后二维码，售后标注为“明明同学（客户经理）”。二维码网址未解码，应查看保存的原始图片扫码。",
+        "filename": "六轴机械臂J1（爪子版）快速上手指南（图片转录）.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "fd2c0c46de7640f1978064a7ee6463ba-2-5d9d9a1b",
+        "chunk_index": 3,
+        "score": 0.5056103441498148
+      }
+    ]
+  },
+  {
+    "question": "KPZ32 PWM舵机接口0到5分别对应哪些STM32引脚？",
+    "hits": [
+      {
+        "content": "## KPZ32 控制板：PWM 舵机接口与电源选择\n来源：E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\001-文档教程\\KPZ32引脚分布图.png，单页原图，人工核对转录。\nPWM 舵机接口：黑色为 GND，红色为 VCC，白色为信号口。\n| 舵机接口编号 | STM32 信号引脚 |\n| --- | --- |\n| 0 | PB3 |\n| 1 | PB8 |\n| 2 | PB9 |\n| 3 | PB6 |\n| 4 | PB7 |\n| 5 | PB4 |\nVCC 电源取决于下方“PWM舵机电源切换”选择：短路 VIN 侧为输入电压，短路 5V 侧为 5V 电压。\n电源接口位于图中底部，左负极（-），右正极（+）；电源开关拨左 ON，拨右 OFF。方向以原图朝向为准。\n\n## KPZ32 控制板：串口、蓝牙与总线接口\n来源：E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\001-文档教程\\KPZ32引脚分布图.png，单页原图，人工核对转录。\n用户接口（二次开发）标注为 RX、TX、GND、5V，对应 STM32 RX3（PB11）、TX3（PB10）。\n蓝牙接口标注为 TX、RX、GND、5V，对应 STM32 TX3（PB10）、RX3（PB11）。原图将 STM32 误写为 SMT32，本文仅规范此拼写。\n总线接口：串口 RX3、TX3 通过电路合成单总线 DAT，单总线具备收发功能。六个总线口完全一样，按原图从左到右依次为 GND、VIN、DAT。\n用户接口、蓝牙接口的 RX/TX 标签照原图转录；实际外部设备接线需结合对应设备定义核对。",
+        "filename": "KPZ32引脚分布图（图片转录）.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "317225e8c6674f43a1c8f2000732db91-0-014b438b",
+        "chunk_index": 1,
+        "score": 0.6585266126863731
+      },
+      {
+        "content": "## KPZ32 控制板：PS2 手柄、红外及按键\n来源：E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\001-文档教程\\KPZ32引脚分布图.png，单页原图，人工核对转录。\n手柄接口两行标注：\n上行：PA15-DAT、PA14-CMD、GND。\n下行：PA12-CLT、PA13-ATT、3V3。\n“CLT”为原图标注，未擅自改写为 CLK；实际时钟信号名称应结合原理图或源码核对。\n红外接口：5V、GND、PA8。\n按键1：PA8；按键2：PA11。\n红外接口与按键1均标为 PA8，此处保留原图信息，不推断两者可以独立同时使用。\n\n## KPZ32 控制板：S1 至 S6 传感器接口与电源切换\n来源：E:\\BaiduNetdiskDownload\\002-开源机械臂Jibot1（STM32）\\001-文档教程\\KPZ32引脚分布图.png，单页原图，人工核对转录。\n各传感器接口在原图中从左到右为 +、-、SDn、SAn，原图给出的对应如下：\n| 接口 | + | - | SD（数字信号） | SA（模拟信号） |\n| --- | --- | --- | --- | --- |\n| S1 | 5V | GND | PA1 | PA0 |\n| S2 | 5V | GND | PA0 | PA1 |\n| S3 | 5V | GND | PB0 | PA2 |\n| S4 | 5V | GND | PB1 | PA3 |\n| S5 | 5V | GND | PA6 | PA4 |\n| S6 | 5V | GND | PA7 | PA5 |\n传感器电源切换：短路 5V 侧为 5V，短路 3V3 侧为 3.3V。表中 5V 是原图接口行的写法，供电仍须同时核对电源跳线位置。原图标注的复用引脚保留，不据此推断接口可独立同时使用。",
+        "filename": "KPZ32引脚分布图（图片转录）.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "317225e8c6674f43a1c8f2000732db91-1-a9aca3d0",
+        "chunk_index": 2,
+        "score": 0.5640332940312518
+      },
+      {
+        "content": "协议中的 ID、位置和时间字段要求补足固定长度，例如 ID `1` 要写成 `001`，位置 `800` 要写成 `0800`。\n\n## 3. STM32 接入注意事项\n\n1. 舵机电源不能由 STM32 开发板或 USB 直接提供，应使用机械臂配套的约 7.4 V 电源，并确认适配器极性。\n2. STM32 控制总线舵机时，需要单线半双工 UART 或等效的收发方向控制，不能只写普通 PWM 输出程序。\n3. 如果使用外部 STM32 电源，舵机电源负极和 STM32 地线需要共地。\n4. 不要把板上的 `TX`、`RX`、`5V` 直接按普通串口模块连接，先确认它们是主控串口还是舵机总线、信号电平是否兼容。\n5. 断电后再插拔舵机线；机械臂上电后大舵机可能突然回到上次目标位置，应先固定机械臂并卸下末端负载。\n6. 第一次测试只连接一只舵机，先读取 ID 或发送低风险的小幅位置命令，再连接全部关节。\n\n## 4. 对当前机械臂的初步结论\n\n目前可以确认：这台机械臂至少使用了 ZP15D 总线舵机和一只约 25 kg·cm 的大扭矩舵机，底座内的控制板负责舵机供电、串口/总线连接和扩展接口。它适合使用 STM32 通过 UART 总线控制，并读取舵机位置、温度和电压。\n\n仍需实物照片或原厂资料确认的项目：\n\n- 25 kg·cm 舵机的完整型号；\n- 控制板的 PCB 型号和 MCU 型号；\n- `0–5` 插座的准确针脚顺序；\n- `TX RX G 5V` 接口的实际用途和电平；\n- 每个关节对应的舵机 ID、零位和机械限位。\n\n## 5. 参考资料",
+        "filename": "mechanical_arm_zp15d.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "940006f5b81242aa9afd2f825f321f29-2-76f57f81",
+        "chunk_index": 3,
+        "score": 0.4935089302711243
+      }
+    ]
+  },
+  {
+    "question": "Jibot1-32 逆运动学函数 kinematics_analysis 在哪里，如何计算？",
+    "hits": [
+      {
+        "content": "## z_kinematics.c | kinematics_analysis | 原文件第25-43行\n来源：003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/src/z_kinematics.c\n以下为原始源码，不是截图OCR。\n```\n25: int kinematics_analysis(float x, float y, float z, float Alpha, kinematics_t *kinematics) {\n26: \tfloat theta3, theta4, theta5, theta6;\n27: \tfloat l0, l1, l2, l3;\n28: \tfloat aaa, bbb, ccc, zf_flag;\n29: \t\n30: \t//放大10倍\n31: \tx = x*10;\n32: \ty = y*10;\n33: \tz = z*10;\n34: \t\n35: \t\n36: \tl0 = kinematics->L0;\n37: \tl1 = kinematics->L1;\n38: \tl2 = kinematics->L2;\n39: \tl3 = kinematics->L3;\n40: \t\n41: \tif(x == 0) {\n42: \t\ttheta6 = 0.0;\n43: \t} else {\n```",
+        "filename": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "56f1db92a980440b9f0c5cbc2daa46dd-96-1654e638",
+        "chunk_index": 97,
+        "score": 0.6026072277533318
+      },
+      {
+        "content": "## z_kinematics.c | kinematics_analysis | 原文件第93-100行\n来源：003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/src/z_kinematics.c\n以下为原始源码，不是截图OCR。\n```\n93: \tkinematics->servo_pwm[0] = (int)(1500-2000.0 * kinematics->servo_angle[0] / 270.0);\n94: \tkinematics->servo_pwm[1] = (int)(1500+2000.0 * kinematics->servo_angle[1] / 270.0);\n95: \tkinematics->servo_pwm[2] = (int)(1500+2000.0 * kinematics->servo_angle[2] / 270.0);\n96: \tkinematics->servo_pwm[3] = (int)(1500+2000.0 * kinematics->servo_angle[3] / 270.0);\n97: \n98: \treturn 0;\n99: }\n100: \n```",
+        "filename": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "56f1db92a980440b9f0c5cbc2daa46dd-100-5eaca3fa",
+        "chunk_index": 101,
+        "score": 0.5806870733113009
+      },
+      {
+        "content": "## z_kinematics.c | kinematics_analysis | 原文件第78-92行\n来源：003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/src/z_kinematics.c\n以下为原始源码，不是截图OCR。\n```\n78:     theta4 = 180.0 - theta4 * 180.0 / pi ;  \n79:     if (theta4 > 135.0 || theta4 < -135.0) {\n80:         return 4;\n81: \t}\n82: \n83:     theta3 = Alpha - theta5 + theta4;\n84:     if(theta3 > 90.0 || theta3 < -90.0) {\n85:         return 7;\n86: \t}\n87: \t\n88: \tkinematics->servo_angle[0] = theta6;\n89: \tkinematics->servo_angle[1] = theta5-90;\n90: \tkinematics->servo_angle[2] = theta4;\n91: \tkinematics->servo_angle[3] = theta3;    \n92: \t\n```",
+        "filename": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "56f1db92a980440b9f0c5cbc2daa46dd-99-c4e73722",
+        "chunk_index": 100,
+        "score": 0.5447482869986675
+      }
+    ]
+  },
+  {
+    "question": "Jibot1-32出厂程序 loop_uart 动作组串口指令解析函数在哪里？",
+    "hits": [
+      {
+        "content": "## sensor.c | loop_uart | 原文件第516-531行\n来源：003-源码例程\\02-出厂程序源码\\Jibot1-32+逆运动学-基础版-250508.zip!/USER/sensor.c\n以下为原始源码，不是截图OCR。\n```\n516: \t\t\t//uart1_send_str(\"group:\");\n517: \t\t\t//uart1_send_str(uart_receive_buf);\n518: \t\t\tdo_action(uart_receive_buf);\n519: \t\t} else if(uart1_mode == 4) {\t\t//存储模式\n520: \t\t\t//uart1_send_str(\"save:\");\n521: \t\t\t//uart1_send_str(uart_receive_buf);\n522: \t\t\taction_save(uart_receive_buf);\n523: \t\t} \n524: \t\tuart1_mode = 0;\n525: \t\tuart1_get_ok = 0;\n526: \t\tuart1_open();\n527: \t}\n528: \treturn;\n529: }\t\n530: \n531: //动作组批量执行\n```",
+        "filename": "Jibot1源码_Jibot1-32+逆运动学-基础版-250508.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "56f1db92a980440b9f0c5cbc2daa46dd-332-54d72dbf",
+        "chunk_index": 333,
+        "score": 0.6365776297999608
+      },
+      {
+        "content": "## z_main.c | loop_uart | 原文件第280-290行\n来源：003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-光控弯曲.zip!/Jibot1-32出厂程序-光控弯曲/USER/z_main.c\n以下为原始源码，不是截图OCR。\n```\n280: void loop_uart(void) {\n281: \tif(uart1_get_ok) {\n282: \t\tif(uart1_mode == 1) {\t\t\t\t\t    //命令模式\n283: \t\t\tparse_group_cmd(uart_receive_buf);\n284: \t\t\tparse_cmd(uart_receive_buf);\t\t\t\n285: \t\t} else if(uart1_mode == 2) {\t\t\t//单个舵机调试\n286: \t\t\tparse_action(uart_receive_buf);\n287: \t\t} else if(uart1_mode == 3) {\t\t  //多路舵机调试\n288: \t\t\tparse_action(uart_receive_buf);\n289: \t\t} else if(uart1_mode == 4) {\t\t  //存储模式\n290: \t\t\tsave_action(uart_receive_buf);\n```\n\n## z_main.c | loop_uart | 原文件第291-299行\n来源：003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-光控弯曲.zip!/Jibot1-32出厂程序-光控弯曲/USER/z_main.c\n以下为原始源码，不是截图OCR。\n```\n291: \t\t} \n292: \t\tuart1_mode = 0;\n293: \t\tuart1_get_ok = 0;\n294: \t\tuart1_open();\n295: \t}\n296: \treturn;\n297: }\t\n298: \n299: //循环读取PS2手柄数据\n```",
+        "filename": "Jibot1源码_Jibot1-32出厂程序-光控弯曲.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "b728279df810469ba9f487393753943c-84-8fb835d3",
+        "chunk_index": 85,
+        "score": 0.6115115081445313
+      },
+      {
+        "content": "## z_main.c | loop_uart | 原文件第280-290行\n来源：003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-摇杆控制.zip!/Jibot1-32出厂程序-摇杆控制/USER/z_main.c\n以下为原始源码，不是截图OCR。\n```\n280: void loop_uart(void) {\n281: \tif(uart1_get_ok) {\n282: \t\tif(uart1_mode == 1) {\t\t\t\t\t    //命令模式\n283: \t\t\tparse_group_cmd(uart_receive_buf);\n284: \t\t\tparse_cmd(uart_receive_buf);\t\t\t\n285: \t\t} else if(uart1_mode == 2) {\t\t\t//单个舵机调试\n286: \t\t\tparse_action(uart_receive_buf);\n287: \t\t} else if(uart1_mode == 3) {\t\t  //多路舵机调试\n288: \t\t\tparse_action(uart_receive_buf);\n289: \t\t} else if(uart1_mode == 4) {\t\t  //存储模式\n290: \t\t\tsave_action(uart_receive_buf);\n```\n\n## z_main.c | loop_uart | 原文件第291-299行\n来源：003-源码例程\\03-传感器例程源码\\Jibot1-32出厂程序-摇杆控制.zip!/Jibot1-32出厂程序-摇杆控制/USER/z_main.c\n以下为原始源码，不是截图OCR。\n```\n291: \t\t} \n292: \t\tuart1_mode = 0;\n293: \t\tuart1_get_ok = 0;\n294: \t\tuart1_open();\n295: \t}\n296: \treturn;\n297: }\t\n298: \n299: //循环读取PS2手柄数据\n```",
+        "filename": "Jibot1源码_Jibot1-32出厂程序-摇杆控制.md",
+        "page": null,
+        "knowledge_base_id": "f75567ffdb404490bda53d8820cedfa8",
+        "knowledge_base_name": "机械臂",
+        "chunk_id": "a016fb412b0f47a79a654b6f4f38d208-33-e03116c2",
+        "chunk_index": 34,
+        "score": 0.6101338962541043
+      }
+    ]
+  }
+]

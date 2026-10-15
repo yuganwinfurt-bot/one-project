@@ -1,0 +1,401 @@
+{
+  "image": "D:\\one project\\rag-assistant\\imports\\jibot1_2026-10-08\\ocr_cache\\e66eb73475890d94db9129cc85e53dba4926fb458b3026c5a1f0cefea8c8d0fe.png",
+  "rows": [
+    {
+      "text": "Setup MDK-ARM V5.30",
+      "score": 0.96664,
+      "box": [
+        [
+          7.0,
+          7.0
+        ],
+        [
+          143.0,
+          7.0
+        ],
+        [
+          143.0,
+          21.0
+        ],
+        [
+          7.0,
+          21.0
+        ]
+      ]
+    },
+    {
+      "text": "×",
+      "score": 0.60853,
+      "box": [
+        [
+          529.0,
+          8.0
+        ],
+        [
+          541.0,
+          8.0
+        ],
+        [
+          541.0,
+          19.0
+        ],
+        [
+          529.0,
+          19.0
+        ]
+      ]
+    },
+    {
+      "text": "License Agreement",
+      "score": 0.99546,
+      "box": [
+        [
+          16.0,
+          45.0
+        ],
+        [
+          126.0,
+          45.0
+        ],
+        [
+          126.0,
+          59.0
+        ],
+        [
+          16.0,
+          59.0
+        ]
+      ]
+    },
+    {
+      "text": "armKEIL",
+      "score": 0.89233,
+      "box": [
+        [
+          379.0,
+          48.0
+        ],
+        [
+          528.0,
+          50.0
+        ],
+        [
+          528.0,
+          79.0
+        ],
+        [
+          379.0,
+          78.0
+        ]
+      ]
+    },
+    {
+      "text": "Please read the following license agreement carefully",
+      "score": 0.98389,
+      "box": [
+        [
+          30.0,
+          67.0
+        ],
+        [
+          282.0,
+          68.0
+        ],
+        [
+          282.0,
+          82.0
+        ],
+        [
+          30.0,
+          81.0
+        ]
+      ]
+    },
+    {
+      "text": "To continue with SETUP, you must accept the terms of the License Agreement To accept the",
+      "score": 0.98872,
+      "box": [
+        [
+          27.0,
+          119.0
+        ],
+        [
+          473.0,
+          119.0
+        ],
+        [
+          473.0,
+          133.0
+        ],
+        [
+          27.0,
+          132.0
+        ]
+      ]
+    },
+    {
+      "text": "agreement, click the check box below.",
+      "score": 0.99083,
+      "box": [
+        [
+          27.0,
+          133.0
+        ],
+        [
+          211.0,
+          132.0
+        ],
+        [
+          211.0,
+          146.0
+        ],
+        [
+          27.0,
+          147.0
+        ]
+      ]
+    },
+    {
+      "text": "ENDUSERLICENSEAGREEMENTFORARMSOFTWARE",
+      "score": 0.99696,
+      "box": [
+        [
+          101.0,
+          157.0
+        ],
+        [
+          451.0,
+          157.0
+        ],
+        [
+          451.0,
+          171.0
+        ],
+        [
+          101.0,
+          171.0
+        ]
+      ]
+    },
+    {
+      "text": "DEVELOPMENTTOOLS",
+      "score": 0.99816,
+      "box": [
+        [
+          203.0,
+          174.0
+        ],
+        [
+          350.0,
+          174.0
+        ],
+        [
+          350.0,
+          187.0
+        ],
+        [
+          203.0,
+          187.0
+        ]
+      ]
+    },
+    {
+      "text": "This enduserlicense agreement(License)is alegal agreement betweenyou",
+      "score": 0.96206,
+      "box": [
+        [
+          57.0,
+          204.0
+        ],
+        [
+          496.0,
+          204.0
+        ],
+        [
+          496.0,
+          218.0
+        ],
+        [
+          57.0,
+          217.0
+        ]
+      ]
+    },
+    {
+      "text": "(a single individual),or the company or organisation (a single legal entity) that",
+      "score": 0.96599,
+      "box": [
+        [
+          58.0,
+          220.0
+        ],
+        [
+          496.0,
+          220.0
+        ],
+        [
+          496.0,
+          233.0
+        ],
+        [
+          58.0,
+          233.0
+        ]
+      ]
+    },
+    {
+      "text": "yourepresent and have the legal authority tobind,and Armrelating to use of the",
+      "score": 0.94419,
+      "box": [
+        [
+          56.0,
+          235.0
+        ],
+        [
+          496.0,
+          234.0
+        ],
+        [
+          496.0,
+          248.0
+        ],
+        [
+          56.0,
+          249.0
+        ]
+      ]
+    },
+    {
+      "text": "Arm Tools.Arm is only willing to license theArm Tools on condition that you",
+      "score": 0.94091,
+      "box": [
+        [
+          57.0,
+          249.0
+        ],
+        [
+          496.0,
+          250.0
+        ],
+        [
+          496.0,
+          263.0
+        ],
+        [
+          57.0,
+          263.0
+        ]
+      ]
+    },
+    {
+      "text": "agree to all the terms of the preceding License Agreement",
+      "score": 0.99717,
+      "box": [
+        [
+          51.0,
+          286.0
+        ],
+        [
+          326.0,
+          286.0
+        ],
+        [
+          326.0,
+          299.0
+        ],
+        [
+          51.0,
+          299.0
+        ]
+      ]
+    },
+    {
+      "text": "-KeilMDK-ARM Setup",
+      "score": 0.93622,
+      "box": [
+        [
+          8.0,
+          311.0
+        ],
+        [
+          122.0,
+          313.0
+        ],
+        [
+          122.0,
+          327.0
+        ],
+        [
+          8.0,
+          324.0
+        ]
+      ]
+    },
+    {
+      "text": "<<Back",
+      "score": 0.978,
+      "box": [
+        [
+          323.0,
+          335.0
+        ],
+        [
+          367.0,
+          333.0
+        ],
+        [
+          368.0,
+          349.0
+        ],
+        [
+          324.0,
+          351.0
+        ]
+      ]
+    },
+    {
+      "text": "<",
+      "score": 0.53082,
+      "box": [
+        [
+          400.0,
+          334.0
+        ],
+        [
+          441.0,
+          336.0
+        ],
+        [
+          440.0,
+          351.0
+        ],
+        [
+          400.0,
+          349.0
+        ]
+      ]
+    },
+    {
+      "text": "Cancel",
+      "score": 0.99854,
+      "box": [
+        [
+          487.0,
+          335.0
+        ],
+        [
+          523.0,
+          335.0
+        ],
+        [
+          523.0,
+          349.0
+        ],
+        [
+          487.0,
+          349.0
+        ]
+      ]
+    }
+  ]
+}
