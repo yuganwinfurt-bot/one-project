@@ -1035,7 +1035,7 @@ function renderApp() {
             <button ref={brandToggleRef} className="brand-logo brand-switcher-toggle" type="button" aria-label="打开项目菜单" aria-expanded={brandMenuOpen} aria-controls="brand-switcher-menu" onClick={() => setBrandMenuOpen((value) => !value)}><Menu size={20} /></button>
             <nav id="brand-switcher-menu" className="brand-switcher-menu" aria-label="项目入口" hidden={!brandMenuOpen}>
               <span className="brand-switcher-heading">项目入口</span>
-              <a className={`brand-switcher-link ${localProjectHost ? "" : "is-disabled"}`} href={localProjectHost ? agentUrl.href : undefined} aria-disabled={!localProjectHost}>Agent 控制台 <span aria-hidden="true">→</span></a>
+              <a className="brand-switcher-link" href={agentUrl.href}>Agent 控制台 <span aria-hidden="true">→</span></a>
               <span className="brand-switcher-current">RAG 知识库 <small>当前页面</small></span>
               <a className="brand-switcher-link" href={projectHomeUrl.href}>项目主页 <span aria-hidden="true">→</span></a>
             </nav>
