@@ -363,8 +363,8 @@ function renderApp() {
         const serverProfiles = (Array.isArray(event.data.server_models) ? event.data.server_models : [])
           .filter((name) => typeof name === "string" && name.trim())
           .map((name) => ({
-            id: `server:${name}`, name: `Agent 服务器 Ollama · ${name}`, endpoint: "server-ollama://configured",
-            model: name, api_key: "", api_token: event.data.server_api_token || "", vendor: "服务器 Ollama", provider: "compatible", mode: "server", effort_supported: false,
+            id: `server:${name}`, name: `服务器模型 · ${name}`, endpoint: "server-ollama://configured",
+            model: name, api_key: "", api_token: event.data.server_api_token || "", vendor: "服务器模型", provider: "compatible", mode: "server", effort_supported: false,
           }));
         const profiles = [
           ...browserProfiles.filter((profile) => profile.mode !== "server"),
@@ -1208,13 +1208,13 @@ function renderApp() {
 
       {modelDialogOpen && <div className="modal-backdrop" onMousedown={(event) => { if (event.target === event.currentTarget && !modelSaving) setModelDialogOpen(false); }}>
         <section className="answer-model-modal" role="dialog" aria-modal="true" aria-labelledby="answer-model-title">
-          <header><div><span className="modal-icon"><Settings2 size={18} /></span><div><h2 id="answer-model-title">RAG 回答模型</h2><p>可选 Agent 中保存的个人 API、浏览器 Ollama 或服务器 Ollama 模型。</p></div></div><button className="icon-button" type="button" aria-label="关闭" disabled={modelSaving} onClick={() => setModelDialogOpen(false)}><X size={18} /></button></header>
+          <header><div><span className="modal-icon"><Settings2 size={18} /></span><div><h2 id="answer-model-title">RAG 回答模型</h2><p>可选个人 API、浏览器 Ollama 或服务器模型。</p></div></div><button className="icon-button" type="button" aria-label="关闭" disabled={modelSaving} onClick={() => setModelDialogOpen(false)}><X size={18} /></button></header>
           <div className="answer-model-body">
             {modelSettingsError && <p className="answer-model-error" role="alert">{modelSettingsError}</p>}
             <section className="answer-model-personal">
               <div className="answer-model-section-head"><div><b>个人可用模型</b><small>打开此窗口时自动读取；切换只影响当前浏览器。</small></div><button className="quiet-button" type="button" disabled={modelSyncing || modelSaving} onClick={syncAgentModel}>{modelSyncing ? "正在读取…" : "刷新 Agent 模型"}</button></div>
               {agentModelProfiles.length ? <div className="answer-agent-models">{agentModelProfiles.map((profile) => {
-                const detail = profile.mode === "server" ? "Agent 服务器 Ollama" : profile.mode === "local" ? "浏览器本机 Ollama" : `${profile.vendor || profile.provider || "API"} · ${profile.model}`;
+                const detail = profile.mode === "server" ? "服务器模型" : profile.mode === "local" ? "浏览器本机 Ollama" : `${profile.vendor || profile.provider || "API"} · ${profile.model}`;
                 return <label key={profile.id} className={selectedAgentModelId === profile.id ? "selected" : ""}><input type="radio" name="rag-browser-model" value={profile.id} checked={selectedAgentModelId === profile.id} onChange={() => setSelectedAgentModelId(profile.id)} /><span><b>{profile.name || profile.model}</b><small>{detail}</small></span>{browserModel?.id === profile.id && <em className="model-current-tag">当前使用</em>}</label>;
               })}</div> : <p className="answer-model-note">{modelSyncing ? "正在从 Agent 读取可用模型…" : "还没有可选模型。请先在 Agent 保存 API 模型，或从聊天模型菜单选择 Ollama。"}</p>}
               <p className="answer-model-note">个人 API 的密钥保存在当前浏览器并直连模型服务；使用个人 API 时，本轮问题、最近对话和检索资料会发送给所选服务。若 Agent 配置了网页令牌，它只保存在当前标签页会话中，并随服务器模型请求发给 Agent。</p>
