@@ -111,7 +111,9 @@ onMounted(() => {
 onBeforeUnmount(() => window.removeEventListener('focus', refreshAuthOnFocus))
 
 function projectHref(project) {
-  const address = localPreview ? project.localUrl || project.publicUrl : project.publicUrl
+  const isRag = project.id === 'rag' || project.id === 'rag-assistant' || /rag|知识库/i.test(`${project.name || ''} ${project.shortName || ''} ${project.caption || ''}`)
+  const isAgent = project.id === 'agent' || project.id === 'yugan-agent' || /agent|智能体/i.test(`${project.name || ''} ${project.shortName || ''} ${project.caption || ''}`)
+  const address = localPreview ? project.localUrl || project.publicUrl : isRag ? '/rag/' : isAgent ? '/agent/' : project.publicUrl
   if (!address) return ''
   try {
     const url = new URL(address, window.location.href)

@@ -135,7 +135,7 @@
   };
   const apiStream = async (path, options, onUpdate) => {
     const token = sessionStorage.getItem('yugan-api-token');
-    const response = await fetch(path, {
+    const response = await fetch(agentPath(path), {
       ...options,
       headers: { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}), ...(options.headers || {}) },
     });
