@@ -67,6 +67,7 @@ class ModelSettingsRequest(BaseModel):
 class ServerOllamaCompletion(BaseModel):
     model: str = Field(min_length=1, max_length=128)
     messages: list[dict] = Field(min_length=1, max_length=100)
+    max_tokens: int = Field(default=1024, ge=64, le=4096)
     tools: list[dict] = Field(default_factory=list, max_length=64)
 
 
@@ -663,12 +664,13 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
         payload = {
             "model": body.model,
             "messages": body.messages,
+            "max_tokens": body.max_tokens,
             "stream": False,
         }
         if body.tools:
             payload["tools"] = body.tools
         try:
-            async with httpx.AsyncClient(timeout=120, trust_env=False) as client:
+            async with httpx.AsyncClient(timeout=httpx.Timeout(300, connect=5), trust_env=False) as client:
                 response = await client.post(f"{endpoint}/v1/chat/completions", json=payload)
         except httpx.HTTPError:
             raise HTTPException(503, "服务器 Ollama 暂不可用") from None
