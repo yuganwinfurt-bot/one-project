@@ -1,6 +1,8 @@
 (() => {
   const status = document.getElementById('status');
   const nonce = window.location.hash.slice(1);
+  const agentBase = new URL('../', window.location.href);
+  const agentApi = (path) => new URL(path, agentBase);
   const trustedOrigin = (origin) => {
     if (origin === window.location.origin) return true;
     try {
@@ -18,7 +20,7 @@
       || event.data?.nonce !== nonce) return;
     handlingRequest = true;
     try {
-      const auth = await fetch('/api/auth/status', { credentials: 'same-origin', cache: 'no-store' }).then((response) => response.json());
+      const auth = await fetch(agentApi('api/auth/status'), { credentials: 'same-origin', cache: 'no-store' }).then((response) => response.json());
       const stored = JSON.parse(localStorage.getItem(`yugan-model-profiles:${auth.subject}`) || '{}');
       if (requestType === 'yugan-request-active-model') {
         const profile = (stored.models || []).find((item) => item.id === stored.active_id);
@@ -36,7 +38,7 @@
         let serverModels = [];
         const serverApiToken = sessionStorage.getItem('yugan-api-token') || '';
         try {
-          const response = await fetch('/api/models/server-ollama', {
+          const response = await fetch(agentApi('api/models/server-ollama'), {
             credentials: 'same-origin', cache: 'no-store',
             headers: serverApiToken ? { Authorization: `Bearer ${serverApiToken}` } : {},
           });
@@ -60,3 +62,4 @@
   });
   if (!window.opener && window.parent === window) status.textContent = '请从 RAG 页面打开此窗口。';
 })();
+
