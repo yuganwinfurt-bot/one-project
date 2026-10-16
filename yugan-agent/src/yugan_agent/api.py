@@ -6,26 +6,30 @@ import os
 import re
 import secrets
 import shutil
+import sqlite3
 import subprocess
-from contextlib import asynccontextmanager
+from contextlib import asynccontextmanager, nullcontext
 from contextvars import ContextVar
 from datetime import datetime, timezone
 from importlib.resources import files
 from pathlib import Path
+from urllib.parse import quote, unquote
 from uuid import uuid4
 
 import httpx
 from fastapi import Depends, FastAPI, HTTPException, Query, Request
-from fastapi.responses import FileResponse, JSONResponse, RedirectResponse
+from fastapi.responses import FileResponse, JSONResponse, RedirectResponse, Response
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, SecretStr
 from starlette.middleware.cors import CORSMiddleware
 
 from . import __version__
 from .approvals import ApprovalBroker
+from .attachment_extract import MAX_ATTACHMENT_BYTES, extract_attachment_text
 from .auth import AuthManager
 from .config import Settings
 from .custom_tools import CustomToolDefinition
+from .guest_files import GuestFileStore
 from .memory import SessionConflict, SQLiteMemory
 from .models import ExecutionEntry, ExecutionTrace, Message
 from .rag_bridge import RagBridgeError, RagSelection
@@ -127,6 +131,7 @@ class ToolExecutionRequest(BaseModel):
     name: str = Field(pattern=r"^[a-zA-Z_][a-zA-Z0-9_]{0,63}$")
     arguments: dict = Field(default_factory=dict)
     disabled_tools: list[str] = Field(default_factory=list, max_length=100)
+    session_id: str | None = Field(default=None, pattern=r"^[a-zA-Z0-9_-]{1,64}$")
 
 
 class LoginBody(BaseModel):
@@ -147,6 +152,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
     workspace_path = env_path.parent / ".yugan" / "workspaces.json"
     legacy_workspace_path = env_path.parent / ".yugan" / "workspace.json"
     approval_broker = ApprovalBroker()
+    guest_files = GuestFileStore(env_path.parent / ".yugan" / "guest_files.lock.sqlite3")
     approval_scope: ContextVar[str | None] = ContextVar("approval_scope", default=None)
 
     async def request_computer_approval(name: str, description: str, arguments: dict) -> bool:
@@ -378,11 +384,25 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
     @app.middleware("http")
     async def limit_body(request: Request, call_next):
         if request.method in {"POST", "PUT", "PATCH"}:
+            path = request.url.path.rstrip("/")
+            if path.endswith("/api/attachments/extract"):
+                max_bytes = MAX_ATTACHMENT_BYTES
+                limit_label = "8 MB"
+            elif path.endswith("/api/models/server-ollama/chat/completions"):
+                # Base64 image data is larger than the original image files.
+                max_bytes = 18 * 1024 * 1024
+                limit_label = "18 MB"
+            else:
+                max_bytes = 128 * 1024
+                limit_label = "128 KB"
+            content_length = request.headers.get("content-length", "")
+            if content_length.isdigit() and int(content_length) > max_bytes:
+                return JSONResponse({"detail": f"请求体不能超过 {limit_label}"}, status_code=413)
             body = bytearray()
             async for chunk in request.stream():
                 body.extend(chunk)
-                if len(body) > 131072:
-                    return JSONResponse({"detail": "请求体不能超过 128 KB"}, status_code=413)
+                if len(body) > max_bytes:
+                    return JSONResponse({"detail": f"请求体不能超过 {limit_label}"}, status_code=413)
             request._body = bytes(body)
         return await call_next(request)
 
@@ -675,7 +695,13 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
         except httpx.HTTPError:
             raise HTTPException(503, "服务器 Ollama 暂不可用") from None
         if response.status_code != 200:
-            raise HTTPException(502, "服务器 Ollama 请求失败")
+            has_image = any(
+                isinstance(message.get("content"), list)
+                and any(part.get("type") == "image_url" for part in message["content"] if isinstance(part, dict))
+                for message in body.messages if isinstance(message, dict)
+            )
+            detail = "服务器模型无法处理图片，请换用支持识图的模型" if has_image else "服务器 Ollama 请求失败"
+            raise HTTPException(502, detail)
         try:
             result = response.json()
         except ValueError:
@@ -982,10 +1008,9 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             approval_callback=request_computer_approval,
             custom_tools=app.state.custom_tools if request.state.role == "admin" else [],
         )
-        schemas = registry.schemas()
-        return schemas if request.state.role == "admin" else [
-            item for item in schemas if not item["name"].startswith("desktop_")
-        ]
+        if request.state.role != "admin":
+            guest_files.restrict_registry(registry, target.workspace)
+        return registry.schemas()
 
     @app.post("/api/tools/execute", dependencies=auth)
     async def execute_browser_tool(body: ToolExecutionRequest, request: Request):
@@ -993,7 +1018,7 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             item for item in app.state.workspaces if item["id"] == app.state.active_workspace_id
         )
         target = app.state.settings.model_copy(update={"workspace": Path(workspace["path"])})
-        disabled = set(body.disabled_tools)
+        disabled = set(body.disabled_tools) if request.state.role == "admin" else set()
         custom = []
         if request.state.role == "admin":
             disabled |= app.state.disabled_builtin_tools
@@ -1004,13 +1029,105 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             disabled_builtins=disabled,
             custom_tools=custom,
         )
-        if request.state.role != "admin" and body.name.startswith("desktop_"):
-            raise HTTPException(403, "游客不能操作服务器桌面")
+        if request.state.role != "admin":
+            guest_files.restrict_registry(registry, target.workspace)
+            for name in body.disabled_tools:
+                registry.unregister(name)
         if body.name not in {item["name"] for item in registry.schemas()}:
             raise HTTPException(403, "该工具已停用或当前账号不可用")
-        async with scoped_run(request):
-            result = await registry.execute(body.name, body.arguments)
+        stored_id = None
+        turn_index = None
+        if body.name == "create_text_file":
+            if not body.session_id:
+                raise HTTPException(400, "生成文件需要当前会话 ID")
+            stored_id = scoped_session_id(body.session_id, request)
+            snapshot = SQLiteMemory(app.state.settings.database).load(stored_id)
+            turn_index = sum(message.role == "user" for message in snapshot.messages)
+        session_context = (
+            guest_files.session_scope(stored_id, turn_index)
+            if request.state.role != "admin" and stored_id is not None
+            else nullcontext()
+        )
+        with session_context:
+            async with scoped_run(request):
+                result = await registry.execute(body.name, body.arguments)
+        if request.state.role == "admin" and stored_id is not None and result.ok:
+            try:
+                result.data["file_id"] = guest_files.record_admin_file(
+                    target.workspace, result.data["path"], stored_id, turn_index
+                )
+            except (OSError, ValueError, PermissionError, sqlite3.Error) as exc:
+                result.data["file_record_error"] = f"文件已创建，但无法显示下载卡片：{exc}"
         return result.model_dump(mode="json")
+
+    def generated_file_session(session_id: str, request: Request) -> str:
+        if not re.fullmatch(r"[a-zA-Z0-9_-]{1,64}", session_id):
+            raise HTTPException(400, "无效的会话 ID")
+        return scoped_session_id(session_id, request)
+
+    @app.get("/api/sessions/{session_id}/generated-files/{file_id}", dependencies=auth)
+    async def preview_generated_file(session_id: str, file_id: str, request: Request):
+        stored_id = generated_file_session(session_id, request)
+        if not re.fullmatch(r"[0-9a-f]{32}", file_id):
+            raise HTTPException(404, "生成文件不存在")
+        try:
+            metadata, content = guest_files.read(stored_id, file_id)
+        except FileNotFoundError:
+            raise HTTPException(404, "生成文件不存在") from None
+        except (ValueError, PermissionError):
+            raise HTTPException(409, "文件已撤销、替换或变更") from None
+        return {**metadata, "content": content.decode("utf-8-sig")}
+
+    @app.get("/api/sessions/{session_id}/generated-files/{file_id}/download", dependencies=auth)
+    async def download_generated_file(session_id: str, file_id: str, request: Request):
+        stored_id = generated_file_session(session_id, request)
+        if not re.fullmatch(r"[0-9a-f]{32}", file_id):
+            raise HTTPException(404, "生成文件不存在")
+        try:
+            metadata, content = guest_files.read(stored_id, file_id)
+        except FileNotFoundError:
+            raise HTTPException(404, "生成文件不存在") from None
+        except (ValueError, PermissionError):
+            raise HTTPException(409, "文件已撤销、替换或变更") from None
+        filename = Path(metadata["path"]).name
+        return Response(
+            content=content,
+            media_type="application/octet-stream",
+            headers={
+                "Content-Disposition": f"attachment; filename*=UTF-8''{quote(filename)}",
+                "Cache-Control": "no-store",
+                "X-Content-Type-Options": "nosniff",
+            },
+        )
+
+    @app.delete("/api/sessions/{session_id}/generated-files/{file_id}", dependencies=auth)
+    async def revoke_generated_file(session_id: str, file_id: str, request: Request):
+        stored_id = generated_file_session(session_id, request)
+        if not re.fullmatch(r"[0-9a-f]{32}", file_id):
+            raise HTTPException(404, "生成文件不存在")
+        try:
+            return guest_files.revoke(stored_id, file_id)
+        except FileNotFoundError:
+            raise HTTPException(404, "生成文件不存在") from None
+        except (ValueError, PermissionError):
+            raise HTTPException(409, "文件已撤销、替换或变更，不能删除") from None
+
+    @app.post("/api/attachments/extract", dependencies=auth)
+    async def extract_browser_attachment(request: Request):
+        encoded_name = request.headers.get("x-filename", "")
+        if not encoded_name or len(encoded_name) > 1024:
+            raise HTTPException(400, "缺少文件名")
+        if request.headers.get("content-length", "").isdigit():
+            if int(request.headers["content-length"]) > MAX_ATTACHMENT_BYTES:
+                raise HTTPException(413, "单个文件不能超过 8 MB")
+        chunks = []
+        size = 0
+        async for chunk in request.stream():
+            size += len(chunk)
+            if size > MAX_ATTACHMENT_BYTES:
+                raise HTTPException(413, "单个文件不能超过 8 MB")
+            chunks.append(chunk)
+        return extract_attachment_text(unquote(encoded_name), b"".join(chunks))
 
     @app.post("/api/sessions/{session_id}/browser-turn", dependencies=auth)
     async def save_browser_turn(session_id: str, request: Request, body: BrowserTurn):
@@ -1049,9 +1166,10 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
             tool_settings,
             approval_callback=request_computer_approval,
             custom_tools=app.state.custom_tools if request.state.role == "admin" else [],
-        ).schemas()
+        )
         if request.state.role != "admin":
-            catalog = [item for item in catalog if not item["name"].startswith("desktop_")]
+            guest_files.restrict_registry(catalog, tool_settings.workspace)
+        catalog = catalog.schemas()
         builtin_names = {item["name"] for item in catalog}
         disabled = (
             app.state.disabled_builtin_tools if request.state.role == "admin" else set()
@@ -1151,6 +1269,7 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
                 "session_id": session_id,
                 "state": snapshot.state,
                 "version": snapshot.version,
+                "generated_files": guest_files.list_for_session(session_id),
                 "messages": [
                     m.model_dump(exclude={"provider_data", "provider"})
                     for m in snapshot.messages
