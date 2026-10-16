@@ -1,6 +1,3 @@
-Warning: truncated output (original token count: 21606)
-Total output lines: 1318
-
 import { Fragment, h, Teleport } from "vue";
 import { createStateFrame, useEffect, useMemo, useRef, useState } from "./vue-state.js";
 import Markdown from "./Markdown.js";
@@ -846,7 +843,136 @@ function renderApp() {
         let boundary;
         while ((boundary = buffer.indexOf("\n\n")) >= 0) {
           handleEvent(buffer.slice(0, boundary));
-          bu…1606 tokens truncated… || 0);
+          buffer = buffer.slice(boundary + 2);
+        }
+      }
+      if (buffer.trim()) handleEvent(buffer);
+      if (finalAnswer === null) throw new Error("实时连接中断，未收到回答结果");
+      if (generationRef.current?.id === requestId) setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: finalAnswer, sources: finalSources, streaming: false } : message));
+      const refreshed = await request(`/api/projects/${projectId}/chats`);
+      if (generationRef.current?.id === requestId) setChats(refreshed);
+    } catch (error) {
+      if (generationRef.current?.id === requestId) {
+        setInput(content);
+        notify(error.message);
+        setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: `${message.content}${message.content ? "\n\n" : ""}出错了：${error.message}`, error: true, streaming: false, retrievalStatus: null } : message));
+      }
+    } finally {
+      if (generationRef.current?.id === requestId) {
+        generationRef.current = null;
+        setBusy(false);
+      }
+    }
+  }
+
+  async function addKnowledgeBase(event) {
+    event.preventDefault();
+    if (auth?.role !== "admin") { notify("游客不能新建知识库。"); return; }
+    try {
+      const created = await request("/api/knowledge-bases", jsonOptions("POST", { name: kbName, description: kbDescription }));
+      const all = await refreshKnowledgeBases();
+      const next = [...all.filter((item) => item.id !== created.id), created];
+      setKnowledgeBases(next);
+      setActiveKbId(created.id);
+      setDocuments([]);
+      setKbName("");
+      setKbDescription("");
+      setShowKbForm(false);
+      notify("知识库已创建，可继续添加资料");
+    } catch (error) { notify(error.message); }
+  }
+
+  async function refreshDocuments(kbId) {
+    const sequence = ++documentRequestRef.current;
+    setDocumentsLoading(true);
+    setDocumentsError("");
+    setDocuments([]);
+    try {
+      const data = await request(`/api/knowledge-bases/${kbId}/documents`);
+      if (sequence === documentRequestRef.current && kbId === currentKbIdRef.current) setDocuments(data);
+    } catch (error) {
+      if (sequence === documentRequestRef.current && kbId === currentKbIdRef.current) setDocumentsError(error.message);
+    } finally {
+      if (sequence === documentRequestRef.current) setDocumentsLoading(false);
+    }
+  }
+
+  // 保存真实的 File 对象，点击选择与拖放统一进入同一条上传队列。
+  function queueFiles(files, preferredKbId = "") {
+    if (auth?.role !== "admin") { notify("游客不能向知识库添加文件。"); return; }
+    if (!files.length) return;
+    if (uploadRunningRef.current) { notify("正在导入资料，请等待当前队列完成后再添加。"); return; }
+    const additions = files.map((file) => {
+      const validType = /\.(pdf|docx|txt|md|csv)$/i.test(file.name);
+      const error = !validType ? "格式不支持，请上传 PDF、DOCX、TXT、MD 或 CSV。" : file.size > 30 * 1024 * 1024 ? "文件超过 30 MB，请缩小后重新选择。" : "";
+      return { id: uniqueId(), file, status: error ? "invalid" : "pending", error, chunkCount: null, targetKbId: "" };
+    });
+    setUploadQueue((items) => uploadDialogOpen ? [...items, ...additions] : additions);
+    if (!uploadDialogOpen) setUploadTargetKbId(preferredKbId || activeScopeIds[0] || activeKbId || knowledgeBases[0]?.id || "");
+    setUploadDialogOpen(true);
+    setDragActive(false);
+    dragDepthRef.current = 0;
+  }
+
+  function handleDrop(event, preferredKbId = "") {
+    if (!transferHasFiles(event)) return;
+    event.preventDefault();
+    event.stopPropagation();
+    if (auth?.role !== "admin") { notify("游客不能向知识库添加文件。"); return; }
+    queueFiles(filesFromTransfer(event), preferredKbId);
+    setDragActive(false);
+    dragDepthRef.current = 0;
+  }
+
+  async function runUploadQueue(retryId = "") {
+    if (auth?.role !== "admin") { notify("游客不能向知识库添加文件。"); return; }
+    if (uploadRunningRef.current || !uploadTargetKbId) return;
+    const targetKbId = uploadTargetKbId;
+    const pending = uploadQueue.filter((item) => retryId ? item.id === retryId && item.status === "error" : item.status === "pending" || item.status === "error");
+    if (!pending.length) return;
+    uploadRunningRef.current = true;
+    setUploading(true);
+    const updateItem = (id, updates) => setUploadQueue((items) => items.map((item) => item.id === id ? { ...item, ...updates } : item));
+    let completed = 0;
+    try {
+      for (const item of pending) {
+        updateItem(item.id, { status: "uploading", error: "", targetKbId });
+        try {
+          const form = new FormData();
+          form.append("files", item.file);
+          const result = await request(`/api/knowledge-bases/${targetKbId}/documents`, { method: "POST", body: form });
+          const document = result.uploaded?.[0];
+          if (!document) throw new Error("服务器没有返回导入结果，请在知识库中确认文件状态。");
+          updateItem(item.id, { status: "done", chunkCount: document.chunk_count, documentId: document.id });
+          completed += 1;
+        } catch (error) { updateItem(item.id, { status: "error", error: error.message }); }
+      }
+      await refreshKnowledgeBases();
+      if (currentKbIdRef.current === targetKbId) await refreshDocuments(targetKbId);
+      notify(completed ? `已导入 ${completed} 份资料，后续提问会自动检索。` : "导入未完成，请查看每个文件下的原因并重试。");
+    } catch (error) { notify(`资料已处理，但列表刷新失败：${error.message}`); }
+    finally { uploadRunningRef.current = false; setUploading(false); }
+  }
+
+  function closeChunks() {
+    chunkRequestRef.current += 1;
+    setChunkDocument(null);
+    setChunks([]);
+    setChunksLoading(false);
+  }
+
+  async function loadChunks(document, offset = 0) {
+    const sequence = ++chunkRequestRef.current;
+    setChunkDocument(document);
+    setChunks([]);
+    setChunkOffset(offset);
+    setChunksLoading(true);
+    setChunksError("");
+    try {
+      const data = await request(`/api/knowledge-bases/${document.knowledge_base_id}/documents/${document.id}/chunks?offset=${offset}&limit=20`);
+      if (sequence !== chunkRequestRef.current) return;
+      setChunks(data.items || []);
+      setChunkTotal(data.total || 0);
     } catch (error) { if (sequence === chunkRequestRef.current) setChunksError(error.message); }
     finally { if (sequence === chunkRequestRef.current) setChunksLoading(false); }
   }
@@ -1189,4 +1315,3 @@ export default {
     return () => { frame.begin(); return renderApp(); };
   },
 };
-
