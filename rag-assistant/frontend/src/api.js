@@ -1,5 +1,7 @@
 const localHost = ["127.0.0.1", "localhost", "[::1]"].includes(window.location.hostname);
-const API = import.meta.env.VITE_API_URL || (localHost ? "http://127.0.0.1:8000" : window.location.origin);
+const publicBasePath = /^\/rag(?:\/|$)/.test(window.location.pathname) ? "/rag" : "";
+const defaultApiBase = localHost ? "http://127.0.0.1:8000" : `${window.location.origin}${publicBasePath}`;
+const API = (import.meta.env.VITE_API_URL || defaultApiBase).replace(/\/+$/, "");
 
 export async function request(path, options = {}) {
   const response = await fetch(`${API}${path}`, { credentials: "include", ...options });
