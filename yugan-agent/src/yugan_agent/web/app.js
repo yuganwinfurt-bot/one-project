@@ -13,9 +13,9 @@
     ragUrl.port = '4173';
     ragLink.href = ragUrl.href;
   } else {
-    ragLink.removeAttribute('href');
-    ragLink.setAttribute('aria-disabled', 'true');
-    ragLink.title = 'RAG 管理页面仅在本机开放';
+    ragLink.href = '/rag/';
+    ragLink.removeAttribute('aria-disabled');
+    ragLink.removeAttribute('title');
   }
   const closeBrandMenu = () => {
     brandMenu.hidden = true;
@@ -87,11 +87,12 @@
     return false;
   };
   const text = (tag, value, className) => { const node = document.createElement(tag); node.textContent = String(value); if (className) node.className = className; return node; };
+  const agentPath = (path) => path.startsWith('/api/') ? `/agent${path}` : path;
   const api = async (path, options = {}) => {
     const token = sessionStorage.getItem('yugan-api-token');
     const headers = { 'Content-Type': 'application/json', ...(token ? { Authorization: `Bearer ${token}` } : {}) };
     const { headers: optionHeaders = {}, ...requestOptions } = options;
-    const response = await fetch(path, { ...requestOptions, headers: { ...headers, ...optionHeaders } });
+    const response = await fetch(agentPath(path), { ...requestOptions, headers: { ...headers, ...optionHeaders } });
     let data; try { data = await response.json(); } catch { throw new Error(`服务返回 HTTP ${response.status}`); }
     if (!response.ok) throw new Error(data.detail || `请求失败：HTTP ${response.status}`);
     return data;
@@ -230,18 +231,61 @@
     $('workspace-form').reset(); workspaceDialog.showModal(); $('workspace-name-input').focus();
   };
   $('create-workspace').addEventListener('click', openWorkspaceDialog);
+  let workspaceBrowserPath = '';
+  let workspaceBrowserParent = null;
+  const loadWorkspaceBrowser = async (path = '') => {
+    const query = path ? `?path=${encodeURIComponent(path)}` : '';
+    const result = await api(`/api/workspaces/browse${query}`);
+    workspaceBrowserPath = result.path;
+    workspaceBrowserParent = result.parent;
+    $('workspace-browser-current').value = result.path;
+    $('workspace-browser-up').disabled = !result.parent;
+
+    const list = $('workspace-browser-list');
+    list.replaceChildren();
+    if (!result.directories.length) {
+      list.append(text('p', '当前目录没有可浏览的子文件夹。'));
+      return;
+    }
+    for (const directory of result.directories) {
+      const item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'secondary';
+      item.style.cssText = 'display:block;width:100%;margin:6px 0;text-align:left;';
+      item.textContent = `📁 ${directory.name}`;
+      item.addEventListener('click', () => {
+        loadWorkspaceBrowser(directory.path).catch((error) => toast(error.message));
+      });
+      list.append(item);
+    }
+  };
+
   $('pick-workspace-path').addEventListener('click', async (event) => {
     const button = event.currentTarget;
     button.disabled = true;
     try {
-      const result = await api('/api/workspaces/pick', { method: 'POST' });
-      if (result.cancelled || !result.path) return;
-      $('workspace-path-input').value = result.path;
-      if (!$('workspace-name-input').value.trim()) {
-        $('workspace-name-input').value = result.path.replace(/[\\/]+$/, '').split(/[\\/]/).pop();
-      }
-    } catch (error) { toast(error.message); }
-    finally { button.disabled = false; }
+      await loadWorkspaceBrowser();
+      $('workspace-browser-dialog').showModal();
+    } catch (error) {
+      toast(error.message);
+    } finally {
+      button.disabled = false;
+    }
+  });
+  $('workspace-browser-up').addEventListener('click', () => {
+    if (workspaceBrowserParent) {
+      loadWorkspaceBrowser(workspaceBrowserParent).catch((error) => toast(error.message));
+    }
+  });
+  $('workspace-browser-close').addEventListener('click', () => $('workspace-browser-dialog').close());
+  $('workspace-browser-cancel').addEventListener('click', () => $('workspace-browser-dialog').close());
+  $('workspace-browser-select').addEventListener('click', () => {
+    $('workspace-path-input').value = workspaceBrowserPath;
+    if (!$('workspace-name-input').value.trim()) {
+      const parts = workspaceBrowserPath.split('/').filter(Boolean);
+      $('workspace-name-input').value = parts[parts.length - 1] || 'workspace';
+    }
+    $('workspace-browser-dialog').close();
   });
   $('close-workspace-dialog').addEventListener('click', () => workspaceDialog.close());
   $('cancel-workspace').addEventListener('click', () => workspaceDialog.close());
@@ -770,7 +814,7 @@
     avatar.setAttribute('aria-label', role === 'user' ? '用户' : 'Yugan Agent');
     if (role === 'user') {
       const image = document.createElement('img');
-      image.src = '/static/default-user-avatar.svg';
+      image.src = '/agent/static/default-user-avatar.svg';
       image.alt = '';
       avatar.append(image);
     } else {
