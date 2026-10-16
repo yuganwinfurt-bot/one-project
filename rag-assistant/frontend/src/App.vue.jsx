@@ -14,6 +14,16 @@ const uniqueId = () => globalThis.crypto?.randomUUID?.() || `${Date.now()}-${Mat
 const filesFromTransfer = (event) => Array.from(event.dataTransfer?.files || []);
 const transferHasFiles = (event) => Array.from(event.dataTransfer?.types || []).includes("Files");
 const localProjectHost = ["127.0.0.1", "localhost", "[::1]"].includes(window.location.hostname);
+const rememberedProjectKey = "yugan-rag-active-project";
+function getRememberedProjectId() {
+  try { return window.sessionStorage.getItem(rememberedProjectKey) || ""; } catch { return ""; }
+}
+function rememberProjectId(id) {
+  try {
+    if (id) window.sessionStorage.setItem(rememberedProjectKey, id);
+    else window.sessionStorage.removeItem(rememberedProjectKey);
+  } catch {}
+}
 const projectHomeUrl = new URL("/", window.location.href);
 if (localProjectHost) projectHomeUrl.port = "8030";
 const agentUrl = new URL(import.meta.env.VITE_AGENT_URL || (localProjectHost ? "/" : "/agent/"), window.location.href);
@@ -286,7 +296,12 @@ function renderApp() {
         setModelSettings(modelData);
         setProjects(projectData);
         setKnowledgeBases(kbData);
-        if (projectData.length) setProjectId(projectData[0].id);
+        if (projectData.length) {
+          const rememberedId = getRememberedProjectId();
+          const selectedProject = projectData.find((project) => project.id === rememberedId) || projectData[0];
+          setProjectId(selectedProject.id);
+          rememberProjectId(selectedProject.id);
+        }
         if (kbData.length) setActiveKbId(kbData[0].id);
       })
       .catch((error) => { if (live) notify(`后端连接失败：${error.message}`); });
@@ -514,6 +529,7 @@ function renderApp() {
     if (busy) return;
     if (id === projectId) { setMobileNav(false); return; }
     setProjectId(id);
+    rememberProjectId(id);
     currentProjectIdRef.current = id;
     currentChatIdRef.current = "";
     chatRequestRef.current += 1;
@@ -639,6 +655,7 @@ function renderApp() {
         projectRequestRef.current += 1;
         chatRequestRef.current += 1;
         setProjectId(next?.id || "");
+        rememberProjectId(next?.id || "");
         setChats([]);
         setChatId("");
         setMessages([]);
@@ -675,6 +692,7 @@ function renderApp() {
         setMessages([]);
         setScopeMode("project");
         setProjectId(created.id);
+        rememberProjectId(created.id);
         notify("项目已创建");
       }
       setProjectDialog(false);
