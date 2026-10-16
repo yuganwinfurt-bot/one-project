@@ -250,6 +250,11 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .delete-chat-confirm { min-width: 90px; height: 33px; padding: 0 13px; border: 1px solid #c57c86; border-radius: 8px; background: #b96572; color: #fff; font-size: 10px; font-weight: 600; }
 .delete-chat-confirm:hover { background: #a95463; }
 .delete-chat-confirm:disabled { cursor: wait; opacity: .65; }
+.delete-project-modal { width: min(470px, 100%); }
+.delete-project-description { overflow-wrap: anywhere; }
+.delete-project-description strong { color: #102237; font-weight: 650; }
+.delete-project-retained { display: flex; align-items: center; gap: 7px; margin: -3px 0 16px; color: #39856e; font-size: 11px; line-height: 1.6; }
+.delete-project-retained svg { flex: none; }
 @media (max-width: 680px) {
   .delete-chat-modal { padding: 18px; border-radius: 13px; }
   .delete-chat-modal h2 { font-size: 17px; }

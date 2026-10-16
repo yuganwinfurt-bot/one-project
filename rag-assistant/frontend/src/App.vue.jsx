@@ -130,6 +130,8 @@ function renderApp() {
   const [sidebarMenu, setSidebarMenu] = useState(null);
   const [deleteChatTarget, setDeleteChatTarget] = useState(null);
   const [deleteChatSaving, setDeleteChatSaving] = useState(false);
+  const [deleteProjectTarget, setDeleteProjectTarget] = useState(null);
+  const [deleteProjectSaving, setDeleteProjectSaving] = useState(false);
   const [renameTarget, setRenameTarget] = useState(null);
   const [renameValue, setRenameValue] = useState("");
   const [renameSaving, setRenameSaving] = useState(false);
@@ -640,10 +642,16 @@ function renderApp() {
     finally { setRenameSaving(false); }
   }
 
-  async function removeProject(project) {
+  function removeProject(project) {
     if (auth?.role !== "admin") { notify("游客不能删除项目。"); return; }
-    if (busy || chatLoading || scopeSaving || projectSaving) return;
-    if (!window.confirm(`删除项目“${project.name}”及其全部对话？\n关联的知识库和资料会保留。`)) return;
+    if (busy || chatLoading || scopeSaving || projectSaving || deleteProjectSaving) return;
+    setDeleteProjectTarget(project);
+  }
+
+  async function confirmRemoveProject() {
+    if (!deleteProjectTarget || deleteProjectSaving) return;
+    const project = deleteProjectTarget;
+    setDeleteProjectSaving(true);
     try {
       await request(`/api/projects/${project.id}`, { method: "DELETE" });
       const remaining = projects.filter((item) => item.id !== project.id);
@@ -662,8 +670,10 @@ function renderApp() {
         setScopeMode("project");
         setSelectedKbIds(next?.knowledge_base_ids || []);
       }
+      setDeleteProjectTarget(null);
       notify("项目已删除，知识库资料已保留");
     } catch (error) { notify(error.message); }
+    finally { setDeleteProjectSaving(false); }
   }
 
   function openProjectDialog(edit = false) {
@@ -1283,6 +1293,19 @@ function renderApp() {
           <div className="delete-chat-preview"><span><MessageSquare size={16} /></span><div><small>将删除的对话</small><strong>{deleteChatTarget.title || "新对话"}</strong></div></div>
           <div className="delete-chat-warning"><span className="delete-chat-warning-dot" />删除后无法恢复</div>
           <footer className="delete-chat-modal-actions"><button type="button" autoFocus className="quiet-button" disabled={deleteChatSaving} onClick={() => setDeleteChatTarget(null)}>取消</button><button type="submit" className="delete-chat-confirm" disabled={deleteChatSaving}>{deleteChatSaving ? "正在删除…" : "删除对话"}</button></footer>
+        </form>
+      </div>}
+
+      {deleteProjectTarget && <div className="modal-backdrop delete-chat-backdrop" onMousedown={(event) => { if (event.target === event.currentTarget && !deleteProjectSaving) setDeleteProjectTarget(null); }}>
+        <form className="delete-chat-modal delete-project-modal" role="dialog" aria-modal="true" aria-labelledby="delete-project-title" aria-describedby="delete-project-description" onSubmit={(event) => { event.preventDefault(); void confirmRemoveProject(); }} onKeydown={(event) => { if (event.key === "Escape" && !deleteProjectSaving) { event.preventDefault(); setDeleteProjectTarget(null); } }}>
+          <header className="delete-chat-modal-head">
+            <span className="delete-chat-modal-icon"><Trash2 size={18} /></span>
+            <div><span className="delete-chat-eyebrow">项目管理</span><h2 id="delete-project-title">删除项目？</h2></div>
+            <button type="button" className="icon-button" aria-label="关闭" disabled={deleteProjectSaving} onClick={() => setDeleteProjectTarget(null)}><X size={18} /></button>
+          </header>
+          <p id="delete-project-description" className="delete-chat-description delete-project-description">确定删除 <strong>“{deleteProjectTarget.name}”</strong> 吗？项目及其中的全部对话、消息记录将无法恢复。</p>
+          <p className="delete-project-retained"><ShieldCheck size={15} />关联的知识库、资料与索引会保留。</p>
+          <footer className="delete-chat-modal-actions"><button type="button" autoFocus className="quiet-button" disabled={deleteProjectSaving} onClick={() => setDeleteProjectTarget(null)}>取消</button><button type="submit" className="delete-chat-confirm" disabled={deleteProjectSaving}>{deleteProjectSaving ? "正在删除…" : "删除项目"}</button></footer>
         </form>
       </div>}
 
