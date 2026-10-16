@@ -1065,7 +1065,7 @@ function renderApp() {
           <button className="manage-link" onClick={() => { setManagerOpen(true); setShowKbForm(false); }}><BookOpen size={16} />管理知识库<ChevronRight size={15} /></button>
           <button type="button" className={`model-status ${browserModel || status?.ollama_connected ? "online" : "offline"}`} onClick={openModelDialog} title="查看并切换 RAG 回答模型">
             <span className="status-dot" />
-            <div><strong>{browserModel ? "当前回答模型" : status?.ollama_connected ? "RAG 回答模型" : "等待 Ollama"}</strong><small>{browserModel?.name || (status?.ollama_connected ? modelSettings.local_model || status.chat_model : "检查本地模型服务")}</small></div>
+            <div><strong>{browserModel ? "当前回答模型" : status?.ollama_connected ? "RAG 回答模型" : "等待 Ollama"}</strong><small>{browserModel ? (browserModel.mode === "server" ? `服务器模型 · ${browserModel.model}` : browserModel.name) : (status?.ollama_connected ? modelSettings.local_model || status.chat_model : "检查本地模型服务")}</small></div>
             <Settings2 size={15} />
           </button>
           <div className="privacy-note"><ShieldCheck size={14} />资料保存在本机</div>
