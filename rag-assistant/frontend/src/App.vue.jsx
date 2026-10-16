@@ -31,8 +31,8 @@ async function requestBrowserModel(profile, messages) {
           "Content-Type": "application/json",
           ...(profile.api_token ? { Authorization: `Bearer ${profile.api_token}` } : {}),
         },
-        body: JSON.stringify({ model: profile.model, messages }),
-        signal: AbortSignal.timeout(120000),
+        body: JSON.stringify({ model: profile.model, messages, max_tokens: 1024 }),
+        signal: AbortSignal.timeout(300000),
       });
     } catch (error) {
       if (error.name === "TimeoutError") throw new Error("服务器模型请求超时。");
@@ -1122,7 +1122,7 @@ function renderApp() {
           </div> : <div className="messages-list">
             {messages.map((message) => <article key={message.id} className={`message-row ${message.role === "user" ? "user-row" : "assistant-row"}`}>
               <div className={`message-avatar ${message.role}`}>
-                {message.role === "user" ? <img src="/default-user-avatar.svg" alt="" /> : <Bot size={17} />}
+                {message.role === "user" ? <img src="default-user-avatar.svg" alt="" /> : <Bot size={17} />}
               </div>
               <div className="message-body">
                 <div className="message-meta"><b>{message.role === "user" ? "你" : "知答"}</b>{message.role === "assistant" && <span>· 基于知识库</span>}</div>
