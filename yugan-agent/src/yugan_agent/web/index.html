@@ -4,13 +4,13 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>yugan-agent · 控制台</title>
-  <link rel="icon" href="/static/icon.svg" type="image/svg+xml">
-  <link rel="stylesheet" href="/static/style.css?v=identity-control-unified-1">
-  <link rel="stylesheet" href="/static/project-lab-theme.css?v=identity-control-unified-1">
-  <script type="module" src="/static/knowledge-disclosure.js?v=1"></script>
-  <script src="/static/vue.global.prod.js?v=3.5.42" defer></script>
-  <script src="/static/vue-mount.js?v=vue3-shell-1" defer></script>
-  <script src="/static/app.js?v=identity-control-unified-1" defer></script>
+  <link rel="icon" href="/agent/static/icon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/agent/static/style.css?v=rag-public-link-1">
+  <link rel="stylesheet" href="/agent/static/project-lab-theme.css?v=rag-public-link-1">
+  <script type="module" src="/agent/static/knowledge-disclosure.js?v=1"></script>
+  <script src="/agent/static/vue.global.prod.js?v=3.5.42" defer></script>
+  <script src="/agent/static/vue-mount.js?v=vue3-shell-1" defer></script>
+  <script src="/agent/static/app.js?v=server-workspace-browser-1" defer></script>
 </head>
 <body>
   <div class="app" id="agent-app">
@@ -22,7 +22,7 @@
             <nav id="brand-switcher-menu" class="brand-switcher-menu" aria-label="项目入口" hidden>
               <span class="brand-switcher-heading">项目入口</span>
               <span class="brand-switcher-current">Agent 控制台 <small>当前页面</small></span>
-              <a id="brand-rag-link" class="brand-switcher-link">RAG 知识库 <span aria-hidden="true">→</span></a>
+              <a id="brand-rag-link" class="brand-switcher-link" href="/rag/">RAG 知识库 <span aria-hidden="true">→</span></a>
               <a id="brand-home-link" class="brand-switcher-link">项目主页 <span aria-hidden="true">→</span></a>
             </nav>
           </div>
@@ -49,7 +49,7 @@
           <button id="auth-control" class="identity-control-button" type="button" aria-live="polite" aria-label="身份与登录">正在读取身份…</button>
           <button id="rag-open" class="secondary rag-open" type="button" aria-haspopup="dialog"><span aria-hidden="true">▤</span><span id="rag-label">连接 RAG</span></button>
           <a id="home-link" class="secondary home-link" href="/" aria-label="返回项目主页"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9"/><path d="M9 20v-7h6v7"/></svg><span>返回主页</span></a>
-          <a href="/docs" target="_blank" rel="noopener">API 文档 ↗</a>
+          <a href="/agent/docs" target="_blank" rel="noopener">API 文档 ↗</a>
         </div>
       </header>
 
@@ -197,9 +197,25 @@
       <label for="workspace-name-input">工作区名称</label>
       <input id="workspace-name-input" name="name" maxlength="80" required placeholder="例如：yugan-agent">
       <label for="workspace-path-input">文件夹路径</label>
-      <div class="workspace-path-control"><input id="workspace-path-input" name="path" maxlength="4096" required placeholder="例如：D:\项目\yugan-agent"><button id="pick-workspace-path" type="button" class="secondary">浏览…</button></div>
+      <div class="workspace-path-control"><input id="workspace-path-input" name="path" maxlength="4096" required placeholder="例如：/home/ubuntu/one-project/my-workspace"><button id="pick-workspace-path" type="button" class="secondary">浏览…</button></div>
       <p class="workspace-dialog-note">文件夹不存在时会自动创建。创建后会切换到新工作区；对话可拖到左侧工作区进行归类。</p>
       <div class="workspace-dialog-actions"><button id="cancel-workspace" type="button" class="secondary">取消</button><button id="save-workspace" type="submit" class="primary">创建工作区</button></div>
+    </form>
+  </dialog>
+  <dialog id="workspace-browser-dialog" class="workspace-dialog" aria-labelledby="workspace-browser-title">
+    <form method="dialog">
+      <div class="workspace-dialog-head">
+        <div><span class="kicker">SERVER PATH</span><h2 id="workspace-browser-title">选择服务器文件夹</h2></div>
+        <button id="workspace-browser-close" type="button" class="dialog-close" aria-label="关闭">×</button>
+      </div>
+      <label for="workspace-browser-current">当前目录（仅限 /home/ubuntu）</label>
+      <input id="workspace-browser-current" readonly>
+      <button id="workspace-browser-up" type="button" class="secondary">上一级</button>
+      <div id="workspace-browser-list" style="max-height:40vh;overflow:auto;margin:12px 0;"></div>
+      <div class="workspace-dialog-actions">
+        <button id="workspace-browser-cancel" type="button" class="secondary">取消</button>
+        <button id="workspace-browser-select" type="button" class="primary">选择此目录</button>
+      </div>
     </form>
   </dialog>
   <dialog id="computer-approval" class="approval-dialog">
