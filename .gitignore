@@ -36,3 +36,6 @@
 **/*.sqlite-*
 **/*.sqlite3
 **/*.sqlite3-*
+
+# Agent 运行时生成的游客文件
+/yugan-agent/workspace/guest-files/
