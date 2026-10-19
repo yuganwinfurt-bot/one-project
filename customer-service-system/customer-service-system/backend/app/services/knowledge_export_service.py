@@ -12,7 +12,7 @@ from app.models import (
     AfterSaleMessage, AfterSaleRequest, AlertNotification, CartItem, CustomerAddress,
     CustomerMessage, CustomerReviewReply, CustomerShipmentMessage, DiagnosisReport,
     DirectConversation, DirectMessage, FavoriteProduct, Order, PlatformLog, Product, ProductInventoryState, CustomerRestockMessage,
-    ProductAfterSaleRiskState, Review, ReviewComment, ReviewReplyNotification, StaffInboxEvent, User,
+    ProductAfterSaleRiskState, Review, ReviewComment, ReviewReplyNotification, StaffInboxEvent, User, DemoLoginCredential,
 )
 from app.observability.models import AgentFeedback, AgentRun, AgentRunStep
 from app.services.after_sale_risk_service import collect_after_sale_risks
@@ -26,7 +26,7 @@ SENSITIVE_KEY = re.compile(
 
 
 class ExportRedactor:
-    def __init__(self, users, addresses):
+    def __init__(self, users, addresses, demo_passwords=()):
         self.aliases = {}
         for user in users:
             alias = f"{'客户' if user.role == 'customer' else '工作人员'}#{user.id}"
@@ -43,6 +43,9 @@ class ExportRedactor:
             for value in (address.receiver_name, address.phone, address.detail):
                 if value:
                     self.aliases[value] = "[收货信息已脱敏]"
+        for value in demo_passwords:
+            if value:
+                self.aliases[value] = "[演示凭证已移除]"
         # 仅用于匹配清除，配置值不进入导出记录。
         for field in ("JWT_SECRET_KEY", "LLM_API_KEY", "EMBEDDING_API_KEY", "RAG_SYNC_TOKEN", "DATABASE_URL"):
             value = getattr(settings, field, "")
@@ -118,7 +121,9 @@ def build_platform_export(indexed_reviews=None):
     with SessionLocal() as db:
         users = db.query(User).all()
         addresses = db.query(CustomerAddress).all()
-        redact = ExportRedactor(users, addresses)
+        # 展示密码表本身不导出；自由文本中提及的演示口令同样脱敏。
+        demo_passwords = [row.display_password for row in db.query(DemoLoginCredential)]
+        redact = ExportRedactor(users, addresses, demo_passwords)
         products = {row.id: row for row in db.query(Product).all()}
         orders = {row.id: row for row in db.query(Order).all()}
         reviews = {row.id: row for row in db.query(Review).all()}

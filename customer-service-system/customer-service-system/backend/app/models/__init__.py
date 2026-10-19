@@ -20,9 +20,11 @@ from app.models.shopping import (
 )
 from app.models.staff_inbox import StaffInboxEvent
 from app.models.user import User
+from app.models.demo_login import DemoLoginCredential
 
 __all__ = [
     "User",
+    "DemoLoginCredential",
     "Product",
     "Order",
     "Review",

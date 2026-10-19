@@ -9,6 +9,7 @@ from app.schemas.auth import LoginRequest, RegisterRequest
 from app.schemas.auth import LoginResponse
 from app.utils.password import verify_password, hash_password
 from app.utils.jwt import create_access_token
+from app.services.demo_login_service import remember_demo_password
 
 
 def login(db: Session, data: LoginRequest):
@@ -26,6 +27,7 @@ def login(db: Session, data: LoginRequest):
     if user.status != 1:
         raise BusinessException(message="账号被禁用")
     user.last_seen_at = datetime.now()
+    remember_demo_password(db, user, data.password)
     db.commit()
     db.refresh(user)
     # 创建token

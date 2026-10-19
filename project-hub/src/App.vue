@@ -154,12 +154,12 @@ function cardTone(project, index) {
         <div class="hero-copy">
           <div class="eyebrow"><span class="live-dot"></span> {{ projects.length }} PROJECTS · ONE ENTRY</div>
           <h1 id="hero-title">智能应用实践，<br /><em>面向真实场景。</em></h1>
-          <p class="hero-lead">围绕智能体任务执行、知识库问答与电商数据分析，构建可本地运行的应用系统，涵盖模型接入、工具编排、文档检索与业务洞察。</p>
+          <p class="hero-lead">从一笔订单、一项任务到一份资料，探索 AI 在业务分析、工具执行和知识问答中的具体用法。三个应用，三种实践。</p>
           <div class="hero-note"><span>PROJECT INDEX</span><span>{{ String(projects.length).padStart(2, '0') }} / PROJECTS</span><span>ONE / HOME</span></div>
         </div>
         <div id="open" class="hero-art" aria-label="项目入口">
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-          <div class="art-heading"><span>PROJECT LAB / INDEX</span><b>{{ projects.length }} 个项目</b></div>
+          <div class="art-heading"><span>SELECTED WORKS</span><b class="works-count">{{ String(projects.length).padStart(2, '0') }}</b></div>
           <div class="art-project-list">
             <component :is="projectHref(project) ? 'a' : 'div'" v-for="(project, index) in projects.slice(0, 3)" :key="project.id" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
               <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
@@ -174,7 +174,7 @@ function cardTone(project, index) {
       </section>
 
       <section id="projects" class="projects section-wrap" aria-labelledby="projects-title">
-        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">项目概览与核心能力</h2></div><p>展示各项目的建设目标、核心模块与技术实践，呈现从数据检索到智能应用落地的实现路径。</p></div>
+        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">从场景出发，把应用做具体。</h2></div><p>用业务数据回答经营问题，用工具完成任务，用资料支持回答。各自独立，也能相互协作。</p></div>
         <div class="project-overviews">
           <article v-for="project in projects" :id="project.id" :key="project.id" class="project-overview" :class="`overview-${project.id}`">
             <div class="overview-hero">
@@ -184,10 +184,28 @@ function cardTone(project, index) {
                 <p class="overview-lead">{{ project.intro || project.description }}</p>
                 <div class="overview-tags"><span v-for="tag in project.tags || []" :key="tag">{{ tag }}</span></div>
               </div>
-              <div class="overview-art" aria-hidden="true"><div class="overview-orbit"></div><div class="overview-orbit orbit-second"></div><div class="overview-core"><span v-if="project.id === 'agent'" class="agent-eyes"><i></i><i></i></span><span v-else class="rag-pages">▤</span></div></div>
+              <div class="overview-art" aria-hidden="true">
+                <div v-if="project.id === 'ecom-analysis'" class="business-preview">
+                  <div class="preview-topline"><span class="preview-dot"></span> BUSINESS DESK <small>流程示意</small></div>
+                  <div class="business-question">最近有哪些商品需要关注？</div>
+                  <div class="business-sources"><span>商品</span><span>订单</span><span>评价</span></div>
+                  <div class="business-output"><span class="business-line"></span><span class="business-line"></span><span class="business-line"></span></div>
+                  <div class="business-result"><span>数据查询</span><i>→</i><b>有依据的分析</b></div>
+                </div>
+                <div v-else-if="project.id === 'agent'" class="task-preview">
+                  <div class="preview-topline"><span class="terminal-dots"><i></i><i></i><i></i></span> TASK SESSION <small>流程示意</small></div>
+                  <p class="task-prompt"><span>›</span> 描述目标，开始一项任务</p>
+                  <ol class="task-steps"><li><span>01</span>理解目标 <b>PLAN</b></li><li><span>02</span>选择并调用工具 <b>ACT</b></li><li><span>03</span>检查结果，继续执行 <b>OBSERVE</b></li></ol>
+                  <div class="task-tools"><span>FILES</span><span>HTTP</span><span>WORKSPACE</span></div>
+                </div>
+                <div v-else class="knowledge-preview">
+                  <div class="document-sheet sheet-back"></div>
+                  <div class="document-sheet sheet-front"><span class="document-label">YOUR KNOWLEDGE</span><b>从资料中寻找答案</b><div class="document-lines"><i></i><i></i><i></i></div><div class="source-excerpt"><span>[1] 参考来源</span><i></i><i></i></div><small>导入 · 检索 · 引用核验</small></div>
+                </div>
+              </div>
             </div>
-            <div class="overview-heading"><div><p class="kicker">功能概览</p><h4>核心模块</h4></div><a v-if="projectHref(project)" class="overview-action" :href="projectHref(project)">{{ project.action || '打开项目页面' }} <span aria-hidden="true">→</span></a></div>
-            <div class="overview-features"><section v-for="feature in project.features || []" :key="feature.name" class="overview-feature"><h5>{{ feature.name }}</h5><p>{{ feature.detail }}</p></section></div>
+            <div class="overview-heading"><div><p class="kicker">{{ project.featureLabel || '功能概览' }}</p><h4>{{ project.featureTitle || '核心模块' }}</h4></div><a v-if="projectHref(project)" class="overview-action" :href="projectHref(project)">{{ project.action || '打开项目页面' }} <span aria-hidden="true">→</span></a></div>
+            <div class="overview-features"><section v-for="(feature, index) in project.features || []" :key="feature.name" class="overview-feature"><span class="feature-index">{{ String(index + 1).padStart(2, '0') }}</span><div><h5>{{ feature.name }}</h5><p>{{ feature.detail }}</p></div></section></div>
             <p v-if="project.note" class="overview-note">{{ project.note }}</p>
           </article>
         </div>

@@ -144,6 +144,34 @@ sudo systemctl restart yugan-agent rag-assistant project-hub ecommerce-api
 - 本次没有把本机整套 RAG storage 覆盖到服务器；服务器原有知识库保留，电商知识库从已迁移的业务库重建。
 - 普通数据分析对话使用 Agent 网页选中的模型；“一键巡检”和部分后台功能仍使用电商 `.env` 的 `LLM_*`，要使用时再填写服务器端模型配置。
 
+## 8. 更新演示账号、订单页与项目首页
+
+先在电脑的 GitHub Desktop 提交并推送本次源码改动。
+将 `D:\one project\release-output\portfolio-demo-update.tar.gz` 上传到 `/home/ubuntu/`，然后执行：
+
+```bash
+bash <<'BASH'
+set -e
+cd /home/ubuntu/one-project
+git pull --ff-only origin main
+tar -xzf /home/ubuntu/portfolio-demo-update.tar.gz -C /home/ubuntu/one-project
+sudo cp -a project-hub/dist/. /opt/project-hub/dist/
+sudo chown -R projecthub:projecthub /opt/project-hub/dist
+sudo systemctl restart project-hub ecommerce-api
+sudo systemctl status ecommerce-api --no-pager -l
+BASH
+```
+
+发现拉取冲突会立即停止，保留服务器上的修改，不强制覆盖。
+后端启动时自动新建展示凭据表并补齐字段，无需重新导入 SQL 或清理数据。页面按 Ctrl+F5 更新。
+运营账号按创建顺序选择最早两个启用账号；删除或停用后补位，新建、改名、改密后同步。
+客户注册账号不参与排序；用户登录页展示专用买家 `demo_customer` / `demo123456`，同名已有账号存在时使用后缀。
+已有未知口令的后台账号需成功登录一次或重新设密，系统才能保存正确展示口令。
+
+订单页按视口高度调整每页条数、按可用宽度分配列宽，长字段换行，保留日期和物流各段内容。
+三个项目介绍分别采用经营看板、任务控制台、资料引用的视觉样式；首页数量标识改为 `SELECTED WORKS / 03`。
+该更新包只有首页与电商前端构建产物，后端源码通过上述 Git 拉取更新。
+
 ## 出错时贴这些输出
 
 ```bash

@@ -1,7 +1,7 @@
 <template>
-  <div class="page-container">
-    <div class="content-card">
-      <div class="toolbar-row">
+  <div class="page-container orders-page">
+    <div ref="cardRef" class="content-card orders-card">
+      <div ref="toolbarRef" class="toolbar-row">
         <el-input
           class="search-input"
           placeholder="按订单号 / 买家 / 商品名搜索"
@@ -14,6 +14,10 @@
       </div>
 
       <el-table
+        ref="tableRef"
+        class="orders-table"
+        :height="tableHeight"
+        :row-style="{ height: '76px' }"
         :header-cell-style="tableHeaderStyle"
         :data="tableData"
         style="width: 100%"
@@ -21,21 +25,21 @@
         @row-click="openDetail"
         @sort-change="handleSortChange"
       >
-        <el-table-column prop="order_no" label="订单号" width="230" show-overflow-tooltip />
-        <el-table-column prop="product_name" label="商品" width="210" show-overflow-tooltip />
-        <el-table-column prop="buyer_name" label="买家" min-width="140">
+        <el-table-column prop="order_no" label="订单号" :min-width="columnWidths.order_no" class-name="order-number-column" />
+        <el-table-column prop="product_name" label="商品" :min-width="columnWidths.product_name" />
+        <el-table-column prop="buyer_name" label="买家" :min-width="columnWidths.buyer_name">
           <template #default="{ row }"><el-button class="buyer-profile-link" type="primary" link @click.stop="openUserProfile(row)">{{ row.buyer_name }}</el-button></template>
         </el-table-column>
-        <el-table-column prop="quantity" label="数量" min-width="90" sortable="custom" :sort-orders="sortOrders" />
-        <el-table-column prop="amount" label="实付" min-width="100" sortable="custom" :sort-orders="sortOrders" />
-        <el-table-column prop="status" label="状态" min-width="205" sortable="custom" :sort-orders="sortOrders">
+        <el-table-column prop="quantity" label="数量" :min-width="columnWidths.quantity" sortable="custom" :sort-orders="sortOrders" />
+        <el-table-column prop="amount" label="实付" :min-width="columnWidths.amount" sortable="custom" :sort-orders="sortOrders" />
+        <el-table-column prop="status" label="状态" :min-width="columnWidths.status" sortable="custom" :sort-orders="sortOrders">
           <template #default="{ row }">
             <el-tag size="small" effect="light" round :type="statusTag(row)">
               {{ orderStatusLabel(row) }}
             </el-tag>
           </template>
         </el-table-column>
-        <el-table-column prop="tracking_no" label="物流单号" min-width="170" show-overflow-tooltip>
+        <el-table-column prop="tracking_no" label="物流单号" :min-width="columnWidths.tracking_no" class-name="tracking-column">
           <template #default="{ row }">
             <div v-if="row.tracking_no">发货：{{ row.tracking_no }}</div>
             <div v-if="row.exchange_tracking_no">换货：{{ row.exchange_tracking_no }}</div>
@@ -45,12 +49,12 @@
             </span>
           </template>
         </el-table-column>
-        <el-table-column prop="create_time" label="下单时间" min-width="210" sortable="custom" :sort-orders="sortOrders">
+        <el-table-column prop="create_time" label="下单时间" :min-width="columnWidths.create_time" sortable="custom" :sort-orders="sortOrders">
           <template #default="{ row }">
-            <span class="time-text">{{ row.create_time }}</span>
+            <time class="order-date" :datetime="row.create_time"><span>{{ row.create_time?.slice(0, 10) }}</span><span>{{ row.create_time?.slice(11, 19) }}</span></time>
           </template>
         </el-table-column>
-        <el-table-column v-if="hasOrderActions" label="操作" width="140" align="center" header-align="center" fixed="right">
+        <el-table-column v-if="hasOrderActions" label="操作" :min-width="columnWidths.actions" align="center" header-align="center">
           <template #default="{ row }">
             <el-button v-if="canShipOrder(row) && row.status === 'paid'" type="success" link @click.stop="shipOrder(row)">
               发货
@@ -67,13 +71,15 @@
         </el-table-column>
       </el-table>
 
-      <div class="table-footer">
+      <div ref="footerRef" class="table-footer orders-footer">
+        <span class="orders-page-size">当前每页 {{ params.pageSize }} 条</span>
         <el-pagination
           v-model:current-page="params.page"
           v-model:page-size="params.pageSize"
           :total="total"
           background
           small
+          :pager-count="5"
           layout="total, prev, pager, next"
           @current-change="load"
         />
@@ -171,7 +177,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import { getOrderDetail, listOrders, shipOrder as shipOrderApi } from '@/api/ecommerce'
@@ -191,6 +197,53 @@ const tableData = ref([])
 const total = ref(0)
 const hasOrderActions = computed(() => tableData.value.some(canShipOrder))
 const params = reactive({ page: 1, pageSize: 10, keywords: '', sortBy: '', sortOrder: 'asc' })
+const cardRef = ref(null), toolbarRef = ref(null), footerRef = ref(null), tableRef = ref(null)
+const tableHeight = ref(440), tableWidth = ref(1100)
+const columnWidths = computed(() => {
+  const weights = { order_no: 2, product_name: 1.6, buyer_name: 0.8, quantity: 0.65, amount: 0.8, status: 1.25, tracking_no: 1.7, create_time: 1.3 }
+  if (hasOrderActions.value) weights.actions = 0.8
+  const totalWeight = Object.values(weights).reduce((sum, weight) => sum + weight, 0)
+  return Object.fromEntries(Object.entries(weights).map(([key, weight]) => [key, Math.max(1, Math.floor((tableWidth.value - 2) * weight / totalWeight))]))
+})
+let layoutObserver = null, resizeTimer = null
+
+function measureLayout(reload = true) {
+  const card = cardRef.value
+  if (!card) return
+  const style = getComputedStyle(card)
+  const paddingY = parseFloat(style.paddingTop) + parseFloat(style.paddingBottom)
+  const paddingX = parseFloat(style.paddingLeft) + parseFloat(style.paddingRight)
+  tableWidth.value = card.clientWidth - paddingX
+  tableHeight.value = Math.max(140, card.clientHeight - paddingY - (toolbarRef.value?.offsetHeight || 36) - (footerRef.value?.offsetHeight || 32) - 24)
+  const pageSize = Math.max(1, Math.min(10, Math.floor((tableHeight.value - 48) / 76)))
+  if (pageSize !== params.pageSize) {
+    params.pageSize = pageSize
+    params.page = 1
+    if (reload) void load()
+  }
+}
+
+async function fitVisibleRows(requestId) {
+  await nextTick()
+  if (requestId !== orderRequestId) return
+  const element = tableRef.value?.$el
+  if (!element) return
+  const headerHeight = element.querySelector('.el-table__header-wrapper')?.offsetHeight || 48
+  const rows = [...element.querySelectorAll('.el-table__body-wrapper tbody > tr')]
+  let used = 0, count = 0
+  for (const row of rows) {
+    used += row.getBoundingClientRect().height
+    if (used > tableHeight.value - headerHeight - 2) break
+    count += 1
+  }
+  // 长商品名或多段物流换行后，也让分页保持在当前视口内。
+  const fitted = Math.max(1, count)
+  if (fitted < tableData.value.length && fitted < params.pageSize) {
+    params.pageSize = fitted
+    params.page = 1
+    await load(true)
+  }
+}
 
 const drawerVisible = ref(false)
 const detailLoading = ref(false)
@@ -263,6 +316,7 @@ async function load(silent = false) {
     }
     const updatedDetail = tableData.value.find(row => row.id === detail.value?.order?.id)
     if (updatedDetail) detail.value.order = { ...detail.value.order, ...updatedDetail }
+    await fitVisibleRows(requestId)
   } finally {
     if (requestId === orderRequestId) loading.value = false
   }
@@ -343,17 +397,48 @@ async function shipOrder(row) {
   }
 }
 
-onMounted(load)
+onMounted(() => {
+  measureLayout(false)
+  layoutObserver = new ResizeObserver(() => {
+    clearTimeout(resizeTimer)
+    resizeTimer = setTimeout(() => measureLayout(), 120)
+  })
+  for (const element of [cardRef.value, toolbarRef.value, footerRef.value]) {
+    if (element) layoutObserver.observe(element)
+  }
+  void load()
+})
+onUnmounted(() => {
+  layoutObserver?.disconnect()
+  clearTimeout(resizeTimer)
+  orderRequestId += 1
+})
 useVisibleRefresh(() => load(true))
 </script>
 
 <style scoped>
+.orders-page { height: 100%; min-height: 0; }
+.orders-card { display: flex; height: 100%; min-height: 0; flex-direction: column; gap: 12px; }
+.orders-card .toolbar-row { flex: none; margin: 0; }
+.orders-table { flex: none; min-width: 0; font-size: 13px; }
+.orders-footer { flex: none; justify-content: space-between; gap: 12px; margin: 0; }
+.orders-page-size { color: var(--app-text-secondary); font-size: 12px; white-space: nowrap; }
+.order-date { display: grid; font-size: 12px; line-height: 1.55; color: var(--app-text-secondary); font-variant-numeric: tabular-nums; }
+:deep(.orders-table .el-table__cell) { padding: 8px 0; }
+:deep(.orders-table .cell) { padding: 0 7px; line-height: 20px; white-space: normal; overflow: visible; overflow-wrap: anywhere; word-break: normal; }
+:deep(.orders-table .el-tag) { height: auto; max-width: 100%; padding: 2px 6px; white-space: normal; line-height: 1.5; }
+:deep(.orders-table .el-button) { max-width: 100%; height: auto; white-space: normal; line-height: 1.5; }
+:deep(.orders-table .el-button > span) { white-space: normal; overflow-wrap: anywhere; }
+:deep(.order-number-column .cell) { font-size: 12px; font-variant-numeric: tabular-nums; }
+:deep(.tracking-column .cell) { font-size: 12px; }
+@media (max-width: 700px) { .orders-page-size { display: none; } .orders-footer { justify-content: flex-end; } }
+
 :deep(.el-table__header-wrapper .cell) {
   display: flex;
   align-items: center;
   justify-content: flex-start;
   gap: 4px;
-  white-space: nowrap;
+  white-space: normal;
 }
 
 :deep(.el-table__header-wrapper th.is-center .cell) {

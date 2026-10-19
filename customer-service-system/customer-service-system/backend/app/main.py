@@ -6,6 +6,7 @@ from sqlalchemy import inspect
 from app.config import UPLOAD_DIR
 from app.models import (  # noqa: F401  注册全部模型
     User,
+    DemoLoginCredential,
     Product,
     Order,
     Review,
@@ -29,6 +30,7 @@ from app.observability.models import (  # noqa: F401
 from app.database import Base, engine, SessionLocal
 from app.services.after_sale_risk_service import sync_all_after_sale_risks
 from app.services.inventory_service import sync_all_inventory
+from app.services.demo_login_service import initialize_demo_credentials
 from app.api import api
 from starlette.middleware.cors import CORSMiddleware
 from app.common.exceptions import (
@@ -43,6 +45,7 @@ Base.metadata.create_all(bind=engine)  # 自动帮我们创数据库表
 
 # create_all 不会修改已有表；启动时补齐兼容旧数据库所需的可空字段。
 _ADDITIVE_COLUMNS = {
+    "demo_login_credentials": {"is_customer_demo": "BOOLEAN NOT NULL DEFAULT 0"},
     "agent_runs": {"answer_text": "TEXT NULL", "answer_context": "JSON NULL"},
     "customer_favorite_products": {"restock_waiting": "BOOLEAN NOT NULL DEFAULT 0"},
     "users": {"last_seen_at": "DATETIME NULL"},
@@ -103,6 +106,7 @@ with engine.begin() as connection:
 async def lifespan(app: FastAPI):
     # 为已有售后补齐集中异常预警；只写提醒，不自动改变商品复核或销售状态。
     with SessionLocal() as db:
+        initialize_demo_credentials(db)
         sync_all_after_sale_risks(db)
         sync_all_inventory(db)
         db.commit()

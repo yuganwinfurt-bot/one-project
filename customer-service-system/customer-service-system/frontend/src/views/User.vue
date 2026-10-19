@@ -139,6 +139,7 @@
             :placeholder="form.id ? '输入密码以重设；留空保持不变' : '请输入初始密码'"
           />
           <div v-if="form.id" class="user-avatar-hint">密码不会从服务器读取；输入新密码后点击“确定”才会重设，留空则保持不变。</div>
+          <div v-if="!form.id || form.role === 'user'" class="user-avatar-hint">最早创建的两个启用运营账号会公开显示在登录页，账号和密码修改后同步更新。</div>
         </el-form-item>
         <el-form-item label="名称" prop="name">
           <el-input v-model="form.name" placeholder="请输入名称" />

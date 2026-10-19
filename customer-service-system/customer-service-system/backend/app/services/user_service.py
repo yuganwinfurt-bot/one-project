@@ -6,6 +6,7 @@ from app.models.user import User
 from app.models.community import DirectConversation, ReviewComment, ReviewReplyNotification
 from app.models.inventory import CustomerRestockMessage
 from app.services.platform_log_service import build_rollback_data, record_changes
+from app.services.demo_login_service import remember_demo_password
 from app.schemas.user import (
     PasswordUpdateRequest,
     UserCreateRequest,
@@ -68,6 +69,7 @@ def update_password(db: Session, user: User, data: PasswordUpdateRequest):
     if data.old_password == data.new_password:
         raise BusinessException(message="新密码不能跟原密码相同")
     user.password = hash_password(data.new_password)
+    remember_demo_password(db, user, data.new_password)
     record_changes(
         db,
         user,
@@ -120,6 +122,7 @@ def create_user(db: Session, data: UserCreateRequest, actor: User | None = None)
     )
     db.add(user)
     db.flush()
+    remember_demo_password(db, user, data.password)
     record_changes(
         db,
         actor,
@@ -200,6 +203,7 @@ def update_user(
         setattr(user, filed, value)
     if data.password:
         user.password = hash_password(data.password)
+    remember_demo_password(db, user, data.password)
     changes = [
         (labels[field], before[field], getattr(user, field))
         for field in payload

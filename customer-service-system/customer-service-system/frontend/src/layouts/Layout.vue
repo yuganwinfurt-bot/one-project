@@ -814,6 +814,9 @@ const handleCommand = async (command) => {
   padding: 12px 10px;
   flex: 1;
   min-height: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
   overflow-y: auto;
 }
 
@@ -845,8 +848,10 @@ const handleCommand = async (command) => {
 
 .sidebar-menu :deep(.el-menu-item) {
   height: 44px;
-  line-height: 44px;
-  margin-bottom: 4px;
+  min-height: 32px;
+  flex: 0 1 44px;
+  line-height: normal;
+  margin-bottom: 0;
   border-radius: var(--app-radius-sm);
 }
 

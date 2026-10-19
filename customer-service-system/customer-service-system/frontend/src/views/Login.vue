@@ -65,23 +65,24 @@
             <template v-if="loginMode === 'user'">
               还没有账号？<router-link to="/register">立即注册</router-link>
             </template>
-            <template v-else>后台账号请联系平台管理员开通</template>
+            <template v-else>选择下方演示账号即可体验后台功能</template>
           </div>
         </el-form>
-        <component v-if="DemoAccounts" :is="DemoAccounts" :mode="loginMode" />
+        <LoginDemoAccounts :mode="loginMode" @select="fillDemoAccount" />
       </el-card>
     </div>
   </div>
 </template>
 
 <script setup>
-import { defineAsyncComponent, reactive, ref, watch } from 'vue'
+import { reactive, ref, watch } from 'vue'
 import { User, Lock, DataAnalysis } from '@element-plus/icons-vue'
 import { ElMessage } from 'element-plus'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import { loginApi } from '@/api/auth'
 import { useUser } from '@/utils/user'
+import LoginDemoAccounts from './LoginDemoAccounts.vue'
 
 const { saveLoginData } = useUser()
 const route = useRoute()
@@ -93,9 +94,12 @@ const form = reactive({
   password: ''
 })
 const loadingValue = ref(false)
-const DemoAccounts = import.meta.env.DEV
-  ? defineAsyncComponent(() => import('./LoginDemoAccounts.vue'))
-  : null
+
+function fillDemoAccount(account) {
+  form.username = account.username
+  form.password = account.password
+  formRef.value?.clearValidate()
+}
 
 const rules = {
   username: [{ required: true, message: '请输入账号', trigger: 'blur' }],
