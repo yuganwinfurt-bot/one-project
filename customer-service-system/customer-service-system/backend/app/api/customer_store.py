@@ -34,6 +34,7 @@ from app.schemas.after_sale import (
 from app.services.after_sale_service import CLOSED_STATUSES, after_sale_flow_data, after_sale_options
 from app.services.after_sale_risk_service import sync_product_after_sale_risk
 from app.services.inventory_service import sync_product_inventory
+from app.services.staff_inbox_service import notify_order_paid, resolve_order_paid_notice
 from app.models.inventory import CustomerRestockMessage
 from app.models.community import DirectMessage, DirectConversation, ReviewComment, ReviewReplyNotification
 from app.services.community_service import add_review_comment, comment_data, direct_inbox, notification_data, review_owner_id
@@ -726,6 +727,8 @@ def checkout(payload: CheckoutRequest, user: CurrentUser, db: DbSession):
             db.add(order)
             db.delete(item)
             created_orders.append((order, product))
+        for order, product in created_orders:
+            notify_order_paid(db, order, product.name)
         for product_id in sorted({product.id for _, product in created_orders}):
             sync_product_after_sale_risk(db, product_id)
             sync_product_inventory(db, product_id)
@@ -774,6 +777,7 @@ def buy_now(payload: BuyNowRequest, user: CurrentUser, db: DbSession):
     )
     try:
         db.add(order)
+        notify_order_paid(db, order, product.name)
         sync_product_after_sale_risk(db, product.id)
         sync_product_inventory(db, product.id)
         db.commit()
@@ -892,6 +896,7 @@ def create_customer_after_sale(
     )
     db.add(record)
     db.flush()
+    resolve_order_paid_notice(db, order.id)
     service_type = {"refund": "退款", "return": "退货退款", "exchange": "换货"}.get(
         record.service_type, "售后"
     )

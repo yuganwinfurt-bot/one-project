@@ -153,6 +153,9 @@ img {
   margin-top: 12px;
 }
 
+.order-paid-popup { cursor: pointer; }
+.order-paid-popup .el-notification__content { white-space: pre-line; overflow-wrap: anywhere; }
+
 .content-card .el-table {
   font-size: 14px;
 }

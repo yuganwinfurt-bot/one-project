@@ -304,8 +304,8 @@ import {
   Service
 } from '@element-plus/icons-vue'
 import router from '@/router'
-import { ElMessage } from 'element-plus'
-import { getStaffMessageCenter } from '@/api/ecommerce'
+import { ElMessage, ElNotification } from 'element-plus'
+import { getStaffMessageCenter, markStaffMessageEventRead } from '@/api/ecommerce'
 import { getCustomerMessages } from '@/api/customer'
 import { sendUserHeartbeat, sendUserLogout } from '@/api/user'
 import { getToken, logout } from '@/utils/auth'
@@ -319,6 +319,11 @@ const customerMessageUnread = ref(0)
 let customerMessageTimer = null
 const staffMessageUnread = ref(0)
 let staffMessageTimer = null
+let staffMessageRefreshing = false
+let orderNoticeBaselineReady = false
+let layoutDisposed = false
+const observedOrderNotices = new Set()
+const orderNoticePopups = new Set()
 const topbarMessageUnread = computed(() =>
   userInfo.value?.role === 'customer' ? customerMessageUnread.value : staffMessageUnread.value
 )
@@ -493,7 +498,9 @@ function handleBrandMenuKeydown(event) {
 }
 
 function openMessageCenter() {
-  router.push(userInfo.value?.role === 'customer' ? '/manager/messages' : '/manager/message-center')
+  router.push(userInfo.value?.role === 'customer'
+    ? '/manager/messages'
+    : { path: '/manager/message-center', query: { tab: 'events' } })
 }
 
 function handleVisibilityChange() {
@@ -594,6 +601,9 @@ onMounted(() => {
 })
 
 onUnmounted(() => {
+  layoutDisposed = true
+  for (const popup of orderNoticePopups) popup.close()
+  orderNoticePopups.clear()
   document.documentElement.classList.remove(LAYOUT_LOCK_CLASS)
   if (customerMessageTimer) {
     clearInterval(customerMessageTimer)
@@ -639,12 +649,52 @@ async function refreshStaffMessageUnread() {
     staffMessageUnread.value = 0
     return
   }
+  if (layoutDisposed || staffMessageRefreshing) return
+  staffMessageRefreshing = true
   try {
     const response = await getStaffMessageCenter()
+    if (layoutDisposed) return
     staffMessageUnread.value = Number(response.data?.unread_count || 0)
+    const orderEvents = (response.data?.events || []).filter(event => event.event_type === 'order_paid')
+    const newOrders = orderEvents.filter(event => !event.is_read && !observedOrderNotices.has(event.id))
+    for (const event of orderEvents) observedOrderNotices.add(event.id)
+    // 首次进入只恢复未读角标；之后只弹出新收到的订单，轮询不重复弹窗。
+    if (orderNoticeBaselineReady && newOrders.length) showNewOrderNotice(newOrders)
+    orderNoticeBaselineReady = true
   } catch {
     // 消息角标不影响其他页面导航。
+  } finally {
+    staffMessageRefreshing = false
   }
+}
+
+function showNewOrderNotice(events) {
+  const single = events.length === 1 ? events[0] : null
+  let popup
+  popup = ElNotification({
+    title: single ? '新订单待发货' : `${events.length} 笔新订单待发货`,
+    message: single ? single.content : '买家已提交新的演示订单，请进入消息中心查看并安排发货。',
+    type: 'success',
+    duration: 8000,
+    customClass: 'order-paid-popup',
+    onClick: () => {
+      popup.close()
+      if (single) void openPaidOrderNotice(single)
+      else router.push({ path: '/manager/message-center', query: { tab: 'events' } })
+    },
+    onClose: () => orderNoticePopups.delete(popup)
+  })
+  orderNoticePopups.add(popup)
+}
+
+async function openPaidOrderNotice(event) {
+  try {
+    await markStaffMessageEventRead(event.id)
+    window.dispatchEvent(new CustomEvent('staff-message-center-updated'))
+  } catch {
+    // 标记暂时失败时仍允许处理订单，提醒会在发货事务内再次置为已读。
+  }
+  if (!layoutDisposed) router.push({ path: '/manager/orders', query: { orderId: String(event.target_id) } })
 }
 
 function handleStaffMessageCenterUpdated(event) {

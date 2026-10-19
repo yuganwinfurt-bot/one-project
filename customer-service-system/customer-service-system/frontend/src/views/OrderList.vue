@@ -177,7 +177,8 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, onUnmounted, reactive, ref } from 'vue'
+import { computed, nextTick, onMounted, onUnmounted, reactive, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
 import { Search } from '@element-plus/icons-vue'
 import { getOrderDetail, listOrders, shipOrder as shipOrderApi } from '@/api/ecommerce'
@@ -185,6 +186,9 @@ import { staffOrderStatusLabel as orderStatusLabel, canShipOrder } from '@/utils
 import { useVisibleRefresh } from '@/utils/visibleRefresh'
 import UserProfileDrawer from '@/components/UserProfileDrawer.vue'
 
+const route = useRoute()
+const router = useRouter()
+let focusRequestId = 0
 const tableHeaderStyle = {
   backgroundColor: '#f8fafc',
   color: '#475569',
@@ -336,9 +340,42 @@ function compareOrders(a, b) {
 }
 
 function handleSearch() {
+  focusRequestId += 1
+  if (route.query.orderId) {
+    const query = { ...route.query }
+    delete query.orderId
+    router.replace({ path: route.path, query })
+  }
   params.page = 1
   load()
 }
+
+async function focusNotificationOrder(value) {
+  const requestId = ++focusRequestId
+  const orderId = Number(value)
+  if (!Number.isSafeInteger(orderId) || orderId <= 0) return load()
+  try {
+    const response = await getOrderDetail(orderId)
+    if (requestId !== focusRequestId) return
+    const order = response.data?.order
+    if (!order?.order_no) throw new Error('订单已不存在，请查看其他订单')
+    params.keywords = order.order_no
+    params.page = 1
+    await load()
+  } catch (error) {
+    if (requestId === focusRequestId) {
+      ElMessage.error(error?.message || '定位订单失败，请搜索订单号')
+      params.keywords = ''
+      params.page = 1
+      void load()
+    }
+  }
+}
+
+watch(() => route.query.orderId, value => {
+  if (value) void focusNotificationOrder(value)
+  else focusRequestId += 1
+})
 
 function handleSortChange({ prop, order }) {
   params.sortBy = order ? prop : ''
@@ -392,6 +429,7 @@ async function shipOrder(row) {
       detail.value.order.tracking_no = row.tracking_no
     }
     ElMessage.success(isBackfill ? '物流单号已补录' : '物流单号已保存，订单已发货')
+    window.dispatchEvent(new CustomEvent('staff-message-center-updated'))
   } catch (error) {
     ElMessage.error(error?.message || '订单发货失败')
   }
@@ -406,12 +444,14 @@ onMounted(() => {
   for (const element of [cardRef.value, toolbarRef.value, footerRef.value]) {
     if (element) layoutObserver.observe(element)
   }
-  void load()
+  if (route.query.orderId) void focusNotificationOrder(route.query.orderId)
+  else void load()
 })
 onUnmounted(() => {
   layoutObserver?.disconnect()
   clearTimeout(resizeTimer)
   orderRequestId += 1
+  focusRequestId += 1
 })
 useVisibleRefresh(() => load(true))
 </script>

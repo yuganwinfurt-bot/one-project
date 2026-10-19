@@ -210,7 +210,7 @@ export function sendAfterSaleMessage(afterSaleId, content) {
   })
 }
 
-/** 后台消息中心：售后私信会话、新售后申请与诊断报告事件 */
+/** 后台消息中心：新订单、售后、私聊与业务事件通知。 */
 export function getStaffMessageCenter() {
   return request({ url: '/api/ecommerce/message-center', method: 'get' })
 }

@@ -3,7 +3,7 @@
     <section class="content-card staff-message-center__heading">
       <div>
         <h1>消息中心</h1>
-        <p>处理用户私聊、售后申请和评论回复通知。</p>
+        <p>查看新订单发货提醒，处理用户私聊、售后申请和评论回复。</p>
       </div>
       <el-button
         v-if="unreadEventCount"
@@ -260,7 +260,12 @@
               <time>{{ activeEvent.create_time || '时间未知' }}</time>
               <p>{{ activeEvent.content }}</p>
               <el-button
-                v-if="activeEvent.event_type === 'review_reply'"
+                v-if="activeEvent.event_type === 'order_paid'"
+                type="primary"
+                @click="openOrder"
+              >查看订单并处理发货</el-button>
+              <el-button
+                v-else-if="activeEvent.event_type === 'review_reply'"
                 type="primary"
                 @click="router.push({ path: `/manager/products/${activeEvent.product_id}`, query: { review_id: activeEvent.review_id } })"
               >查看评论</el-button>
@@ -285,7 +290,7 @@
         <div v-else class="staff-inbox__placeholder">
           <el-icon :size="42"><ChatDotRound /></el-icon>
           <strong>{{ activeTab === 'conversations' ? '选择一个会话开始沟通' : '选择一条通知查看详情' }}</strong>
-          <span>{{ activeTab === 'conversations' ? '售后中心的“沟通”会直接打开对应用户会话。' : '诊断报告和新售后申请会显示在通知列表。' }}</span>
+          <span>{{ activeTab === 'conversations' ? '售后中心的“沟通”会直接打开对应用户会话。' : '新订单待发货、售后申请和风险提醒会显示在通知列表。' }}</span>
         </div>
       </main>
     </section>
@@ -349,7 +354,7 @@
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { Bell, ChatDotRound, Document, Service } from '@element-plus/icons-vue'
+import { Bell, ChatDotRound, Document, Service, Tickets } from '@element-plus/icons-vue'
 import DirectConversationPanel from '@/components/DirectConversationPanel.vue'
 import { readReviewNotification } from '@/api/community'
 import {
@@ -384,7 +389,7 @@ const directConversations = ref([])
 const selectedDirectConversationId = ref(null)
 const activeDirectConversation = computed(() => directConversations.value.find(item => item.conversation_id === selectedDirectConversationId.value))
 const unreadCount = ref(0)
-const activeTab = ref('conversations')
+const activeTab = ref(route.query.tab === 'events' ? 'events' : 'conversations')
 const selectedAfterSaleId = ref(null)
 const selectedEventId = ref(null)
 const chatMessages = ref([])
@@ -432,11 +437,11 @@ function conversationPreview(content = '') {
 }
 
 function eventIcon(type) {
-  return type === 'diagnosis_report' ? Document : type === 'after_sale_request' ? Service : Bell
+  return type === 'order_paid' ? Tickets : type === 'diagnosis_report' ? Document : type === 'after_sale_request' ? Service : Bell
 }
 
 function eventTypeLabel(type) {
-  return type === 'review_reply' ? '评价回复' : type === 'diagnosis_report' ? '诊断报告' : type === 'after_sale_request' ? '售后事件' : type === 'alert' ? '风险预警' : '系统通知'
+  return type === 'order_paid' ? '订单发货提醒' : type === 'review_reply' ? '评价回复' : type === 'diagnosis_report' ? '诊断报告' : type === 'after_sale_request' ? '售后事件' : type === 'alert' ? '风险预警' : '系统通知'
 }
 
 function statusTone(status) {
@@ -766,6 +771,15 @@ function openEventConversation() {
   const afterSaleId = activeEvent.value?.target_id
   if (afterSaleId) selectConversation(afterSaleId)
 }
+
+function openOrder() {
+  const orderId = activeEvent.value?.target_id
+  if (orderId) router.push({ path: '/manager/orders', query: { orderId: String(orderId) } })
+}
+
+watch(() => route.query.tab, tab => {
+  if (tab === 'events' && activeTab.value !== 'events') selectTab('events')
+})
 
 watch(
   () => route.query.afterSaleId,

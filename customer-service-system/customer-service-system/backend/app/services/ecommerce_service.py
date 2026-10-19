@@ -21,6 +21,7 @@ from app.services.after_sale_service import after_sale_flow_data
 from app.services.community_service import notify_review_reply, review_owner_id
 from app.services.after_sale_risk_service import collect_after_sale_risks
 from app.services.inventory_service import sync_product_inventory
+from app.services.staff_inbox_service import resolve_order_paid_notice
 from app.schemas.ecommerce import (
     AlertItem,
     DiagnosisReportItem,
@@ -381,6 +382,7 @@ def ship_order(db: Session, order_id: int, tracking_no: str) -> OrderItem:
     if first_shipment:
         order.status = "shipped"
     order.tracking_no = tracking_no
+    resolve_order_paid_notice(db, order.id)
     if first_shipment and order.buyer_user_id is not None:
         db.add(
             CustomerShipmentMessage(

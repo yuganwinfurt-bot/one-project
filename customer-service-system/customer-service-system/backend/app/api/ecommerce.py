@@ -439,7 +439,7 @@ def list_after_sales(
 
 @router.get("/message-center")
 def get_staff_message_center(_editor: CurrentProductEditor, db: DbSession):
-    """后台消息中心：售后会话与诊断/售后事件通知。"""
+    """后台消息中心：售后会话、新订单和业务事件通知。"""
     event_rows = (
         db.query(StaffInboxEvent)
         .order_by(StaffInboxEvent.create_time.desc(), StaffInboxEvent.id.desc())
