@@ -18,6 +18,7 @@ class Settings(BaseSettings):
     base_url: str | None = None
     server_ollama_url: str = Field(default="http://127.0.0.1:11434", max_length=500)
     rag_web_origin: str = Field(default="http://127.0.0.1:4173", max_length=500)
+    ecommerce_web_origin: str = Field(default="http://127.0.0.1:5173", max_length=500)
     thinking: Literal["auto", "enabled", "disabled"] = "auto"
     workspace: Path = Path("workspace")
     database: Path = Path(".yugan/memory.db")
@@ -58,6 +59,17 @@ class Settings(BaseSettings):
             or rag_origin.fragment
         ):
             raise ValueError("YUGAN_RAG_WEB_ORIGIN 必须是有效的网页源地址")
+        ecommerce_origin = urlsplit(self.ecommerce_web_origin)
+        if (
+            ecommerce_origin.scheme not in {"http", "https"}
+            or not ecommerce_origin.hostname
+            or ecommerce_origin.username
+            or ecommerce_origin.password
+            or ecommerce_origin.path not in {"", "/"}
+            or ecommerce_origin.query
+            or ecommerce_origin.fragment
+        ):
+            raise ValueError("YUGAN_ECOMMERCE_WEB_ORIGIN 必须是有效的网页源地址")
         if self.provider != "mock":
             if not self.model.strip() or self.model == "demo":
                 raise ValueError("请把 YUGAN_MODEL 设置为供应商实际支持的模型 ID")

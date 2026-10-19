@@ -1,0 +1,30 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+.env
+*.log
+
+# Node / frontend
+node_modules/
+dist/
+*.local
+
+# Uploads（忽略用户上传；保留评价样图供教学）
+backend/uploads/*
+!backend/uploads/.gitkeep
+!backend/uploads/review_samples/
+!backend/uploads/review_samples/**
+
+# IDE / OS
+.idea/
+.vscode/
+*.suo
+*.sw?
+.DS_Store
+Thumbs.db
+
+# Chroma / local vector data (后续章节)
+backend/data/chroma/

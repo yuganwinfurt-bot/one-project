@@ -17,6 +17,7 @@
 - 管理员登录配置保存在两个后端的 `.env`；Agent 与 RAG 使用相同账号、密码哈希和签名密钥时共享登录状态。
 - 上传文件、SQLite 数据和 Chroma 索引保存在 RAG 后端的 `backend/storage/`。部署到服务器后，这些资料由服务器存储和检索。
 - Agent 控制台可按项目或手动选择知识库，通过本机只读接口 `/api/integrations/agent/retrieve` 获取相关片段；该接口只检索，不生成回答或修改资料。
+- 电商分析平台会把商品描述和买家评价同步到独立知识库“电商商品与评价”；电商语义检索和 Agent 问答共用这份索引。同步接口仅接受本机请求，并校验 `ECOM_RAG_SYNC_TOKEN`。
 - RAG 回答直接使用 Agent 当前浏览器中启用的模型；在 Agent 模型设置保存后，从 RAG 左下角连接模型。模型配置和 API Key 保存在用户浏览器的 `localStorage`，浏览器直接请求模型服务，RAG/Agent 后端不接收或保存 API Key。
 
 ### PDF 分片和图片说明
@@ -80,6 +81,7 @@ Copy-Item "D:\one project\rag-assistant\backend\.env.example" "D:\one project\ra
 - `OLLAMA_EMBED_MODEL`：默认 `bge-m3`
 - `RAG_TOP_K`：每个知识库的候选片段数，默认 4
 - `RAG_MIN_RELEVANCE`：最低相关度，默认 0.25；这是初始值，应运行下面的评测再按资料调整
+- `ECOM_RAG_SYNC_TOKEN`：电商后端与本机 RAG 共享的同步密钥，必须与电商 `.env` 中的 `RAG_SYNC_TOKEN` 一致
 - `MAX_UPLOAD_MB`：单文件最大大小，默认 30 MB
 - `backend/storage/assistant.sqlite3`：项目、知识库、对话、消息记录
 - `backend/storage/uploads/`：导入的原始文档

@@ -1,11 +1,14 @@
 import asyncio
+import csv
 import hashlib
+import io
 import json
 import logging
 import os
 import re
 import secrets
 from contextlib import asynccontextmanager
+from contextvars import ContextVar
 from pathlib import Path
 from uuid import uuid4
 
@@ -29,6 +32,7 @@ from .rag.graph import create_rag_graph
 from .rag.pipeline import (
     ALLOWED_EXTENSIONS,
     delete_knowledge_base_collection,
+    get_vector_store,
     index_file,
     read_document_chunks,
     remove_document_vectors,
@@ -38,6 +42,7 @@ from .schemas import (
     AgentRetrieveRequest,
     ChatCreate,
     ChatUpdate,
+    EcommerceSyncRequest,
     KnowledgeBaseCreate,
     MessageCreate,
     ProjectCreate,
@@ -45,6 +50,12 @@ from .schemas import (
 )
 
 MAX_UPLOAD_BYTES = MAX_UPLOAD_MB * 1024 * 1024
+ECOMMERCE_KB_ID = "ecommerce-analysis-platform"
+ECOMMERCE_KB_NAME = "电商分析平台"
+ECOMMERCE_PROJECT_ID = "ecommerce-platform"
+ECOMMERCE_EXPORT_FILENAME = "电商分析平台_后台业务快照.csv"
+_private_access = ContextVar("rag_private_access", default=False)
+_ecommerce_sync_lock = asyncio.Lock()
 logger = logging.getLogger(__name__)
 
 auth_manager = AuthManager(
@@ -98,6 +109,7 @@ async def authenticate_and_limit_guests(request: Request, call_next):
     role = auth_manager.role(request)
     request.state.role = role
     request.state.subject = auth_manager.subject(request)
+    _private_access.set(role == "admin")
     origin = request.headers.get("origin")
     if origin and origin != str(request.base_url).rstrip("/"):
         if origin.rstrip("/") not in WEB_ORIGINS:
@@ -129,9 +141,16 @@ async def authenticate_and_limit_guests(request: Request, call_next):
             and request.client is not None
             and request.client.host in {"127.0.0.1", "::1"}
         )
+        local_ecommerce_sync = (
+            request.method == "POST"
+            and path == "/api/integrations/agent/sync-ecommerce"
+            and request.client is not None
+            and request.client.host in {"127.0.0.1", "::1"}
+        )
         if not (
             guest_chat_create or guest_chat_update or guest_chat_delete
-            or guest_chat_retrieve or guest_chat_answer or guest_chat_stream or local_agent_retrieve
+            or guest_chat_retrieve or guest_chat_answer or guest_chat_stream
+            or local_agent_retrieve or local_ecommerce_sync
         ):
             return JSONResponse({"detail": "游客不能修改知识库、项目或模型设置"}, status_code=403)
     return await call_next(request)
@@ -180,17 +199,19 @@ def auth_logout(request: Request):
     return response
 
 
-def ensure_knowledge_bases_exist(knowledge_base_ids: list[str]):
+def ensure_knowledge_bases_exist(knowledge_base_ids: list[str], *, allow_private=False):
     ids = list(dict.fromkeys(knowledge_base_ids))
     if not ids:
         return ids
     placeholders = ",".join("?" for _ in ids)
     with connect() as db:
-        count = db.execute(
-            f"SELECT COUNT(*) FROM knowledge_bases WHERE id IN ({placeholders})", ids
-        ).fetchone()[0]
-    if count != len(ids):
+        rows = db.execute(
+            f"SELECT id, access_level FROM knowledge_bases WHERE id IN ({placeholders})", ids
+        ).fetchall()
+    if len(rows) != len(ids):
         raise HTTPException(status_code=404, detail="选择的知识库不存在或已被删除")
+    if not (allow_private or _private_access.get()) and any(row["access_level"] == "staff" for row in rows):
+        raise HTTPException(status_code=403, detail="该知识库包含后台业务资料，请登录管理员后查看")
     return ids
 
 
@@ -227,9 +248,13 @@ def effective_knowledge_bases(db, chat):
             "SELECT knowledge_base_id FROM project_knowledge_bases WHERE project_id = ? ORDER BY rowid",
             (chat["project_id"],),
         ).fetchall()
-        return [row["knowledge_base_id"] for row in rows]
-    existing = {row["id"] for row in db.execute("SELECT id FROM knowledge_bases")}
-    return [value for value in parse_json(chat["knowledge_base_ids"]) if value in existing]
+        ids = [row["knowledge_base_id"] for row in rows]
+    else:
+        ids = parse_json(chat["knowledge_base_ids"])
+    existing = {row["id"] for row in db.execute(
+        "SELECT id FROM knowledge_bases WHERE access_level != 'staff' OR ?", (int(_private_access.get()),)
+    )}
+    return [value for value in ids if value in existing]
 
 
 def chat_dict(db, chat):
@@ -263,7 +288,7 @@ async def public_answer(payload: PublicQuestion, x_bridge_token: str = Header(de
     with connect() as db:
         placeholders = ",".join("?" for _ in kb_ids)
         rows = db.execute(
-            f"SELECT id, name FROM knowledge_bases WHERE id IN ({placeholders})", kb_ids
+            f"SELECT id, name FROM knowledge_bases WHERE id IN ({placeholders}) AND access_level != 'staff'", kb_ids
         ).fetchall()
     names = {row["id"]: row["name"] for row in rows}
     if len(names) != len(set(kb_ids)):
@@ -286,28 +311,177 @@ async def retrieve_for_agent(payload: AgentRetrieveRequest, request: Request):
     """Return read-only evidence from selected local knowledge bases, without Ollama chat."""
     if not request.client or request.client.host not in {"127.0.0.1", "::1"}:
         raise HTTPException(status_code=403, detail="此检索接口仅允许本机 Agent 调用")
-    kb_ids = ensure_knowledge_bases_exist(payload.knowledge_base_ids)
+    token = os.getenv("ECOM_RAG_SYNC_TOKEN", "").strip()
+    trusted = bool(token and secrets.compare_digest(request.headers.get("x-integration-key", ""), token))
+    requested_ids = payload.knowledge_base_ids
+    if payload.knowledge_base_name:
+        with connect() as db:
+            row = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (payload.knowledge_base_name,)).fetchone()
+        if not row:
+            raise HTTPException(status_code=404, detail="电商分析平台知识库尚未创建，请先同步后台数据")
+        requested_ids = [row["id"]]
+    kb_ids = ensure_knowledge_bases_exist(requested_ids, allow_private=trusted)
     with connect() as db:
         placeholders = ",".join("?" for _ in kb_ids)
         rows = db.execute(
             f"SELECT id, name FROM knowledge_bases WHERE id IN ({placeholders})", kb_ids
         ).fetchall()
     names = {row["id"]: row["name"] for row in rows}
-    matches = await asyncio.to_thread(retrieve_contexts, payload.query, kb_ids, names)
+    matches = await asyncio.to_thread(
+        retrieve_contexts,
+        payload.query,
+        kb_ids,
+        names,
+        payload.top_k,
+        payload.product_ids,
+        payload.doc_types,
+    )
+    collection_size = sum(
+        get_vector_store(knowledge_base_id)._collection.count()
+        for knowledge_base_id in kb_ids
+    )
     return JSONResponse(
         {"matches": [
             {
-                "content": item.get("content", "")[:1000],
+                "content": item.get("content", "")[:3000],
                 "filename": item.get("filename", "资料")[:160],
                 "page": item.get("page"),
                 "knowledge_base_id": item.get("knowledge_base_id", ""),
                 "knowledge_base_name": item.get("knowledge_base_name", "知识库")[:80],
                 "score": round(float(item.get("score", 0)), 3),
+                "chunk_id": item.get("chunk_id"),
+                "metadata": {
+                    key: item.get("metadata", {}).get(key)
+                    for key in ("record_id", "doc_type", "source_table", "source_id", "product_id", "review_id", "rating", "name", "category", "has_image", "chunk_index")
+                    if item.get("metadata", {}).get(key) is not None
+                },
             }
-            for item in matches[:8]
-        ]},
+            for item in matches[:payload.top_k]
+        ], "collection_size": collection_size},
         headers={"Cache-Control": "no-store"},
     )
+
+
+@app.post("/api/integrations/agent/sync-ecommerce", include_in_schema=False)
+async def sync_ecommerce_knowledge(payload: EcommerceSyncRequest, request: Request):
+    """Replace the managed e-commerce CSV in the local RAG library; loopback + shared token only."""
+    if not request.client or request.client.host not in {"127.0.0.1", "::1"}:
+        raise HTTPException(status_code=403, detail="此同步接口仅允许本机 Agent 调用")
+    expected_token = os.getenv("ECOM_RAG_SYNC_TOKEN", "").strip()
+    supplied_token = request.headers.get("x-integration-key", "")
+    if not expected_token:
+        raise HTTPException(status_code=503, detail="未配置电商 RAG 同步密钥")
+    if not secrets.compare_digest(supplied_token, expected_token):
+        raise HTTPException(status_code=403, detail="电商 RAG 同步密钥无效")
+
+    async with _ecommerce_sync_lock:
+        return await _sync_ecommerce_records(payload)
+
+
+async def _sync_ecommerce_records(payload: EcommerceSyncRequest):
+    with connect() as db:
+        existing = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (ECOMMERCE_KB_NAME,)).fetchone()
+        kb_id = existing["id"] if existing else ECOMMERCE_KB_ID
+        if not existing and db.execute("SELECT id FROM knowledge_bases WHERE id = ?", (kb_id,)).fetchone():
+            kb_id = new_id()
+
+    ids = [record.record_id for record in payload.records]
+    if len(ids) != len(set(ids)):
+        raise HTTPException(status_code=422, detail="同步记录包含重复编号")
+
+    output = io.StringIO(newline="")
+    fieldnames = ["record_id", "doc_type", "source_table", "source_id", "product_id", "review_id", "rating", "name", "category", "has_image", "content"]
+    writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
+    writer.writeheader()
+    for record in payload.records:
+        writer.writerow(record.model_dump())
+    content = output.getvalue().encode("utf-8")
+    if len(content) > MAX_UPLOAD_BYTES:
+        raise HTTPException(status_code=413, detail=f"电商资料超过 {MAX_UPLOAD_MB} MB 限制")
+
+    with connect() as db:
+        previous = db.execute("SELECT * FROM documents WHERE knowledge_base_id = ? AND filename = ?", (kb_id, ECOMMERCE_EXPORT_FILENAME)).fetchall()
+        if len(previous) == 1 and Path(previous[0]["stored_path"]).is_file() and Path(previous[0]["stored_path"]).read_bytes() == content:
+            db.execute("UPDATE knowledge_bases SET access_level = 'public' WHERE id = ?", (kb_id,))
+            return {"knowledge_base_id": kb_id, "knowledge_base_name": ECOMMERCE_KB_NAME,
+                    "record_count": len(payload.records), "chunk_count": previous[0]["chunk_count"],
+                    "collection_size": get_vector_store(kb_id)._collection.count(), "unchanged": True, "cleanup_warning": False}
+
+    document_id = uuid4().hex
+    target_dir = UPLOAD_DIR / kb_id
+    target_dir.mkdir(parents=True, exist_ok=True)
+    stored_path = target_dir / f"{document_id}.csv"
+    stored_path.write_bytes(content)
+    vector_ids: list[str] = []
+    try:
+        chunk_count, vector_ids = await asyncio.to_thread(
+            index_file,
+            kb_id,
+            document_id,
+            stored_path,
+            ECOMMERCE_EXPORT_FILENAME,
+        )
+        with connect() as db:
+            old_docs = db.execute(
+                "SELECT id, stored_path, vector_ids FROM documents WHERE knowledge_base_id = ? AND filename = ?",
+                (kb_id, ECOMMERCE_EXPORT_FILENAME),
+            ).fetchall()
+            stamp = now_iso()
+            db.execute(
+                "INSERT OR IGNORE INTO knowledge_bases (id, name, description, created_at, access_level) VALUES (?, ?, ?, ?, 'public')",
+                (kb_id, ECOMMERCE_KB_NAME, "电商后台完整业务快照及功能规则，已排除凭证并脱敏个人信息", stamp),
+            )
+            db.execute("UPDATE knowledge_bases SET access_level = 'public' WHERE id = ?", (kb_id,))
+            db.execute(
+                "INSERT OR IGNORE INTO projects (id, name, created_at) VALUES (?, ?, ?)",
+                (ECOMMERCE_PROJECT_ID, "电商分析平台", stamp),
+            )
+            db.execute(
+                "INSERT OR IGNORE INTO project_knowledge_bases (project_id, knowledge_base_id) VALUES (?, ?)",
+                (ECOMMERCE_PROJECT_ID, kb_id),
+            )
+            # 旧商品评价库保留，项目改用新的完整业务库，避免重复检索同一批商品评价。
+            db.execute("DELETE FROM project_knowledge_bases WHERE project_id = ? AND knowledge_base_id IN (SELECT id FROM knowledge_bases WHERE id = 'ecommerce-platform' AND name = '电商商品与评价') AND knowledge_base_id != ?", (ECOMMERCE_PROJECT_ID, kb_id))
+            db.execute(
+                "INSERT INTO documents (id, knowledge_base_id, filename, stored_path, chunk_count, vector_ids, uploaded_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                (document_id, kb_id, ECOMMERCE_EXPORT_FILENAME, str(stored_path), chunk_count, json.dumps(vector_ids), stamp),
+            )
+            for old_doc in old_docs:
+                db.execute("DELETE FROM documents WHERE id = ?", (old_doc["id"],))
+    except Exception as exc:
+        try:
+            if vector_ids:
+                await asyncio.to_thread(remove_document_vectors, kb_id, vector_ids)
+            stored_path.unlink(missing_ok=True)
+        except Exception:
+            logger.exception("清理失败的电商 RAG 同步文件时发生错误")
+        if isinstance(exc, HTTPException):
+            raise
+        logger.exception("电商资料同步到 RAG 失败")
+        raise HTTPException(status_code=503, detail="电商资料索引失败，请检查 RAG 的 bge-m3 服务") from exc
+
+    cleanup_warning = False
+    for old_doc in old_docs:
+        try:
+            await asyncio.to_thread(
+                remove_document_vectors,
+                kb_id,
+                parse_json(old_doc["vector_ids"]),
+            )
+            Path(old_doc["stored_path"]).unlink(missing_ok=True)
+        except Exception:
+            cleanup_warning = True
+            logger.exception("清理旧电商 RAG 分片失败：%s", old_doc["id"])
+
+    return {
+        "knowledge_base_id": kb_id,
+        "knowledge_base_name": ECOMMERCE_KB_NAME,
+        "project_name": "电商分析平台",
+        "record_count": len(payload.records),
+        "chunk_count": chunk_count,
+        "collection_size": get_vector_store(kb_id)._collection.count(),
+        "cleanup_warning": cleanup_warning,
+    }
 
 
 @app.get("/api/status")
@@ -432,8 +606,9 @@ def list_knowledge_bases():
             """
             SELECT kb.*, COUNT(d.id) AS document_count
             FROM knowledge_bases kb LEFT JOIN documents d ON d.knowledge_base_id = kb.id
+            WHERE kb.access_level != 'staff' OR ?
             GROUP BY kb.id ORDER BY kb.created_at
-            """
+            """, (int(_private_access.get()),)
         ).fetchall()
         return [dict(row) for row in rows]
 
@@ -478,6 +653,7 @@ def delete_knowledge_base(knowledge_base_id: str):
 
 @app.get("/api/knowledge-bases/{knowledge_base_id}/documents")
 def list_documents(knowledge_base_id: str):
+    ensure_knowledge_bases_exist([knowledge_base_id])
     with connect() as db:
         kb = db.execute("SELECT id FROM knowledge_bases WHERE id = ?", (knowledge_base_id,)).fetchone()
         if not kb:
@@ -544,6 +720,7 @@ async def upload_documents(knowledge_base_id: str, files: list[UploadFile] = Fil
 def list_chunks(knowledge_base_id: str, document_id: str,
                 offset: int = Query(default=0, ge=0),
                 limit: int = Query(default=20, ge=1, le=100)):
+    ensure_knowledge_bases_exist([knowledge_base_id])
     with connect() as db:
         document = db.execute(
             "SELECT * FROM documents WHERE id = ? AND knowledge_base_id = ?",

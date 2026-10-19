@@ -1,5 +1,7 @@
 // 在这里添加项目。首页卡片、入口列表和项目数量会自动更新。
 // publicUrl 留空表示只在本机展示入口；不要把管理后台直接填为公网地址。
+const projectOrder = { 'ecom-analysis': 0, agent: 1, rag: 2 }
+
 export const projects = [
   {
     id: 'agent',
@@ -55,4 +57,29 @@ export const projects = [
     publicUrl: '',
     action: '进入 RAG 页面',
   },
-]
+  {
+    id: 'ecom-analysis',
+    name: '电商分析平台',
+    shortName: '电商分析平台',
+    mark: 'E',
+    category: '电商智能分析',
+    introLabel: 'ECOMMERCE · DATA ANALYSIS',
+    introTitle: '让商品与订单数据，',
+    introAccent: '变成可追问的洞察。',
+    intro: '围绕商品、订单和评价发起自然语言分析；系统结合业务数据查询、语义检索与工作流编排，整理诊断结果。',
+    tags: ['自然语言分析', '语义检索', '工作流编排'],
+    features: [
+      { name: '自然语言数据分析', detail: '围绕商品、订单和评价提问，查询业务数据并生成分析结果。' },
+      { name: 'Agent 工作流', detail: '使用 LangGraph 编排分析步骤，并通过 MCP 工具访问已注册的数据能力。' },
+      { name: '商品与评价语义检索', detail: '使用 Chroma 向量库检索商品信息和评价内容，为分析补充相关文本依据。' },
+      { name: '经营数据管理', detail: '提供商品、订单、评价、运行记录和诊断报告等管理页面。' },
+    ],
+    note: '在线演示支持浏览商品、订单与售后管理，以及基于业务数据的自然语言分析。模型可在 Agent 页面配置。',
+    description: '围绕商品、订单和评价进行自然语言分析，结合数据查询与语义检索整理经营诊断。',
+    caption: '商品 · 订单 · 评价分析',
+    tone: 'paper',
+    localUrl: 'http://127.0.0.1:5173/',
+    publicUrl: '/ecommerce/',
+    action: '进入电商分析平台',
+  },
+].sort((left, right) => (projectOrder[left.id] ?? 99) - (projectOrder[right.id] ?? 99))

@@ -82,6 +82,14 @@ def initialize_database():
             """
         )
         # 老会话保留已选范围；新会话默认每轮跟随项目关联的知识库。
+        kb_columns = {row["name"] for row in db.execute("PRAGMA table_info(knowledge_bases)")}
+        if "access_level" not in kb_columns:
+            db.execute("ALTER TABLE knowledge_bases ADD COLUMN access_level TEXT NOT NULL DEFAULT 'public'")
+        # 电商演示库公开读取；凭证排除和个人信息脱敏由同步导出层处理。
+        db.execute(
+            "UPDATE knowledge_bases SET access_level = 'public' WHERE name = ?",
+            ("电商分析平台",),
+        )
         chat_columns = {row["name"] for row in db.execute("PRAGMA table_info(chats)")}
         if "scope_mode" not in chat_columns:
             db.execute("ALTER TABLE chats ADD COLUMN scope_mode TEXT NOT NULL DEFAULT 'custom'")

@@ -39,3 +39,6 @@
 
 # Agent 运行时生成的游客文件
 /yugan-agent/workspace/guest-files/
+
+# 本机打包的上线资源与数据库导出，不提交到源码仓库。
+/release-output/

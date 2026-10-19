@@ -7,15 +7,29 @@
   const brandToggle = $('brand-switcher-toggle');
   const brandMenu = $('brand-switcher-menu');
   const ragLink = $('brand-rag-link');
+  const ecommerceLink = $('brand-ecom-link');
+  const loginRequested = new URLSearchParams(window.location.search).get('auth') === 'login';
+  if (loginRequested) {
+    const cleanUrl = new URL(window.location.href);
+    cleanUrl.searchParams.delete('auth');
+    history.replaceState(history.state, '', `${cleanUrl.pathname}${cleanUrl.search}${cleanUrl.hash}`);
+  }
   const localHost = ['127.0.0.1', 'localhost', '[::1]'].includes(window.location.hostname);
   if (localHost) {
     const ragUrl = new URL('/', window.location.href);
     ragUrl.port = '4173';
     ragLink.href = ragUrl.href;
+    const ecommerceUrl = new URL('/', window.location.href);
+    ecommerceUrl.port = '5173';
+    ecommerceLink.href = ecommerceUrl.href;
   } else {
     ragLink.href = '/rag/';
     ragLink.removeAttribute('aria-disabled');
     ragLink.removeAttribute('title');
+    ecommerceLink.removeAttribute('href');
+    ecommerceLink.setAttribute('aria-disabled', 'true');
+    ecommerceLink.classList.add('is-disabled');
+    ecommerceLink.title = '仅本机演示';
   }
   const closeBrandMenu = () => {
     brandMenu.hidden = true;
@@ -105,7 +119,7 @@
     $('workspace-page-create').hidden = false;
     const identityControl = $('auth-control');
     identityControl.disabled = auth.loading;
-    identityControl.textContent = auth.loading ? '正在读取身份…' : !auth.available ? '身份状态未知 · 重试' : `当前身份：${auth.role === 'admin' ? '管理员' : '游客'} · ${auth.role === 'admin' ? '退出' : '登录'}`;
+    identityControl.textContent = auth.loading ? '正在读取身份…' : !auth.available ? '身份状态未知 · 重试' : `${auth.role === 'admin' ? '服务器管理员' : '游客'} · ${auth.role === 'admin' ? '退出' : '登录'}`;
     identityControl.classList.toggle('identity-admin', auth.role === 'admin' && auth.available);
     identityControl.classList.toggle('identity-unavailable', !auth.available && !auth.loading);
     $('workflow-guest-note').hidden = auth.role === 'admin';
@@ -832,6 +846,8 @@
     if (view === 'workspaces') loadWorkspace().then(renderWorkspaceOverview).catch((error) => toast(error.message));
   };
   document.querySelectorAll('.nav[data-view]').forEach((n) => n.addEventListener('click', () => show(n.dataset.view)));
+  const requestedView = new URLSearchParams(window.location.search).get('view');
+  if (requestedView === 'settings') show('settings');
   $('workspace-page-create').addEventListener('click', () => $('create-workspace').click());
   $('refresh-workspaces').addEventListener('click', async () => {
     try {
@@ -2084,6 +2100,7 @@
   const init = async () => {
     try {
       await refreshAuth();
+      if (loginRequested && auth.role !== 'admin') $('auth-control').click();
       loadBrowserToolPreferences();
       const status = await api('/api/status');
       auth.tokenRequired = Boolean(status.token_required);

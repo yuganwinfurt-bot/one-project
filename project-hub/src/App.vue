@@ -111,8 +111,8 @@ onMounted(() => {
 onBeforeUnmount(() => window.removeEventListener('focus', refreshAuthOnFocus))
 
 function projectHref(project) {
-  const isRag = project.id === 'rag' || project.id === 'rag-assistant' || /rag|知识库/i.test(`${project.name || ''} ${project.shortName || ''} ${project.caption || ''}`)
-  const isAgent = project.id === 'agent' || project.id === 'yugan-agent' || /agent|智能体/i.test(`${project.name || ''} ${project.shortName || ''} ${project.caption || ''}`)
+  const isRag = project.id === 'rag' || project.id === 'rag-assistant'
+  const isAgent = project.id === 'agent' || project.id === 'yugan-agent'
   const address = localPreview ? project.localUrl || project.publicUrl : isRag ? '/rag/' : isAgent ? '/agent/' : project.publicUrl
   if (!address) return ''
   try {
@@ -144,7 +144,7 @@ function cardTone(project, index) {
       </nav>
       <div class="identity-control">
         <button class="identity-control-button" :class="{ 'identity-admin': role === 'admin', 'identity-unavailable': !authAvailable && !authLoading }" type="button" :disabled="authLoading" aria-live="polite" @click="handleIdentityClick">
-          {{ authLoading ? '正在读取身份…' : !authAvailable ? '身份状态未知 · 重试' : `当前身份：${role === 'admin' ? '管理员' : '游客'} · ${role === 'admin' ? '退出' : '登录'}` }}
+          {{ authLoading ? '正在读取身份…' : !authAvailable ? '身份状态未知 · 重试' : `${role === 'admin' ? '服务器管理员' : '游客'} · ${role === 'admin' ? '退出' : '登录'}` }}
         </button>
       </div>
     </header>
@@ -154,12 +154,12 @@ function cardTone(project, index) {
         <div class="hero-copy">
           <div class="eyebrow"><span class="live-dot"></span> {{ projects.length }} PROJECTS · ONE ENTRY</div>
           <h1 id="hero-title">智能应用实践，<br /><em>面向真实场景。</em></h1>
-          <p class="hero-lead">围绕智能体任务执行与知识库问答，构建可本地运行的应用系统，涵盖模型接入、工具编排、文档检索与来源追踪。</p>
+          <p class="hero-lead">围绕智能体任务执行、知识库问答与电商数据分析，构建可本地运行的应用系统，涵盖模型接入、工具编排、文档检索与业务洞察。</p>
           <div class="hero-note"><span>PROJECT INDEX</span><span>{{ String(projects.length).padStart(2, '0') }} / PROJECTS</span><span>ONE / HOME</span></div>
         </div>
         <div id="open" class="hero-art" aria-label="项目入口">
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
-          <div class="art-heading"><span>PROJECT LAB / INDEX</span><b>{{ String(projects.length).padStart(2, '0') }}</b></div>
+          <div class="art-heading"><span>PROJECT LAB / INDEX</span><b>{{ projects.length }} 个项目</b></div>
           <div class="art-project-list">
             <component :is="projectHref(project) ? 'a' : 'div'" v-for="(project, index) in projects.slice(0, 3)" :key="project.id" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
               <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
@@ -174,7 +174,7 @@ function cardTone(project, index) {
       </section>
 
       <section id="projects" class="projects section-wrap" aria-labelledby="projects-title">
-        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">项目概览与核心能力</h2></div><p>展示两个项目的建设目标、核心模块与技术实践，呈现从模型接入到应用落地的实现路径。</p></div>
+        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">项目概览与核心能力</h2></div><p>展示各项目的建设目标、核心模块与技术实践，呈现从数据检索到智能应用落地的实现路径。</p></div>
         <div class="project-overviews">
           <article v-for="project in projects" :id="project.id" :key="project.id" class="project-overview" :class="`overview-${project.id}`">
             <div class="overview-hero">

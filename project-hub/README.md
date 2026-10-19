@@ -1,6 +1,6 @@
-# 个人练习 · Agent × RAG 项目实验室
+# 个人练习 · 电商分析 × Agent × RAG 项目实验室
 
-Vue 3 首页是两个现有项目的导航页。在本机打开 <http://127.0.0.1:8030/> 后，点击首页右侧的 Agent 或 RAG 卡片，分别进入原页面 <http://127.0.0.1:8020/> 和 <http://127.0.0.1:4173/>。下方分别介绍两个项目的用途和功能。页头显示当前游客/管理员身份，并提供管理员登录；身份请求由首页后端转发到本机 Agent，浏览器不直接访问 Agent API。公网首页不提供指向访客本机 `127.0.0.1` 的操作链接，也不公开 Agent 的管理接口。
+Vue 3 首页展示电商数据分析、Agent 和 RAG 项目。在本机打开 <http://127.0.0.1:8030/> 后，电商分析入口进入 <http://127.0.0.1:5173/>，Agent 和 RAG 入口分别进入 <http://127.0.0.1:8020/> 和 <http://127.0.0.1:4173/>。页头显示当前游客/管理员身份，并提供管理员登录；身份请求由首页后端转发到本机 Agent，浏览器不直接访问 Agent API。公网首页不提供指向访客本机 `127.0.0.1` 的操作链接，也不公开 Agent 的管理接口。
 
 ## 增加新项目
 
@@ -42,7 +42,7 @@ Vue 3 首页是两个现有项目的导航页。在本机打开 <http://127.0.0.
 & 'D:\one project\yugan-agent\.venv\Scripts\python.exe' 'D:\one project\start_local_projects.py'
 ```
 
-脚本依次检查 Ollama、RAG 后端 `127.0.0.1:8000`、RAG 原页面 `127.0.0.1:4173`、yugan-agent 控制台 `127.0.0.1:8020` 和主页网关 `127.0.0.1:8030`；已经运行的服务会跳过。浏览器会打开 <http://127.0.0.1:8030/>。日志保存在 `data/local-launcher/`，不会提交到仓库。
+脚本依次检查 Ollama、RAG 后端 `127.0.0.1:8000`、RAG 页面 `127.0.0.1:4173`、yugan-agent 控制台 `127.0.0.1:8020`、电商分析后端 `127.0.0.1:8001`、电商分析前端 `127.0.0.1:5173` 和主页网关 `127.0.0.1:8030`；已经运行的服务会跳过。电商源码会先在 `D:\one project\customer-service-system` 下查找（含其子目录），找不到时使用桌面上的源码目录。浏览器会打开 <http://127.0.0.1:8030/>。日志保存在 `data/local-launcher/`，不会提交到仓库。
 
 停止由这个脚本启动的进程：
 
@@ -67,6 +67,8 @@ npm run build
 首次安装首页前端依赖：在 `project-hub` 目录运行 `npm install`。若双击启动时提示缺少 RAG 的 `vite.js`，在 `D:\one project\rag-assistant\frontend` 目录再运行一次 `npm install`。本机因为 npm 镜像 DNS 暂不可用，当前首页 `node_modules` 使用已有 Vue 项目的依赖复制来完成构建；部署到服务器时重新执行 `npm install`。
 
 ## Linux 部署包
+
+电商平台接入现有服务器的步骤见 [电商平台上线操作单](ECOMMERCE_DEPLOYMENT.md)，包含源码提交、页面和图片打包、MySQL 迁移及 `/ecommerce/` 路由配置。
 
 本地已生成 `project-hub-release.zip`，包含构建后的 Vue 项目页、静态页面网关及 [Nginx](deploy/nginx.example.conf)、[systemd](deploy/project-hub.service.example) 模板。公开部署前，在项目首页服务环境中设置 `PROJECT_HUB_AGENT_API_URL=http://127.0.0.1:8020`，并在服务器本机启动 Agent；首页只代理身份状态、登录和退出，其他 Agent/RAG API 仍不对公网开放。Agent 与 RAG 的管理员签名配置必须一致。当前 4 GB 云服务器已运行 Hermes Agent，先用 [只读检查脚本](deploy/inspect-server.sh)核对已有站点和端口，再人工核对证书路径，避免覆盖原应用。部署细节见 [上线核对单](DEPLOYMENT.md)。
 

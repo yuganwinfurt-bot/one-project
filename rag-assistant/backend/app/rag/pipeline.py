@@ -1,5 +1,6 @@
 import logging
 import math
+import re
 import time
 from pathlib import Path
 from uuid import uuid4
@@ -11,6 +12,7 @@ from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 from ..config import OLLAMA_BASE_URL, OLLAMA_CLIENT_KWARGS, OLLAMA_EMBED_MODEL, RAG_MIN_RELEVANCE, RAG_TOP_K, VECTOR_DIR
+from ..schemas import ECOMMERCE_DOC_TYPES
 
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md", ".csv"}
 logger = logging.getLogger(__name__)
@@ -140,6 +142,24 @@ def load_file(path: Path, original_filename: str):
         document.metadata["source"] = original_filename
         if isinstance(document.metadata.get("page"), int):
             document.metadata["page"] += 1
+        if extension == ".csv":
+            csv_fields = {}
+            for key in ("record_id", "doc_type", "source_table", "source_id", "product_id", "review_id", "rating", "name", "category", "has_image"):
+                match = re.search(rf"(?m)^{re.escape(key)}:[ \t]*([^\r\n]*)$", document.page_content)
+                if match:
+                    csv_fields[key] = match.group(1).strip()
+            if csv_fields.get("doc_type") in ECOMMERCE_DOC_TYPES:
+                for key in ("record_id", "doc_type", "source_table", "source_id", "name", "category"):
+                    if csv_fields.get(key):
+                        document.metadata[key] = csv_fields[key]
+                for key in ("product_id", "review_id", "rating"):
+                    try:
+                        if csv_fields.get(key):
+                            document.metadata[key] = int(csv_fields[key])
+                    except ValueError:
+                        pass
+                if "has_image" in csv_fields:
+                    document.metadata["has_image"] = csv_fields["has_image"].lower() in {"true", "1", "yes"}
     return documents
 
 
@@ -222,15 +242,30 @@ def read_document_chunks(knowledge_base_id: str, document_id: str, filename: str
     return items
 
 
-def retrieve_contexts(question: str, knowledge_base_ids: list[str], names_by_id: dict[str, str]):
+def retrieve_contexts(
+    question: str,
+    knowledge_base_ids: list[str],
+    names_by_id: dict[str, str],
+    top_k: int | None = None,
+    product_ids: list[int] | None = None,
+    doc_types: list[str] | None = None,
+):
     matches = []
+    per_base_limit = top_k or RAG_TOP_K
+    filters = []
+    if product_ids:
+        filters.append({"product_id": {"$in": product_ids}})
+    if doc_types:
+        filters.append({"doc_type": {"$in": doc_types}})
+    metadata_filter = {"$and": filters} if len(filters) > 1 else (filters[0] if filters else None)
     for knowledge_base_id in knowledge_base_ids:
         store = get_vector_store(knowledge_base_id)
         if not store.get(limit=1, include=["metadatas"])["ids"]:
             continue
         results = store.similarity_search_with_relevance_scores(
             question,
-            k=RAG_TOP_K,
+            k=per_base_limit,
+            filter=metadata_filter,
         )
         for document, score in results:
             if not math.isfinite(score) or score < RAG_MIN_RELEVANCE:
@@ -243,6 +278,7 @@ def retrieve_contexts(question: str, knowledge_base_ids: list[str], names_by_id:
                     "page": metadata.get("page"),
                     "knowledge_base_id": knowledge_base_id,
                     "knowledge_base_name": names_by_id.get(knowledge_base_id, "知识库"),
+                    "metadata": metadata,
                     "chunk_id": metadata.get("chunk_id"),
                     "chunk_index": metadata.get("chunk_index"),
                     "score": float(score),
@@ -250,4 +286,4 @@ def retrieve_contexts(question: str, knowledge_base_ids: list[str], names_by_id:
             )
 
     matches.sort(key=lambda item: item["score"], reverse=True)
-    return matches[: RAG_TOP_K * 2]
+    return matches[: (per_base_limit if top_k is not None else RAG_TOP_K * 2)]

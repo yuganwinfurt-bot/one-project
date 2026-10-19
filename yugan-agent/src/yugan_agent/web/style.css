@@ -129,6 +129,11 @@ footer code{font:inherit;color:#8eb9d8;overflow-wrap:anywhere}
 @media(max-width:700px){#view-settings #model-form .model-field{grid-template-columns:1fr;gap:7px}}
 .model-effort-ticks{display:flex;justify-content:space-between;color:#a8bdd6;font-size:10px}
 #model-effort-hint{margin:0;color:#8fa8c5;font-size:10px;line-height:1.5}
+#view-settings .settings-hero{display:grid;grid-template-columns:minmax(0,1fr) minmax(360px,.85fr);align-items:center;gap:28px;min-height:138px;margin:0 0 24px}
+#view-settings .settings-hero-copy{min-width:0}
+#view-settings .settings-hero .vision-model-picker{align-content:center;min-height:118px;margin:0;padding:14px 16px}
+#view-settings .settings-hero .vision-model-picker label{font-size:14px}
+#view-settings .settings-hero .vision-model-picker select{min-height:46px;font-size:15px}
 .settings-layout{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(320px,.85fr);align-items:stretch;gap:16px;min-height:0}
 #view-settings .settings-card{min-width:0;gap:9px;padding:18px}
 #view-settings .settings-card input{padding:9px 11px;font-size:12px}
@@ -148,6 +153,7 @@ footer code{font:inherit;color:#8eb9d8;overflow-wrap:anywhere}
 .saved-model-empty{color:#9db2ce;font-size:12px}
 @media(min-width:861px){#view-settings .settings-layout{flex:1 1 auto;min-height:0}#view-settings .settings-card{align-content:start;overflow-y:auto}}
 @media(max-width:1100px){.settings-layout{grid-template-columns:1fr}}
+@media(max-width:860px){#view-settings .settings-hero{grid-template-columns:1fr;gap:16px;min-height:0;margin-bottom:16px}#view-settings .settings-hero .vision-model-picker{min-height:0}}
 @media(max-width:860px){.model-controls{order:2;margin-left:auto}.composer-foot #send{order:3;margin-left:0}.saved-model-list{max-height:320px}}
 
 .workspace-list-section{display:flex;flex:0 0 auto;flex-direction:column;gap:5px;margin-top:17px;max-height:205px;min-height:0}

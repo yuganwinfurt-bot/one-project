@@ -251,6 +251,8 @@ button:focus-visible, input:focus-visible, textarea:focus-visible, select:focus-
 .delete-chat-confirm:hover { background: #a95463; }
 .delete-chat-confirm:disabled { cursor: wait; opacity: .65; }
 .delete-project-modal { width: min(470px, 100%); }
+.delete-kb-modal { width: min(490px, 100%); }
+.delete-kb-description { overflow-wrap: anywhere; }
 .delete-project-description { overflow-wrap: anywhere; }
 .delete-project-description strong { color: #102237; font-weight: 650; }
 .delete-project-retained { display: flex; align-items: center; gap: 7px; margin: -3px 0 16px; color: #39856e; font-size: 11px; line-height: 1.6; }

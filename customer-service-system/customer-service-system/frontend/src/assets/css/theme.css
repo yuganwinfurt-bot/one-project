@@ -1,0 +1,74 @@
+:root {
+  color-scheme: light;
+  --app-primary: #147c69;
+  --app-primary-light: #1a9c81;
+  --app-primary-dark: #102237;
+  --app-sidebar-bg: #e4ece8;
+  --app-sidebar-hover: #f3f8f5;
+  --app-sidebar-active: #ffffff;
+  --app-bg: #f8f9f6;
+  --app-card-bg: #ffffff;
+  --app-text: #102237;
+  --app-text-secondary: #687984;
+  --app-border: #dbe4e1;
+  --app-radius: 16px;
+  --app-radius-sm: 12px;
+  --app-shadow: 0 6px 20px rgba(16, 34, 55, 0.06);
+  --app-shadow-md: 0 14px 40px rgba(16, 34, 55, 0.12);
+  /* 以 8pt 为间距基准，页面边距 20，卡片内边距与间距 16。 */
+  --app-space-page: 20px;
+  --app-space-card: 16px;
+  --app-space-gap: 16px;
+  --el-color-primary: #102237;
+  --el-color-primary-light-3: #1d4255;
+  --el-color-primary-light-5: #537a77;
+  --el-color-primary-light-7: #a8cfc1;
+  --el-color-primary-light-8: #cce4d9;
+  --el-color-primary-light-9: #e9f1ed;
+  --el-color-primary-dark-2: #0b1b2b;
+  --el-text-color-primary: #102237;
+  --el-text-color-regular: #30475b;
+  --el-text-color-secondary: #687984;
+  --el-text-color-placeholder: #8a9ca2;
+  --el-border-color: #dbe4e1;
+  --el-border-color-light: #e4ebe7;
+  --el-border-color-lighter: #edf2ef;
+  --el-fill-color-light: #f3f8f5;
+  --el-fill-color-lighter: #f8f9f6;
+  --el-fill-color-extra-light: #fbfcf9;
+  --el-bg-color: #ffffff;
+  --el-bg-color-page: #f8f9f6;
+  --el-box-shadow-light: 0 12px 32px rgba(16, 34, 55, 0.12);
+  --el-table-header-bg-color: #f3f8f5;
+  --el-table-border-color: #e2eae6;
+  --el-table-row-hover-bg-color: #f8fcf9;
+  --el-table-current-row-bg-color: #e9f1ed;
+  --el-border-radius-base: 8px;
+}
+
+body {
+  background: var(--app-bg);
+  color: var(--app-text);
+  font-family: 'DM Sans', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+}
+
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(26, 156, 129, 0.34);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #cceee2;
+  color: #102237;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}

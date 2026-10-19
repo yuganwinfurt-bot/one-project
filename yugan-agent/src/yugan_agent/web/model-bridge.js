@@ -11,21 +11,34 @@
       return window.location.protocol === 'https:' && target.protocol === 'https:' && target.hostname === window.location.hostname && !target.port;
     } catch { return false; }
   };
+  const validWebOrigin = (origin) => {
+    try {
+      const target = new URL(origin);
+      return ['http:', 'https:'].includes(target.protocol) && target.origin === origin;
+    } catch { return false; }
+  };
   let handlingRequest = false;
   window.addEventListener('message', async (event) => {
     const requestType = event.data?.type;
     const trustedSender = event.source === window.opener || (window.parent !== window && event.source === window.parent);
-    if (handlingRequest || !trustedSender || !trustedOrigin(event.origin)
+    if (handlingRequest || !trustedSender || !validWebOrigin(event.origin)
       || !['yugan-request-active-model', 'yugan-request-model-profiles'].includes(requestType)
       || event.data?.nonce !== nonce) return;
     handlingRequest = true;
     try {
       const auth = await fetch(agentApi('api/auth/status'), { credentials: 'same-origin', cache: 'no-store' }).then((response) => response.json());
+      const configuredOrigins = new Set(Array.isArray(auth.trusted_origins) ? auth.trusted_origins : []);
+      if (event.origin !== window.location.origin && !trustedOrigin(event.origin) && !configuredOrigins.has(event.origin)) {
+        throw new Error('此网页来源未获准访问 Agent 模型配置');
+      }
       const stored = JSON.parse(localStorage.getItem(`yugan-model-profiles:${auth.subject}`) || '{}');
       if (requestType === 'yugan-request-active-model') {
         const profile = (stored.models || []).find((item) => item.id === stored.active_id);
         if (!profile) throw new Error('Agent 尚未选择模型');
-        event.source.postMessage({ type: 'yugan-active-model', nonce, profile }, event.origin);
+        const activeProfile = profile.mode === 'server'
+          ? { ...profile, api_token: sessionStorage.getItem('yugan-api-token') || '' }
+          : profile;
+        event.source.postMessage({ type: 'yugan-active-model', nonce, profile: activeProfile }, event.origin);
       } else {
         const profiles = (Array.isArray(stored.models) ? stored.models : [])
           .filter((item) => item && item.id && item.model && item.endpoint)

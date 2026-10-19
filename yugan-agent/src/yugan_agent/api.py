@@ -217,16 +217,18 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
             await agent.close()
 
     app = FastAPI(title="yugan-agent", version=__version__, lifespan=lifespan)
-    trusted_rag_origins = {settings.rag_web_origin.rstrip("/")}
-    rag_origin = settings.rag_web_origin.rstrip("/")
-    if rag_origin.startswith("http://127.0.0.1:"):
-        trusted_rag_origins.add(rag_origin.replace("127.0.0.1", "localhost", 1))
-    elif rag_origin.startswith("http://localhost:"):
-        trusted_rag_origins.add(rag_origin.replace("localhost", "127.0.0.1", 1))
-    app.state.trusted_rag_origins = trusted_rag_origins
+    trusted_web_origins = set()
+    for configured_origin in (settings.rag_web_origin, settings.ecommerce_web_origin):
+        origin = configured_origin.rstrip("/")
+        trusted_web_origins.add(origin)
+        if origin.startswith("http://127.0.0.1:"):
+            trusted_web_origins.add(origin.replace("127.0.0.1", "localhost", 1))
+        elif origin.startswith("http://localhost:"):
+            trusted_web_origins.add(origin.replace("localhost", "127.0.0.1", 1))
+    app.state.trusted_web_origins = trusted_web_origins
     app.add_middleware(
         CORSMiddleware,
-        allow_origins=sorted(trusted_rag_origins),
+        allow_origins=sorted(trusted_web_origins),
         allow_credentials=True,
         allow_methods=["GET", "POST", "OPTIONS"],
         allow_headers=["Content-Type", "Authorization"],
@@ -240,6 +242,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
             guest_token, subject = auth_manager.issue_guest_session()
             response = JSONResponse({
                 "role": "guest", "subject": subject, "login_configured": auth_manager.configured,
+                "trusted_origins": sorted(trusted_web_origins),
             })
             auth_manager.set_cookie(response, request, guest_token)
             return response
@@ -247,6 +250,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
             "role": role,
             "subject": "admin" if role == "admin" else subject,
             "login_configured": auth_manager.configured,
+            "trusted_origins": sorted(trusted_web_origins),
         })
         return response
 
@@ -334,7 +338,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
                 raise HTTPException(401, "需要正确的 Bearer 令牌")
         # 阻止其他网站通过浏览器向本机 API 发起跨源调用。
         origin = request.headers.get("origin")
-        if origin and origin not in {str(request.base_url).rstrip("/"), *trusted_rag_origins}:
+        if origin and origin not in {str(request.base_url).rstrip("/"), *trusted_web_origins}:
             raise HTTPException(403, "不接受跨源请求")
         request.state.role = auth_manager.role(request)
         request.state.subject = auth_manager.subject(request)
@@ -668,7 +672,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
         # This endpoint never accepts a client API key. Require the page's own origin
         # before forwarding a model request to the operator-configured Ollama service.
         origin = request.headers.get("origin")
-        if origin not in {str(request.base_url).rstrip("/"), *trusted_rag_origins}:
+        if origin not in {str(request.base_url).rstrip("/"), *trusted_web_origins}:
             raise HTTPException(403, "只能由当前 Agent 页面调用服务器模型")
         endpoint = settings.server_ollama_url.rstrip("/")
         try:

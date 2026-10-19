@@ -29,6 +29,11 @@ if (localProjectHost) projectHomeUrl.port = "8030";
 const agentUrl = new URL(import.meta.env.VITE_AGENT_URL || (localProjectHost ? "/" : "/agent/"), window.location.href);
 if (localProjectHost && !import.meta.env.VITE_AGENT_URL) agentUrl.port = "8020";
 if (!agentUrl.pathname.endsWith("/")) agentUrl.pathname += "/";
+const ecommerceEnvUrl = import.meta.env.VITE_ECOM_URL;
+const ecommerceAvailable = localProjectHost || Boolean(ecommerceEnvUrl);
+const ecommerceUrl = new URL(ecommerceEnvUrl || "/", window.location.href);
+if (localProjectHost && !ecommerceEnvUrl) ecommerceUrl.port = "5173";
+if (ecommerceEnvUrl && !ecommerceUrl.pathname.endsWith("/")) ecommerceUrl.pathname += "/";
 
 async function requestBrowserModel(profile, messages) {
   if (profile.mode === "server") {
@@ -132,6 +137,8 @@ function renderApp() {
   const [deleteChatSaving, setDeleteChatSaving] = useState(false);
   const [deleteProjectTarget, setDeleteProjectTarget] = useState(null);
   const [deleteProjectSaving, setDeleteProjectSaving] = useState(false);
+  const [deleteKbTarget, setDeleteKbTarget] = useState(null);
+  const [deleteKbSaving, setDeleteKbSaving] = useState(false);
   const [renameTarget, setRenameTarget] = useState(null);
   const [renameValue, setRenameValue] = useState("");
   const [renameSaving, setRenameSaving] = useState(false);
@@ -268,8 +275,11 @@ function renderApp() {
       const savedProfiles = JSON.parse(localStorage.getItem(`yugan-rag-browser-models:${subject}`) || "[]");
       const selectedProfile = JSON.parse(localStorage.getItem(`yugan-rag-browser-model:${subject}`) || "null");
       const serverApiToken = sessionStorage.getItem(`yugan-rag-server-token:${subject}`) || "";
-      const profiles = Array.isArray(savedProfiles) ? savedProfiles.filter((profile) => profile?.id && profile?.model && profile?.endpoint).map((profile) => profile.mode === "server" ? { ...profile, api_token: serverApiToken } : profile) : [];
-      const selected = selectedProfile?.mode === "server" ? { ...selectedProfile, api_token: serverApiToken } : selectedProfile;
+      const restoreProfile = (profile) => profile?.mode === "server"
+        ? { ...profile, name: `服务器模型 · ${profile.model}`, vendor: "服务器模型", api_token: serverApiToken }
+        : profile;
+      const profiles = Array.isArray(savedProfiles) ? savedProfiles.filter((profile) => profile?.id && profile?.model && profile?.endpoint).map(restoreProfile) : [];
+      const selected = restoreProfile(selectedProfile);
       setAgentModelProfiles(profiles);
       setBrowserModel(selected?.id && selected?.model ? selected : null);
       setSelectedAgentModelId(selected?.id || profiles[0]?.id || "");
@@ -1036,7 +1046,14 @@ function renderApp() {
 
   async function removeKnowledgeBase(kb) {
     if (auth?.role !== "admin") { notify("游客不能删除知识库。"); return; }
-    if (!window.confirm(`删除知识库“${kb.name}”及其中的所有文件和索引？`)) return;
+    if (uploading || busy || deleteKbSaving) return;
+    setDeleteKbTarget(kb);
+  }
+
+  async function confirmRemoveKnowledgeBase() {
+    if (!deleteKbTarget || deleteKbSaving || uploading || busy) return;
+    const kb = deleteKbTarget;
+    setDeleteKbSaving(true);
     try {
       await request(`/api/knowledge-bases/${kb.id}`, { method: "DELETE" });
       const next = await refreshKnowledgeBases();
@@ -1044,8 +1061,10 @@ function renderApp() {
       setChats((items) => items.map((chat) => ({ ...chat, knowledge_base_ids: (chat.knowledge_base_ids || []).filter((id) => id !== kb.id) })));
       setSelectedKbIds((ids) => ids.filter((id) => id !== kb.id));
       setActiveKbId(next[0]?.id || "");
+      setDeleteKbTarget(null);
       notify("知识库已删除");
     } catch (error) { notify(error.message); }
+    finally { setDeleteKbSaving(false); }
   }
 
   return (
@@ -1063,6 +1082,9 @@ function renderApp() {
             <button ref={brandToggleRef} className="brand-logo brand-switcher-toggle" type="button" aria-label="打开项目菜单" aria-expanded={brandMenuOpen} aria-controls="brand-switcher-menu" onClick={() => setBrandMenuOpen((value) => !value)}><Menu size={20} /></button>
             <nav id="brand-switcher-menu" className="brand-switcher-menu" aria-label="项目入口" hidden={!brandMenuOpen}>
               <span className="brand-switcher-heading">项目入口</span>
+              {ecommerceAvailable
+                ? <a className="brand-switcher-link" href={ecommerceUrl.href}>电商分析平台 <span aria-hidden="true">→</span></a>
+                : <span className="brand-switcher-link is-disabled" aria-disabled="true" title="仅本机演示">电商分析平台 <small>仅本机演示</small></span>}
               <a className="brand-switcher-link" href={agentUrl.href}>Agent 控制台 <span aria-hidden="true">→</span></a>
               <span className="brand-switcher-current">RAG 知识库 <small>当前页面</small></span>
               <a className="brand-switcher-link" href={projectHomeUrl.href}>项目主页 <span aria-hidden="true">→</span></a>
@@ -1109,7 +1131,7 @@ function renderApp() {
           </div>
           <div className="topbar-actions">
             <button type="button" className={`identity-control-button ${auth?.role === "admin" ? "identity-admin" : ""} ${!authAvailable && !authLoading ? "identity-unavailable" : ""}`} aria-live="polite" disabled={authLoading || identityBusy} onClick={handleIdentityClick}>
-              {authLoading ? "正在读取身份…" : !authAvailable ? "身份状态未知 · 重试" : `当前身份：${auth?.role === "admin" ? "管理员" : "游客"} · ${auth?.role === "admin" ? "退出" : "登录"}`}
+              {authLoading ? "正在读取身份…" : !authAvailable ? "身份状态未知 · 重试" : `${auth?.role === "admin" ? "服务器管理员" : "游客"} · ${auth?.role === "admin" ? "退出" : "登录"}`}
             </button>
             <div className="scope-wrap" ref={scopeRef}>
               <button className={`scope-button ${scopeOpen ? "is-open" : ""}`} onClick={() => setScopeOpen((value) => !value)}>
@@ -1194,7 +1216,7 @@ function renderApp() {
                 <div className="kb-detail-head"><div><p className="eyebrow">KNOWLEDGE BASE</p><h3>{activeKb.name}</h3><p>{activeKb.description || "把同一主题的资料放在这里，项目可以组合多个知识库。"}</p></div>{auth?.role === "admin" && <button className="danger-quiet" disabled={uploading || busy} onClick={() => removeKnowledgeBase(activeKb)} title="删除知识库"><Trash2 size={16} /></button>}</div>
                 {auth?.role === "admin" ? <button type="button" className="upload-zone" disabled={uploading} onClick={() => fileRef.current?.click()} onDrop={(event) => handleDrop(event, activeKbId)}>
                   <span className="upload-icon">{uploading ? <span className="spinner" /> : <Upload size={20} />}</span><b>{uploading ? "正在读取并建立索引…" : "添加资料文件"}</b><small>点击选择或拖入 PDF、DOCX、TXT、MD、CSV · 单个文件 ≤ 30 MB</small>
-                </button> : <p className="answer-model-note">游客模式仅开放知识库检索；文件、分片与知识库由管理员维护。</p>}
+                </button> : <p className="answer-model-note">游客可查看公开知识库的资料、分片并进行检索；资料修改由管理员维护。</p>}
                 <div className="document-list-head"><b>已导入资料</b><span>{documents.length} 份</span></div>
                 <div className="document-list">
                   {documentsLoading && <div className="loading-state"><span className="spinner" />正在读取资料列表…</div>}
@@ -1306,6 +1328,20 @@ function renderApp() {
           <p id="delete-project-description" className="delete-chat-description delete-project-description">确定删除 <strong>“{deleteProjectTarget.name}”</strong> 吗？项目及其中的全部对话、消息记录将无法恢复。</p>
           <p className="delete-project-retained"><ShieldCheck size={15} />关联的知识库、资料与索引会保留。</p>
           <footer className="delete-chat-modal-actions"><button type="button" autoFocus className="quiet-button" disabled={deleteProjectSaving} onClick={() => setDeleteProjectTarget(null)}>取消</button><button type="submit" className="delete-chat-confirm" disabled={deleteProjectSaving}>{deleteProjectSaving ? "正在删除…" : "删除项目"}</button></footer>
+        </form>
+      </div>}
+
+      {deleteKbTarget && <div className="modal-backdrop delete-chat-backdrop" onMousedown={(event) => { if (event.target === event.currentTarget && !deleteKbSaving) setDeleteKbTarget(null); }}>
+        <form className="delete-chat-modal delete-kb-modal" role="dialog" aria-modal="true" aria-labelledby="delete-kb-title" aria-describedby="delete-kb-description" onSubmit={(event) => { event.preventDefault(); void confirmRemoveKnowledgeBase(); }} onKeydown={(event) => { if (event.key === "Escape" && !deleteKbSaving) { event.preventDefault(); setDeleteKbTarget(null); } }}>
+          <header className="delete-chat-modal-head">
+            <span className="delete-chat-modal-icon"><Trash2 size={18} /></span>
+            <div><span className="delete-chat-eyebrow">知识库管理</span><h2 id="delete-kb-title">删除知识库？</h2></div>
+            <button type="button" className="icon-button" aria-label="关闭" disabled={deleteKbSaving} onClick={() => setDeleteKbTarget(null)}><X size={18} /></button>
+          </header>
+          <p id="delete-kb-description" className="delete-chat-description delete-kb-description">确定删除这个知识库吗？其中的资料文件、文本分片和向量索引都会一并删除；已关联的对话将不再使用它。</p>
+          <div className="delete-chat-preview"><span><BookOpen size={16} /></span><div><small>将删除的知识库 · {deleteKbTarget.document_count || 0} 份文件</small><strong title={deleteKbTarget.name}>{deleteKbTarget.name}</strong></div></div>
+          <div className="delete-chat-warning"><span className="delete-chat-warning-dot" />此操作无法撤销</div>
+          <footer className="delete-chat-modal-actions"><button type="button" autoFocus className="quiet-button" disabled={deleteKbSaving} onClick={() => setDeleteKbTarget(null)}>取消</button><button type="submit" className="delete-chat-confirm" disabled={deleteKbSaving || uploading || busy}>{deleteKbSaving ? "正在删除…" : "删除知识库"}</button></footer>
         </form>
       </div>}
 
