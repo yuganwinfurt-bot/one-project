@@ -47,6 +47,7 @@
         <p v-if="syncActive" class="semantic__sub">
           {{ syncJob.record_count }} 条业务记录 ·
           {{ syncJob.total_chunks ? `已完成 ${syncJob.processed_chunks} / ${syncJob.total_chunks} 个分片` : '正在整理资料' }}。
+          <template v-if="syncJob.total_chunks">已复用 {{ syncJob.reused_chunks || 0 }} 个分片，本次新计算 {{ syncJob.embedded_chunks || 0 }} 个向量。</template>
           同步在服务器后台进行，离开或刷新页面后仍可回来查看进度。
         </p>
         <el-alert v-if="syncJob.error" :title="syncJob.error" type="error" :closable="false" show-icon />
@@ -57,6 +58,10 @@
     <div v-if="syncResult" class="content-card semantic__sync-summary">
       <strong>已同步 {{ syncResult.record_count }} 条业务记录 · {{ syncResult.chunk_count }} 个检索分片</strong>
       <p>{{ syncResult.privacy_note }}</p>
+      <template v-if="syncResult.incremental">
+        <p>本次新增 {{ syncResult.added_records || 0 }} 条 · 更新 {{ syncResult.updated_records || 0 }} 条 · 删除 {{ syncResult.deleted_records || 0 }} 条 · 未变化 {{ syncResult.unchanged_records || 0 }} 条。</p>
+        <p>复用 {{ syncResult.reused_chunks || 0 }} 个分片，仅新计算 {{ syncResult.embedded_chunks || 0 }} 个向量。</p>
+      </template>
       <p v-if="syncResult.unchanged">数据与上次一致，已沿用现有索引。</p>
       <p v-if="syncResult.cleanup_warning">新索引已保存，部分旧分片清理失败，请管理员查看 RAG 日志。</p>
       <div class="semantic__examples"><el-tag v-for="(count, type) in syncResult.by_type" :key="type" size="small" effect="plain">{{ documentType(type) }} {{ count }}</el-tag></div>
@@ -66,7 +71,7 @@
       <div class="panel-head">
         <span class="panel-title">检索结果</span>
         <span class="panel-sub">
-          命中 {{ result.hit_count }} 条 · 向量库共 {{ result.collection_size }} 条文档
+          命中 {{ result.hit_count }} 条 · 向量库共 {{ result.collection_size }} 个分片
         </span>
       </div>
       <ul v-if="result.hits?.length" class="hit-list">
@@ -143,7 +148,7 @@ const syncError = ref('')
 const syncActive = computed(() => ['queued', 'running'].includes(syncJob.value?.status))
 const syncLoading = computed(() => syncSubmitting.value || syncActive.value || syncChecking.value)
 const syncStageLabel = computed(() => ({
-  queued: '同步任务已排队', preparing: '正在准备同步', indexing: '正在建立检索索引',
+  queued: '同步任务已排队', preparing: '正在比对上次快照', indexing: '正在计算变化数据的向量', writing: '正在保存检索索引',
   done: '同步完成', failed: '同步失败，可重新同步', interrupted: '上次同步已中断，可重新同步'
 })[syncJob.value?.stage] || '暂时无法读取同步进度')
 const syncPercent = computed(() => {

@@ -41,7 +41,7 @@ def get_job(job_id=None):
 
 
 def update_job(job_id, *, only_running=False, **values):
-    allowed = {"status", "stage", "processed_chunks", "total_chunks", "result", "error"}
+    allowed = {"status", "stage", "processed_chunks", "total_chunks", "result", "error", "reused_chunks", "embedded_chunks"}
     if not values or not set(values) <= allowed:
         raise ValueError("Invalid job update")
     if "result" in values:
@@ -81,13 +81,16 @@ async def _run(job_id, runner, lock):
         async with lock:
             update_job(job_id, status="running", stage="preparing")
 
-            def progress(done, total):
-                update_job(job_id, only_running=True, stage="indexing", processed_chunks=done, total_chunks=total)
+            def progress(done, total, *, reused_chunks=0, embedded_chunks=0, stage="indexing"):
+                update_job(job_id, only_running=True, stage=stage, processed_chunks=done, total_chunks=total,
+                           reused_chunks=reused_chunks, embedded_chunks=embedded_chunks)
 
             result = await runner(progress)
             count = int(result.get("chunk_count") or 0)
             update_job(job_id, status="succeeded", stage="done", result=result,
-                       processed_chunks=count, total_chunks=count)
+                       processed_chunks=count, total_chunks=count,
+                       reused_chunks=int(result.get("reused_chunks") or 0),
+                       embedded_chunks=int(result.get("embedded_chunks") or 0))
     except asyncio.CancelledError:
         update_job(job_id, status="interrupted", stage="interrupted",
                    error="RAG 服务停止，上次同步中断，请重新同步。")

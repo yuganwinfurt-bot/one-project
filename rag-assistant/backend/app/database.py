@@ -88,11 +88,26 @@ def initialize_database():
                 created_at TEXT NOT NULL,
                 updated_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS embedding_cache (
+                model_key TEXT NOT NULL,
+                text_hash TEXT NOT NULL,
+                dimensions INTEGER NOT NULL,
+                embedding BLOB NOT NULL,
+                created_at TEXT NOT NULL,
+                PRIMARY KEY (model_key, text_hash)
+            );
             CREATE INDEX IF NOT EXISTS idx_chats_project_updated ON chats(project_id, updated_at DESC);
             CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id, id);
             CREATE INDEX IF NOT EXISTS idx_documents_knowledge_base ON documents(knowledge_base_id, uploaded_at DESC);
             """
         )
+        document_columns = {row["name"] for row in db.execute("PRAGMA table_info(documents)")}
+        if "embedding_profile" not in document_columns:
+            db.execute("ALTER TABLE documents ADD COLUMN embedding_profile TEXT NOT NULL DEFAULT ''")
+        job_columns = {row["name"] for row in db.execute("PRAGMA table_info(ecommerce_sync_jobs)")}
+        for column in ("reused_chunks", "embedded_chunks"):
+            if column not in job_columns:
+                db.execute(f"ALTER TABLE ecommerce_sync_jobs ADD COLUMN {column} INTEGER NOT NULL DEFAULT 0")
         # 老会话保留已选范围；新会话默认每轮跟随项目关联的知识库。
         kb_columns = {row["name"] for row in db.execute("PRAGMA table_info(knowledge_bases)")}
         if "access_level" not in kb_columns:

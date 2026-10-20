@@ -31,6 +31,7 @@ from . import ecommerce_sync_jobs
 from .auth import AuthManager
 from .model_settings import AnswerModelSettings, load_settings, save_settings, validate_settings
 from .rag.graph import create_rag_graph
+from .rag.ecommerce_index import embedding_profile, index_ecommerce_snapshot, snapshot_changes
 from .rag.pipeline import (
     ALLOWED_EXTENSIONS,
     delete_knowledge_base_collection,
@@ -389,15 +390,6 @@ async def start_ecommerce_sync(payload: EcommerceSyncRequest, request: Request):
     require_ecommerce_integration(request)
 
     async def run(progress):
-        # 此处只检查向量模型。浏览器选择的聊天 API 不参与资料向量化。
-        try:
-            response = await app.state.ollama_status_client.get(f"{OLLAMA_BASE_URL}/api/tags")
-            response.raise_for_status()
-            names = [item.get("name", "") for item in response.json().get("models", [])]
-        except (httpx.HTTPError, ValueError) as exc:
-            raise HTTPException(status_code=503, detail="无法连接服务器的 Ollama 向量服务，请检查 ollama 服务状态。") from exc
-        if not any(name == OLLAMA_EMBED_MODEL or name.startswith(OLLAMA_EMBED_MODEL + ":") for name in names):
-            raise HTTPException(status_code=503, detail=f"服务器尚未安装向量模型 {OLLAMA_EMBED_MODEL}，请先用 ollama pull 下载。")
         result = await _sync_ecommerce_records(payload, progress)
         result["by_type"] = dict(Counter(record.doc_type for record in payload.records))
         result["privacy_note"] = "不包含登录账号、密码、密码摘要、令牌、密钥；姓名、联系方式及详细收货地址已脱敏。"
@@ -422,7 +414,24 @@ def ecommerce_sync_status(job_id: str, request: Request):
     return JSONResponse(job, headers={"Cache-Control": "no-store"})
 
 
+async def ecommerce_embedding_profile():
+    try:
+        response = await app.state.ollama_status_client.get(f"{OLLAMA_BASE_URL}/api/tags")
+        response.raise_for_status()
+        models = response.json().get("models", [])
+    except (httpx.HTTPError, ValueError) as exc:
+        raise HTTPException(status_code=503, detail="无法连接服务器的 Ollama 向量服务，请检查 ollama 服务状态。") from exc
+    expected = OLLAMA_EMBED_MODEL if ":" in OLLAMA_EMBED_MODEL else OLLAMA_EMBED_MODEL + ":latest"
+    for item in models:
+        name = item.get("name", "")
+        normalized = name if ":" in name else name + ":latest"
+        if normalized == expected:
+            return embedding_profile(name, item.get("digest", ""))
+    raise HTTPException(status_code=503, detail=f"服务器尚未安装向量模型 {OLLAMA_EMBED_MODEL}，请先用 ollama pull 下载。")
+
+
 async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
+    model_key = await ecommerce_embedding_profile()
     with connect() as db:
         existing = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (ECOMMERCE_KB_NAME,)).fetchone()
         kb_id = existing["id"] if existing else ECOMMERCE_KB_ID
@@ -437,7 +446,7 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
     fieldnames = ["record_id", "doc_type", "source_table", "source_id", "product_id", "review_id", "rating", "name", "category", "has_image", "content"]
     writer = csv.DictWriter(output, fieldnames=fieldnames, lineterminator="\n")
     writer.writeheader()
-    for record in payload.records:
+    for record in sorted(payload.records, key=lambda item: item.record_id):
         writer.writerow(record.model_dump())
     content = output.getvalue().encode("utf-8")
     if len(content) > MAX_UPLOAD_BYTES:
@@ -445,11 +454,19 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
 
     with connect() as db:
         previous = db.execute("SELECT * FROM documents WHERE knowledge_base_id = ? AND filename = ?", (kb_id, ECOMMERCE_EXPORT_FILENAME)).fetchall()
-        if len(previous) == 1 and Path(previous[0]["stored_path"]).is_file() and Path(previous[0]["stored_path"]).read_bytes() == content:
+        if any(row["embedding_profile"] and row["embedding_profile"] != model_key for row in previous):
+            raise HTTPException(status_code=409, detail="向量模型或版本已变更，不能复用旧索引；请使用独立知识库重建新模型索引。")
+        legacy = any(not row["embedding_profile"] for row in previous)
+        if legacy and OLLAMA_EMBED_MODEL not in {"bge-m3", "bge-m3:latest"}:
+            raise HTTPException(status_code=409, detail="旧快照未记录向量模型，不能自动迁移到新模型；请使用独立知识库重建。")
+        snapshot_same = len(previous) == 1 and Path(previous[0]["stored_path"]).is_file() and Path(previous[0]["stored_path"]).read_bytes() == content
+        if snapshot_same and not legacy:
             db.execute("UPDATE knowledge_bases SET access_level = 'public' WHERE id = ?", (kb_id,))
             return {"knowledge_base_id": kb_id, "knowledge_base_name": ECOMMERCE_KB_NAME,
                     "record_count": len(payload.records), "chunk_count": previous[0]["chunk_count"],
-                    "collection_size": get_vector_store(kb_id)._collection.count(), "unchanged": True, "cleanup_warning": False}
+                    "collection_size": get_vector_store(kb_id)._collection.count(), "unchanged": True, "cleanup_warning": False,
+                    "incremental": True, "embedded_chunks": 0, "reused_chunks": previous[0]["chunk_count"],
+                    "added_records": 0, "updated_records": 0, "deleted_records": 0, "unchanged_records": len(payload.records)}
 
     document_id = uuid4().hex
     target_dir = UPLOAD_DIR / kb_id
@@ -458,12 +475,17 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
     stored_path.write_bytes(content)
     vector_ids: list[str] = []
     try:
-        chunk_count, vector_ids = await asyncio.to_thread(
-            index_file,
+        changes = await asyncio.to_thread(snapshot_changes, stored_path, [Path(row["stored_path"]) for row in previous])
+        previous_ids = list(dict.fromkeys(value for row in previous for value in parse_json(row["vector_ids"])))
+        chunk_count, vector_ids, index_stats = await asyncio.to_thread(
+            index_ecommerce_snapshot,
             kb_id,
             document_id,
             stored_path,
             ECOMMERCE_EXPORT_FILENAME,
+            previous_ids,
+            model_key,
+            legacy,
             progress,
         )
         with connect() as db:
@@ -488,8 +510,8 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
             # 旧商品评价库保留，项目改用新的完整业务库，避免重复检索同一批商品评价。
             db.execute("DELETE FROM project_knowledge_bases WHERE project_id = ? AND knowledge_base_id IN (SELECT id FROM knowledge_bases WHERE id = 'ecommerce-platform' AND name = '电商商品与评价') AND knowledge_base_id != ?", (ECOMMERCE_PROJECT_ID, kb_id))
             db.execute(
-                "INSERT INTO documents (id, knowledge_base_id, filename, stored_path, chunk_count, vector_ids, uploaded_at) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (document_id, kb_id, ECOMMERCE_EXPORT_FILENAME, str(stored_path), chunk_count, json.dumps(vector_ids), stamp),
+                "INSERT INTO documents (id, knowledge_base_id, filename, stored_path, chunk_count, vector_ids, uploaded_at, embedding_profile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+                (document_id, kb_id, ECOMMERCE_EXPORT_FILENAME, str(stored_path), chunk_count, json.dumps(vector_ids), stamp, model_key),
             )
             for old_doc in old_docs:
                 db.execute("DELETE FROM documents WHERE id = ?", (old_doc["id"],))
@@ -526,6 +548,9 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
         "chunk_count": chunk_count,
         "collection_size": get_vector_store(kb_id)._collection.count(),
         "cleanup_warning": cleanup_warning,
+        "unchanged": snapshot_same,
+        **changes,
+        **index_stats,
     }
 
 
