@@ -76,6 +76,18 @@ def initialize_database():
                 vector_ids TEXT NOT NULL DEFAULT '[]',
                 uploaded_at TEXT NOT NULL
             );
+            CREATE TABLE IF NOT EXISTS ecommerce_sync_jobs (
+                id TEXT PRIMARY KEY,
+                status TEXT NOT NULL,
+                stage TEXT NOT NULL,
+                record_count INTEGER NOT NULL,
+                processed_chunks INTEGER NOT NULL DEFAULT 0,
+                total_chunks INTEGER NOT NULL DEFAULT 0,
+                result TEXT NOT NULL DEFAULT '{}',
+                error TEXT NOT NULL DEFAULT '',
+                created_at TEXT NOT NULL,
+                updated_at TEXT NOT NULL
+            );
             CREATE INDEX IF NOT EXISTS idx_chats_project_updated ON chats(project_id, updated_at DESC);
             CREATE INDEX IF NOT EXISTS idx_messages_chat_id ON messages(chat_id, id);
             CREATE INDEX IF NOT EXISTS idx_documents_knowledge_base ON documents(knowledge_base_id, uploaded_at DESC);

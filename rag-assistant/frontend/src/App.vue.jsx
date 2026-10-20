@@ -30,10 +30,9 @@ const agentUrl = new URL(import.meta.env.VITE_AGENT_URL || (localProjectHost ? "
 if (localProjectHost && !import.meta.env.VITE_AGENT_URL) agentUrl.port = "8020";
 if (!agentUrl.pathname.endsWith("/")) agentUrl.pathname += "/";
 const ecommerceEnvUrl = import.meta.env.VITE_ECOM_URL;
-const ecommerceAvailable = localProjectHost || Boolean(ecommerceEnvUrl);
-const ecommerceUrl = new URL(ecommerceEnvUrl || "/", window.location.href);
+const ecommerceUrl = new URL(ecommerceEnvUrl || (localProjectHost ? "/" : "/ecommerce/"), window.location.href);
 if (localProjectHost && !ecommerceEnvUrl) ecommerceUrl.port = "5173";
-if (ecommerceEnvUrl && !ecommerceUrl.pathname.endsWith("/")) ecommerceUrl.pathname += "/";
+if (!ecommerceUrl.pathname.endsWith("/")) ecommerceUrl.pathname += "/";
 
 async function requestBrowserModel(profile, messages) {
   if (profile.mode === "server") {
@@ -1082,9 +1081,7 @@ function renderApp() {
             <button ref={brandToggleRef} className="brand-logo brand-switcher-toggle" type="button" aria-label="打开项目菜单" aria-expanded={brandMenuOpen} aria-controls="brand-switcher-menu" onClick={() => setBrandMenuOpen((value) => !value)}><Menu size={20} /></button>
             <nav id="brand-switcher-menu" className="brand-switcher-menu" aria-label="项目入口" hidden={!brandMenuOpen}>
               <span className="brand-switcher-heading">项目入口</span>
-              {ecommerceAvailable
-                ? <a className="brand-switcher-link" href={ecommerceUrl.href}>电商分析平台 <span aria-hidden="true">→</span></a>
-                : <span className="brand-switcher-link is-disabled" aria-disabled="true" title="仅本机演示">电商分析平台 <small>仅本机演示</small></span>}
+              <a className="brand-switcher-link" href={ecommerceUrl.href}>电商分析平台 <span aria-hidden="true">→</span></a>
               <a className="brand-switcher-link" href={agentUrl.href}>Agent 控制台 <span aria-hidden="true">→</span></a>
               <span className="brand-switcher-current">RAG 知识库 <small>当前页面</small></span>
               <a className="brand-switcher-link" href={projectHomeUrl.href}>项目主页 <span aria-hidden="true">→</span></a>

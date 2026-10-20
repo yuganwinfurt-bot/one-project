@@ -26,11 +26,11 @@
     ragLink.href = '/rag/';
     ragLink.removeAttribute('aria-disabled');
     ragLink.removeAttribute('title');
-    ecommerceLink.removeAttribute('href');
-    ecommerceLink.setAttribute('aria-disabled', 'true');
-    ecommerceLink.classList.add('is-disabled');
-    ecommerceLink.title = '仅本机演示';
+    ecommerceLink.href = '/ecommerce/';
   }
+  ecommerceLink.removeAttribute('aria-disabled');
+  ecommerceLink.removeAttribute('title');
+  ecommerceLink.classList.remove('is-disabled');
   const closeBrandMenu = () => {
     brandMenu.hidden = true;
     brandToggle.setAttribute('aria-expanded', 'false');

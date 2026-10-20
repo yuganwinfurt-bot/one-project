@@ -7,6 +7,7 @@ import logging
 import os
 import re
 import secrets
+from collections import Counter
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from pathlib import Path
@@ -26,6 +27,7 @@ from .config import (
     UPLOAD_DIR,
 )
 from .database import connect, initialize_database, new_id, now_iso, parse_json
+from . import ecommerce_sync_jobs
 from .auth import AuthManager
 from .model_settings import AnswerModelSettings, load_settings, save_settings, validate_settings
 from .rag.graph import create_rag_graph
@@ -76,6 +78,7 @@ WEB_ORIGINS = {
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     initialize_database()
+    ecommerce_sync_jobs.recover_interrupted_jobs()
     try:
         _app.state.answer_model_settings = load_settings()
     except (OSError, ValueError):
@@ -143,7 +146,7 @@ async def authenticate_and_limit_guests(request: Request, call_next):
         )
         local_ecommerce_sync = (
             request.method == "POST"
-            and path == "/api/integrations/agent/sync-ecommerce"
+            and path in {"/api/integrations/agent/sync-ecommerce", "/api/integrations/agent/sync-ecommerce/jobs"}
             and request.client is not None
             and request.client.host in {"127.0.0.1", "::1"}
         )
@@ -362,9 +365,7 @@ async def retrieve_for_agent(payload: AgentRetrieveRequest, request: Request):
     )
 
 
-@app.post("/api/integrations/agent/sync-ecommerce", include_in_schema=False)
-async def sync_ecommerce_knowledge(payload: EcommerceSyncRequest, request: Request):
-    """Replace the managed e-commerce CSV in the local RAG library; loopback + shared token only."""
+def require_ecommerce_integration(request: Request):
     if not request.client or request.client.host not in {"127.0.0.1", "::1"}:
         raise HTTPException(status_code=403, detail="此同步接口仅允许本机 Agent 调用")
     expected_token = os.getenv("ECOM_RAG_SYNC_TOKEN", "").strip()
@@ -374,11 +375,54 @@ async def sync_ecommerce_knowledge(payload: EcommerceSyncRequest, request: Reque
     if not secrets.compare_digest(supplied_token, expected_token):
         raise HTTPException(status_code=403, detail="电商 RAG 同步密钥无效")
 
+
+@app.post("/api/integrations/agent/sync-ecommerce", include_in_schema=False)
+async def sync_ecommerce_knowledge(payload: EcommerceSyncRequest, request: Request):
+    """兼容旧客户端；新页面使用立即返回的后台任务接口。"""
+    require_ecommerce_integration(request)
     async with _ecommerce_sync_lock:
         return await _sync_ecommerce_records(payload)
 
 
-async def _sync_ecommerce_records(payload: EcommerceSyncRequest):
+@app.post("/api/integrations/agent/sync-ecommerce/jobs", include_in_schema=False)
+async def start_ecommerce_sync(payload: EcommerceSyncRequest, request: Request):
+    require_ecommerce_integration(request)
+
+    async def run(progress):
+        # 此处只检查向量模型。浏览器选择的聊天 API 不参与资料向量化。
+        try:
+            response = await app.state.ollama_status_client.get(f"{OLLAMA_BASE_URL}/api/tags")
+            response.raise_for_status()
+            names = [item.get("name", "") for item in response.json().get("models", [])]
+        except (httpx.HTTPError, ValueError) as exc:
+            raise HTTPException(status_code=503, detail="无法连接服务器的 Ollama 向量服务，请检查 ollama 服务状态。") from exc
+        if not any(name == OLLAMA_EMBED_MODEL or name.startswith(OLLAMA_EMBED_MODEL + ":") for name in names):
+            raise HTTPException(status_code=503, detail=f"服务器尚未安装向量模型 {OLLAMA_EMBED_MODEL}，请先用 ollama pull 下载。")
+        result = await _sync_ecommerce_records(payload, progress)
+        result["by_type"] = dict(Counter(record.doc_type for record in payload.records))
+        result["privacy_note"] = "不包含登录账号、密码、密码摘要、令牌、密钥；姓名、联系方式及详细收货地址已脱敏。"
+        return result
+
+    return JSONResponse(ecommerce_sync_jobs.start_job(len(payload.records), run, _ecommerce_sync_lock),
+                        status_code=202, headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/integrations/agent/sync-ecommerce/jobs/latest", include_in_schema=False)
+def latest_ecommerce_sync(request: Request):
+    require_ecommerce_integration(request)
+    return JSONResponse(ecommerce_sync_jobs.get_job(), headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/integrations/agent/sync-ecommerce/jobs/{job_id}", include_in_schema=False)
+def ecommerce_sync_status(job_id: str, request: Request):
+    require_ecommerce_integration(request)
+    job = ecommerce_sync_jobs.get_job(job_id)
+    if job is None:
+        raise HTTPException(status_code=404, detail="同步任务不存在")
+    return JSONResponse(job, headers={"Cache-Control": "no-store"})
+
+
+async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
     with connect() as db:
         existing = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (ECOMMERCE_KB_NAME,)).fetchone()
         kb_id = existing["id"] if existing else ECOMMERCE_KB_ID
@@ -420,6 +464,7 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest):
             document_id,
             stored_path,
             ECOMMERCE_EXPORT_FILENAME,
+            progress,
         )
         with connect() as db:
             old_docs = db.execute(
@@ -458,7 +503,7 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest):
         if isinstance(exc, HTTPException):
             raise
         logger.exception("电商资料同步到 RAG 失败")
-        raise HTTPException(status_code=503, detail="电商资料索引失败，请检查 RAG 的 bge-m3 服务") from exc
+        raise HTTPException(status_code=503, detail=f"电商资料索引失败，请检查 RAG 的 {OLLAMA_EMBED_MODEL} 向量服务及服务日志") from exc
 
     cleanup_warning = False
     for old_doc in old_docs:

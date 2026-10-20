@@ -19,9 +19,10 @@
           <el-option v-for="n in [3, 5, 8, 10]" :key="n" :label="`Top ${n}`" :value="n" />
         </el-select>
         <el-button type="primary" :loading="loading" @click="handleSearch">检索</el-button>
-        <el-button :loading="syncLoading" @click="handleSync">同步后台数据到 RAG</el-button>
-        <el-button tag="a" :href="ragSettingsUrl.href">前往设置 RAG</el-button>
+        <el-button :loading="syncLoading" @click="handleSync">{{ syncActive ? '正在同步后台数据' : '同步后台数据到 RAG' }}</el-button>
+        <el-button tag="a" :href="ragSettingsUrl.href">打开 RAG 知识库</el-button>
       </div>
+      <p class="semantic__sub">资料同步使用服务器上的向量模型，登录页选择的聊天 API 用于生成回答。</p>
       <div class="semantic__examples">
         <span class="semantic__examples-label">试试：</span>
         <el-tag
@@ -36,9 +37,28 @@
       </div>
     </div>
 
+    <div v-if="syncJob || syncError" class="content-card semantic__sync-progress" aria-live="polite">
+      <div class="panel-head">
+        <span class="panel-title">{{ syncStageLabel }}</span>
+        <el-button size="small" :loading="syncChecking" @click="refreshSyncStatus">刷新进度</el-button>
+      </div>
+      <template v-if="syncJob">
+        <el-progress :percentage="syncPercent" :status="syncProgressStatus" />
+        <p v-if="syncActive" class="semantic__sub">
+          {{ syncJob.record_count }} 条业务记录 ·
+          {{ syncJob.total_chunks ? `已完成 ${syncJob.processed_chunks} / ${syncJob.total_chunks} 个分片` : '正在整理资料' }}。
+          同步在服务器后台进行，离开或刷新页面后仍可回来查看进度。
+        </p>
+        <el-alert v-if="syncJob.error" :title="syncJob.error" type="error" :closable="false" show-icon />
+      </template>
+      <el-alert v-if="syncError" :title="syncError" type="warning" :closable="false" show-icon />
+    </div>
+
     <div v-if="syncResult" class="content-card semantic__sync-summary">
       <strong>已同步 {{ syncResult.record_count }} 条业务记录 · {{ syncResult.chunk_count }} 个检索分片</strong>
       <p>{{ syncResult.privacy_note }}</p>
+      <p v-if="syncResult.unchanged">数据与上次一致，已沿用现有索引。</p>
+      <p v-if="syncResult.cleanup_warning">新索引已保存，部分旧分片清理失败，请管理员查看 RAG 日志。</p>
       <div class="semantic__examples"><el-tag v-for="(count, type) in syncResult.by_type" :key="type" size="small" effect="plain">{{ documentType(type) }} {{ count }}</el-tag></div>
     </div>
 
@@ -91,12 +111,12 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { computed, onMounted, onUnmounted, ref } from 'vue'
 import DOMPurify from 'dompurify'
 import { marked } from 'marked'
 import { ElMessage } from 'element-plus'
 import { listProducts } from '@/api/ecommerce'
-import { searchSemantic, syncSemanticData } from '@/api/semantic'
+import { getSemanticSyncStatus, searchSemantic, syncSemanticData } from '@/api/semantic'
 
 defineOptions({ name: 'SemanticSearch' })
 
@@ -116,7 +136,25 @@ function documentType(type) { return typeNames[type] || '业务资料' }
 const query = ref('')
 const topK = ref(5)
 const loading = ref(false)
-const syncLoading = ref(false)
+const syncJob = ref(null)
+const syncSubmitting = ref(false)
+const syncChecking = ref(true)
+const syncError = ref('')
+const syncActive = computed(() => ['queued', 'running'].includes(syncJob.value?.status))
+const syncLoading = computed(() => syncSubmitting.value || syncActive.value || syncChecking.value)
+const syncStageLabel = computed(() => ({
+  queued: '同步任务已排队', preparing: '正在准备同步', indexing: '正在建立检索索引',
+  done: '同步完成', failed: '同步失败，可重新同步', interrupted: '上次同步已中断，可重新同步'
+})[syncJob.value?.stage] || '暂时无法读取同步进度')
+const syncPercent = computed(() => {
+  if (syncJob.value?.status === 'succeeded') return 100
+  const job = syncJob.value
+  return job?.total_chunks ? Math.min(99, Math.floor(100 * job.processed_chunks / job.total_chunks)) : 0
+})
+const syncProgressStatus = computed(() => syncJob.value?.status === 'succeeded' ? 'success'
+  : ['failed', 'interrupted'].includes(syncJob.value?.status) ? 'exception' : undefined)
+let syncPollTimer
+let disposed = false
 const result = ref(null)
 const productNames = ref({})
 
@@ -171,15 +209,51 @@ async function handleSearch() {
 
 async function handleSync() {
   if (syncLoading.value) return
-  syncLoading.value = true
+  syncSubmitting.value = true
+  syncError.value = ''
+  clearTimeout(syncPollTimer)
   try {
     const res = await syncSemanticData()
-    const data = res.data || {}
-    syncResult.value = data
-    ElMessage.success(`已同步 ${data.record_count || 0} 条后台业务记录到“电商分析平台”知识库`)
-    if (query.value.trim()) await handleSearch()
+    if (disposed) return
+    applySyncJob(res.data)
+    scheduleSyncPoll()
+  } catch (err) {
+    if (disposed) return
+    syncError.value = `${err.userMessage || err.message || '未收到同步任务回执'}。请先刷新进度，确认任务是否已提交。`
   } finally {
-    syncLoading.value = false
+    syncSubmitting.value = false
+  }
+}
+
+function applySyncJob(job) {
+  const previous = syncJob.value
+  syncJob.value = job || null
+  syncResult.value = job?.status === 'succeeded' ? job.result : null
+  if (job?.status === 'succeeded' && previous?.id === job.id && ['queued', 'running'].includes(previous.status)) {
+    ElMessage.success(`已同步 ${job.result?.record_count || 0} 条后台业务记录`)
+  }
+}
+
+function scheduleSyncPoll(delay = 2500) {
+  clearTimeout(syncPollTimer)
+  if (!disposed && syncActive.value) syncPollTimer = setTimeout(refreshSyncStatus, delay)
+}
+
+async function refreshSyncStatus() {
+  if (disposed) return
+  clearTimeout(syncPollTimer)
+  syncChecking.value = true
+  try {
+    const res = await getSemanticSyncStatus(syncJob.value?.id || '')
+    if (disposed) return
+    applySyncJob(res.data)
+    syncError.value = ''
+  } catch (err) {
+    if (disposed) return
+    syncError.value = `${err.userMessage || err.message || '暂时无法读取进度'}。这不代表同步任务已停止，可以稍后刷新进度。`
+  } finally {
+    syncChecking.value = false
+    scheduleSyncPoll(syncError.value ? 10000 : 2500)
   }
 }
 
@@ -188,7 +262,14 @@ function runExample(example) {
   handleSearch()
 }
 
-onMounted(loadProductNames)
+onMounted(() => {
+  loadProductNames().catch(() => {})
+  refreshSyncStatus()
+})
+onUnmounted(() => {
+  disposed = true
+  clearTimeout(syncPollTimer)
+})
 </script>
 
 <style scoped>
@@ -222,6 +303,7 @@ onMounted(loadProductNames)
   max-width: 460px;
 }
 .semantic__sync-summary p { color: var(--app-text-secondary); font-size: 13px; line-height: 1.6; }
+.semantic__sync-progress :deep(.el-alert) { margin-top: 12px; }
 
 .semantic__topk {
   width: 110px;

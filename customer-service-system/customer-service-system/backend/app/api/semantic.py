@@ -1,6 +1,6 @@
 """语义检索调试接口（lesson-04）。"""
 
-from fastapi import APIRouter
+from fastapi import APIRouter, Response as HttpResponse
 
 from app.common.response import Response
 from app.dependencies.auth import CurrentAdmin, CurrentProductEditor
@@ -25,6 +25,18 @@ def semantic_search(
 
 @router.post("/sync")
 def sync_semantic_data(_: CurrentAdmin):
-    """同步后台完整业务快照，不导出凭证；个人信息脱敏。"""
+    """提交脱敏业务快照到后台队列，立即返回任务编号。"""
     result = semantic_search_service.sync_ecommerce_data()
-    return Response.success(message="已同步到独立 RAG 知识库", data=result)
+    return Response.success(message="同步任务已提交", data=result)
+
+
+@router.get("/sync")
+def latest_sync_status(response: HttpResponse, _: CurrentProductEditor):
+    response.headers["Cache-Control"] = "no-store"
+    return Response.success(data=semantic_search_service.get_sync_job())
+
+
+@router.get("/sync/{job_id}")
+def sync_status(job_id: str, response: HttpResponse, _: CurrentProductEditor):
+    response.headers["Cache-Control"] = "no-store"
+    return Response.success(data=semantic_search_service.get_sync_job(job_id))

@@ -3,6 +3,7 @@ import math
 import re
 import time
 from pathlib import Path
+from typing import Callable
 from uuid import uuid4
 
 from langchain_chroma import Chroma
@@ -11,7 +12,7 @@ from langchain_community.document_loaders.parsers.images import RapidOCRBlobPars
 from langchain_ollama import OllamaEmbeddings
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
-from ..config import OLLAMA_BASE_URL, OLLAMA_CLIENT_KWARGS, OLLAMA_EMBED_MODEL, RAG_MIN_RELEVANCE, RAG_TOP_K, VECTOR_DIR
+from ..config import OLLAMA_BASE_URL, OLLAMA_CLIENT_KWARGS, OLLAMA_EMBED_MODEL, RAG_EMBED_BATCH_SIZE, RAG_MIN_RELEVANCE, RAG_TOP_K, VECTOR_DIR
 from ..schemas import ECOMMERCE_DOC_TYPES
 
 ALLOWED_EXTENSIONS = {".pdf", ".docx", ".txt", ".md", ".csv"}
@@ -163,7 +164,8 @@ def load_file(path: Path, original_filename: str):
     return documents
 
 
-def index_file(knowledge_base_id: str, document_id: str, path: Path, original_filename: str):
+def index_file(knowledge_base_id: str, document_id: str, path: Path, original_filename: str,
+               progress: Callable[[int, int], None] | None = None):
     source_documents = load_file(path, original_filename)
     if not source_documents:
         raise ValueError("文件中没有提取到可索引的文字")
@@ -183,13 +185,18 @@ def index_file(knowledge_base_id: str, document_id: str, path: Path, original_fi
 
     store = get_vector_store(knowledge_base_id)
     try:
-        # 分批处理长文档，避免一次提交数千分片。
-        for start in range(0, len(chunks), 64):
+        if progress:
+            progress(0, len(chunks))
+        # CPU 上采用小批次，完成一批就保存进度。
+        for start in range(0, len(chunks), RAG_EMBED_BATCH_SIZE):
+            end = min(start + RAG_EMBED_BATCH_SIZE, len(chunks))
             add_documents_with_retry(
                 store,
-                chunks[start:start + 64],
-                vector_ids[start:start + 64],
+                chunks[start:end],
+                vector_ids[start:end],
             )
+            if progress:
+                progress(end, len(chunks))
     except Exception:
         try:
             store.delete(ids=vector_ids)

@@ -12,7 +12,7 @@ from app.vectorstore import chroma_store
 from app.services.knowledge_export_service import build_platform_export
 
 
-def _post_rag(path: str, payload: dict[str, Any], timeout: float, *, sync: bool = False) -> dict[str, Any]:
+def _request_rag(path: str, payload: dict[str, Any] | None, timeout: float, *, sync: bool = False, method: str = "POST"):
     base_url = settings.RAG_BASE_URL.rstrip("/")
     headers = {"Content-Type": "application/json"}
     if settings.RAG_SYNC_TOKEN:
@@ -23,9 +23,9 @@ def _post_rag(path: str, payload: dict[str, Any], timeout: float, *, sync: bool 
         headers["X-Integration-Key"] = settings.RAG_SYNC_TOKEN
     request = Request(
         f"{base_url}{path}",
-        data=json.dumps(payload, ensure_ascii=False).encode("utf-8"),
+        data=json.dumps(payload, ensure_ascii=False).encode("utf-8") if payload is not None else None,
         headers=headers,
-        method="POST",
+        method=method,
     )
     try:
         with urlopen(request, timeout=timeout) as response:
@@ -37,8 +37,16 @@ def _post_rag(path: str, payload: dict[str, Any], timeout: float, *, sync: bool 
         except (UnicodeDecodeError, json.JSONDecodeError):
             detail = str(exc)
         raise BusinessException(f"独立 RAG 请求失败：{detail}", code=503) from exc
-    except (URLError, TimeoutError, OSError, json.JSONDecodeError) as exc:
-        raise BusinessException("无法连接独立 RAG 服务，请确认它在 127.0.0.1:8000 运行", code=503) from exc
+    except TimeoutError as exc:
+        raise BusinessException("RAG 服务响应超时；若正在同步，任务会继续运行，请稍后刷新进度", code=504) from exc
+    except URLError as exc:
+        if isinstance(exc.reason, TimeoutError):
+            raise BusinessException("RAG 服务响应超时，请稍后刷新同步进度", code=504) from exc
+        raise BusinessException("无法连接独立 RAG 服务，请检查 rag-assistant 服务及 RAG_BASE_URL 配置", code=503) from exc
+    except OSError as exc:
+        raise BusinessException("无法连接独立 RAG 服务，请检查 rag-assistant 服务及 RAG_BASE_URL 配置", code=503) from exc
+    except (UnicodeDecodeError, json.JSONDecodeError) as exc:
+        raise BusinessException("RAG 服务返回了无效数据，请检查服务日志", code=503) from exc
 
 
 def _field(raw: str, key: str) -> str | None:
@@ -70,7 +78,7 @@ def search_similar(
     query = query.strip()
     if not query:
         raise BusinessException("检索 query 不能为空")
-    result = _post_rag(
+    result = _request_rag(
         "/api/integrations/agent/retrieve",
         {
             "query": query,
@@ -151,14 +159,25 @@ def _build_ecommerce_records() -> list[dict[str, Any]]:
 
 
 def sync_ecommerce_data() -> dict[str, Any]:
-    """更新完整后台快照；重复同步替换本平台的受管理文件。"""
-    records, summary = _build_platform_snapshot()
+    """提交后台任务，向量化期间不占用浏览器的长请求。"""
+    current = get_sync_job()
+    if current and current["status"] in {"queued", "running"}:
+        return {**current, "reused": True}
+    records, _summary = _build_platform_snapshot()
     if not records:
         raise BusinessException("没有可同步的后台业务数据，未执行同步")
-    result = _post_rag(
-        "/api/integrations/agent/sync-ecommerce",
+    return _request_rag(
+        "/api/integrations/agent/sync-ecommerce/jobs",
         {"records": records},
-        settings.RAG_SYNC_TIMEOUT_SECONDS,
+        30.0,
         sync=True,
     )
-    return {**summary, **result}
+
+
+def get_sync_job(job_id: str | None = None) -> dict[str, Any] | None:
+    if job_id is not None and not re.fullmatch(r"[a-f0-9]{32}", job_id):
+        raise BusinessException("同步任务编号无效", code=422)
+    return _request_rag(
+        f"/api/integrations/agent/sync-ecommerce/jobs/{job_id or 'latest'}",
+        None, 10.0, sync=True, method="GET",
+    )

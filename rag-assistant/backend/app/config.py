@@ -21,6 +21,7 @@ OLLAMA_CLIENT_KWARGS = (
 )
 OLLAMA_CHAT_MODEL = os.getenv("OLLAMA_CHAT_MODEL", "qwen3.5:9b")
 OLLAMA_EMBED_MODEL = os.getenv("OLLAMA_EMBED_MODEL", "bge-m3")
+RAG_EMBED_BATCH_SIZE = max(1, min(int(os.getenv("RAG_EMBED_BATCH_SIZE", "16")), 64))
 RAG_TOP_K = max(1, min(int(os.getenv("RAG_TOP_K", "4")), 12))
 RAG_MIN_RELEVANCE = max(0.0, min(float(os.getenv("RAG_MIN_RELEVANCE", "0.25")), 1.0))
 MAX_UPLOAD_MB = max(1, int(os.getenv("MAX_UPLOAD_MB", "30")))
