@@ -41,6 +41,29 @@ docker compose --env-file .env.docker.example build
 
 构建只打包代码与前端资源，不启动容器，也不重启现有服务。需要 Docker Engine 和 Docker Compose 插件；本地 Windows 没有 Docker 命令时，应在 Ubuntu 服务器上执行。
 
+### Windows / Docker Desktop 构建
+
+先打开 Docker Desktop，确认引擎正在运行。若本机通过 HTTP 代理访问 Docker Hub，除 Desktop 界面中的代理设置外，也给当前 PowerShell 构建进程设置代理：
+
+```powershell
+cd "D:\one project"
+$env:HTTP_PROXY = "http://127.0.0.1:7877"
+$env:HTTPS_PROXY = "http://127.0.0.1:7877"
+docker compose --env-file .env.docker.example build
+```
+
+`7877` 是本机当前使用的代理端口；换用其他代理时需按实际地址修改。上述环境变量只在当前 PowerShell 会话内生效，代理程序需要保持运行。
+
+如果报错包含 `failed to fetch anonymous token` 和 Windows 的 `connectex`，先确认这个构建进程已设置代理。可用以下命令检查 Windows 到 Docker Hub 的代理连接：
+
+```powershell
+curl.exe --max-time 20 -I -x http://127.0.0.1:7877 https://auth.docker.io/token
+```
+
+出现 `200 Connection established` 后再收到 `405 Method Not Allowed`，表示已连接到服务，但该接口不支持这次测试使用的 HEAD 方法。
+
+本步骤仅构建镜像；应用启动仍需满足下文的数据、端口及主机服务要求。
+
 ## 启动前先确认冲突
 
 应用容器会挂载并继续使用这几个原有目录：
