@@ -983,12 +983,10 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
 
     @app.post("/api/approval-scopes/{scope}/approve-all", dependencies=auth)
     async def approve_all_for_run(scope: str, request: Request):
-        if (
-            request.client is None
-            or request.client.host not in {"127.0.0.1", "::1"}
-            or request.headers.get("origin") != str(request.base_url).rstrip("/")
-        ):
-            raise HTTPException(403, "只能从本机网页批准整次任务")
+        origin = request.headers.get("origin")
+        allowed_origins = {str(request.base_url).rstrip("/"), *app.state.trusted_web_origins}
+        if origin not in allowed_origins:
+            raise HTTPException(403, "整次批准需要从受信任网页发起")
         if not re.fullmatch(r"[0-9a-f]{32}", scope):
             raise HTTPException(400, "无效的任务确认标识")
         if not approval_broker.approve_all(scope):
