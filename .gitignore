@@ -2,6 +2,7 @@
 **/.env
 **/.env.*
 !**/.env.example
+!/.env.docker.example
 
 # Python 缓存和测试临时文件
 **/__pycache__/

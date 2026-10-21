@@ -1,0 +1,96 @@
+name: one-project
+
+services:
+  yugan-agent:
+    build:
+      context: .
+      dockerfile: docker/yugan-agent.Dockerfile
+    image: one-project/yugan-agent:local
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - ./yugan-agent/.env
+    environment:
+      AGENT_PORT: ${AGENT_PORT:-8020}
+    command: ["python", "-m", "yugan_agent", "serve", "--host", "127.0.0.1", "--port", "${AGENT_PORT:-8020}"]
+    volumes:
+      - ./yugan-agent/workspace:/app/workspace
+      - ./yugan-agent/.yugan:/app/.yugan
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+
+  rag-assistant:
+    build:
+      context: .
+      dockerfile: docker/rag-assistant.Dockerfile
+    image: one-project/rag-assistant:local
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - ./rag-assistant/backend/.env
+    environment:
+      RAG_PORT: ${RAG_PORT:-8000}
+      RAG_DATA_DIR: /app/storage
+    command: ["sh", "-c", "uvicorn app.main:app --host 127.0.0.1 --port \"$${RAG_PORT}\" --proxy-headers --forwarded-allow-ips=127.0.0.1"]
+    volumes:
+      - ./rag-assistant/backend/storage:/app/storage
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+
+  ecommerce:
+    build:
+      context: .
+      dockerfile: docker/ecommerce.Dockerfile
+    image: one-project/ecommerce:local
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    env_file:
+      - ./customer-service-system/customer-service-system/backend/.env
+    environment:
+      ECOMMERCE_PORT: ${ECOMMERCE_PORT:-8001}
+      RAG_BASE_URL: http://127.0.0.1:${RAG_PORT:-8000}
+      SERVER_AUTH_STATUS_URL: http://127.0.0.1:${AGENT_PORT:-8020}/api/auth/status
+    command: ["sh", "-c", "uvicorn app.main:app --host 127.0.0.1 --port \"$${ECOMMERCE_PORT}\" --proxy-headers --forwarded-allow-ips=127.0.0.1"]
+    volumes:
+      - ./customer-service-system/customer-service-system/backend/data:/app/data
+      - ./customer-service-system/customer-service-system/backend/uploads:/app/uploads
+    user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
+
+  project-hub:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+      target: project-hub
+    image: one-project/project-hub:local
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      HUB_PORT: ${HUB_PORT:-8031}
+      PROJECT_HUB_AGENT_API_URL: http://127.0.0.1:${AGENT_PORT:-8020}
+    command: ["sh", "-c", "uvicorn hub_api:app --host 127.0.0.1 --port \"$${HUB_PORT}\" --proxy-headers --forwarded-allow-ips=127.0.0.1"]
+    depends_on:
+      - yugan-agent
+
+  web-gateway:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+      target: web-gateway
+    image: one-project/web-gateway:local
+    init: true
+    restart: unless-stopped
+    network_mode: host
+    environment:
+      WEB_PORT: ${WEB_PORT:-8030}
+      HUB_PORT: ${HUB_PORT:-8031}
+      AGENT_PORT: ${AGENT_PORT:-8020}
+      RAG_PORT: ${RAG_PORT:-8000}
+      ECOMMERCE_PORT: ${ECOMMERCE_PORT:-8001}
+      NGINX_ENVSUBST_FILTER: '^(WEB_PORT|HUB_PORT|AGENT_PORT|RAG_PORT|ECOMMERCE_PORT)$'
+    depends_on:
+      - project-hub
+      - yugan-agent
+      - rag-assistant
+      - ecommerce
