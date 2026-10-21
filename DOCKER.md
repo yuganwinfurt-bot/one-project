@@ -1,5 +1,7 @@
 # 用 Docker Compose 启动整个 one-project
 
+整套镜像发布到同一个 Docker Hub 仓库，请看 [一键发布说明](DOCKER-PUBLISH.md)。Windows 双击项目根目录的一键上传Docker镜像.bat 打开发布窗口。
+
 此配置面向当前的 Ubuntu 服务器部署方式：Docker 管项目里的 Agent、RAG、电商 API、项目首页和前端网关；MySQL、Ollama、Nginx/HTTPS 证书以及应用数据仍由服务器现有环境提供。它不会把 MySQL 或 Ollama 的数据复制进容器。
 
 Compose 使用 `network_mode: host`，让容器里的 API 能继续访问服务器本机的 MySQL（`127.0.0.1:3306`）和 Ollama（`127.0.0.1:11434`）。这套配置按 Ubuntu/Linux 服务器设计；Docker Desktop 4.34 及以上虽支持 host networking，但需要在设置中开启，而且与 Linux 主机网络的表现有差异。

@@ -1,0 +1,146 @@
+name: Publish all Docker images
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/publish-images.yml
+      - .dockerignore
+      - compose.publish.yaml
+      - docker/**
+      - yugan-agent/**
+      - rag-assistant/**
+      - customer-service-system/customer-service-system/**
+      - project-hub/**
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version label, e.g. latest or v1.0.0'
+        required: true
+        default: latest
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: docker-hub-publish
+  cancel-in-progress: false
+
+jobs:
+  prepare:
+    runs-on: ubuntu-latest
+    outputs:
+      enabled: ${{ steps.settings.outputs.enabled }}
+      repository: ${{ steps.settings.outputs.repository }}
+      username: ${{ steps.settings.outputs.username }}
+      version: ${{ steps.settings.outputs.version }}
+    steps:
+      - name: Check publishing configuration
+        id: settings
+        shell: bash
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME || 'yuganwinfurt' }}
+          DOCKERHUB_REPOSITORY: ${{ vars.DOCKERHUB_REPOSITORY }}
+          REQUESTED_VERSION: ${{ inputs.version }}
+        run: |
+          if [[ -z "$DOCKERHUB_TOKEN" ]]; then
+            echo 'enabled=false' >> "$GITHUB_OUTPUT"
+            echo '::warning::Add the DOCKERHUB_TOKEN repository secret to enable image publishing.'
+            echo '### Docker Hub publishing is not configured' >> "$GITHUB_STEP_SUMMARY"
+            echo 'Add DOCKERHUB_TOKEN under Settings > Secrets and variables > Actions. See DOCKER-PUBLISH.md.' >> "$GITHUB_STEP_SUMMARY"
+            if [[ "$GITHUB_EVENT_NAME" == workflow_dispatch ]]; then
+              exit 1
+            fi
+            exit 0
+          fi
+          repository="${DOCKERHUB_REPOSITORY:-$DOCKERHUB_USERNAME/one-project}"
+          version="${REQUESTED_VERSION:-sha-${GITHUB_SHA:0:12}}"
+          if [[ ! "$repository" =~ ^[a-z0-9][a-z0-9_-]*/[a-z0-9][a-z0-9_.-]*$ ]]; then
+            echo '::error::DOCKERHUB_REPOSITORY must be a lowercase namespace/repository name.'
+            exit 1
+          fi
+          if [[ ! "$version" =~ ^[A-Za-z0-9_][A-Za-z0-9_.-]{0,95}$ ]]; then
+            echo '::error::The version must be a valid Docker tag suffix (1-96 characters).'
+            exit 1
+          fi
+          {
+            echo 'enabled=true'
+            echo "repository=$repository"
+            echo "username=$DOCKERHUB_USERNAME"
+            echo "version=$version"
+          } >> "$GITHUB_OUTPUT"
+          {
+            echo '### Publishing five service images'
+            echo "Repository: $repository"
+            echo "Version: $version (also updates each service's latest tag)"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+  publish:
+    needs: prepare
+    if: needs.prepare.outputs.enabled == 'true'
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        include:
+          - service: yugan-agent
+            dockerfile: docker/yugan-agent.Dockerfile
+            target: ''
+          - service: rag-assistant
+            dockerfile: docker/rag-assistant.Dockerfile
+            target: ''
+          - service: ecommerce
+            dockerfile: docker/ecommerce.Dockerfile
+            target: ''
+          - service: project-hub
+            dockerfile: docker/web.Dockerfile
+            target: project-hub
+          - service: web-gateway
+            dockerfile: docker/web.Dockerfile
+            target: web-gateway
+    steps:
+      - name: Get project source
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v4
+      - name: Sign in to Docker Hub
+        uses: docker/login-action@v4
+        with:
+          username: ${{ needs.prepare.outputs.username }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - name: Set image tags
+        id: tags
+        shell: bash
+        env:
+          REPOSITORY: ${{ needs.prepare.outputs.repository }}
+          SERVICE: ${{ matrix.service }}
+          VERSION: ${{ needs.prepare.outputs.version }}
+        run: |
+          {
+            echo 'tags<<IMAGE_TAGS'
+            echo "$REPOSITORY:$SERVICE-$VERSION"
+            if [[ "$VERSION" != latest ]]; then
+              echo "$REPOSITORY:$SERVICE-latest"
+            fi
+            echo 'IMAGE_TAGS'
+          } >> "$GITHUB_OUTPUT"
+      - name: Build and upload image
+        uses: docker/build-push-action@v7
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          target: ${{ matrix.target }}
+          platforms: linux/amd64
+          push: true
+          tags: ${{ steps.tags.outputs.tags }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=one-project-${{ matrix.service }}
+          cache-to: type=gha,mode=max,scope=one-project-${{ matrix.service }}

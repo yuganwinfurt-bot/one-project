@@ -1,0 +1,36 @@
+# Build/push all five images to one Docker Hub repository.
+# Can also be layered over compose.yaml when pulling published images.
+name: one-project
+
+services:
+  yugan-agent:
+    build:
+      context: .
+      dockerfile: docker/yugan-agent.Dockerfile
+    image: ${DOCKER_HUB_REPOSITORY:-yuganwinfurt/one-project}:yugan-agent-${IMAGE_VERSION:-latest}
+
+  rag-assistant:
+    build:
+      context: .
+      dockerfile: docker/rag-assistant.Dockerfile
+    image: ${DOCKER_HUB_REPOSITORY:-yuganwinfurt/one-project}:rag-assistant-${IMAGE_VERSION:-latest}
+
+  ecommerce:
+    build:
+      context: .
+      dockerfile: docker/ecommerce.Dockerfile
+    image: ${DOCKER_HUB_REPOSITORY:-yuganwinfurt/one-project}:ecommerce-${IMAGE_VERSION:-latest}
+
+  project-hub:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+      target: project-hub
+    image: ${DOCKER_HUB_REPOSITORY:-yuganwinfurt/one-project}:project-hub-${IMAGE_VERSION:-latest}
+
+  web-gateway:
+    build:
+      context: .
+      dockerfile: docker/web.Dockerfile
+      target: web-gateway
+    image: ${DOCKER_HUB_REPOSITORY:-yuganwinfurt/one-project}:web-gateway-${IMAGE_VERSION:-latest}
