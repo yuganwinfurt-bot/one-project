@@ -31,6 +31,10 @@ test -f customer-service-system/customer-service-system/backend/.env || cp custo
 
 `env_file` 中有密码或 API Key，不要提交到 Git，也不要贴到聊天里。
 
+密码哈希等值包含 `$` 时，在应用 `.env` 中用单引号包裹整个值，例如 `YUGAN_ADMIN_PASSWORD_HASH='algorithm$salt$digest'`（仅格式示意）。这样 Compose 不会将哈希片段当作变量替换，应用的 dotenv 解析仍能得到原始哈希。Agent 和 RAG 的实际哈希应保持一致。
+
+RAG 通过 `AGENT_MODEL_PROFILES_PATH=/agent-state/model_profiles.json` 读取 Agent 的模型配置；Compose 将 Agent 的 `.yugan` 目录只读挂载到该位置。
+
 ## 先构建镜像
 
 仓库提供的 `.env.docker.example` 使用 `18000` 段备用端口，构建和预览时不会占用当前 systemd 服务的 `8000/8001/8020/8030` 端口：
@@ -63,6 +67,18 @@ curl.exe --max-time 20 -I -x http://127.0.0.1:7877 https://auth.docker.io/token
 出现 `200 Connection established` 后再收到 `405 Method Not Allowed`，表示已连接到服务，但该接口不支持这次测试使用的 HEAD 方法。
 
 本步骤仅构建镜像；应用启动仍需满足下文的数据、端口及主机服务要求。
+
+### Windows 本机启动
+
+本机 MySQL 和 Ollama 需要已启动；Docker Desktop 的“资源 → 网络”中需开启“Enable host networking”。停止原本的本机启动脚本后再使用同一份项目数据运行容器。
+
+```powershell
+cd "D:\one project"
+docker compose --env-file .env.docker.example up -d --no-build
+docker compose --env-file .env.docker.example ps
+```
+
+启动后打开 `http://127.0.0.1:18030/`。首页中的 Agent、RAG 和电商入口在 Docker 构建中统一使用网关路径，不再跳转到原本的本机开发端口。查看运行日志使用 `docker compose --env-file .env.docker.example logs --tail=50`，停止使用 `docker compose --env-file .env.docker.example stop`。
 
 ## 启动前先确认冲突
 

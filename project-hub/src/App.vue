@@ -3,6 +3,7 @@ import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { projects } from './projects.js'
 
 const localPreview = ['127.0.0.1', 'localhost', '::1', '[::1]'].includes(window.location.hostname)
+const useGateway = import.meta.env.VITE_USE_GATEWAY === 'true'
 const psbNumber = import.meta.env.VITE_PSB_RECORD_NUMBER || ''
 const psbId = import.meta.env.VITE_PSB_RECORD_ID || ''
 const cardTones = ['navy', 'mint', 'paper']
@@ -113,7 +114,8 @@ onBeforeUnmount(() => window.removeEventListener('focus', refreshAuthOnFocus))
 function projectHref(project) {
   const isRag = project.id === 'rag' || project.id === 'rag-assistant'
   const isAgent = project.id === 'agent' || project.id === 'yugan-agent'
-  const address = localPreview ? project.localUrl || project.publicUrl : isRag ? '/rag/' : isAgent ? '/agent/' : project.publicUrl
+  const gatewayAddress = isRag ? '/rag/' : isAgent ? '/agent/' : project.publicUrl
+  const address = localPreview && !useGateway ? project.localUrl || project.publicUrl : gatewayAddress
   if (!address) return ''
   try {
     const url = new URL(address, window.location.href)

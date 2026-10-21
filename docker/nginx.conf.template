@@ -10,7 +10,7 @@ server {
         rewrite ^/agent(/.*)$ $1 break;
         proxy_pass http://127.0.0.1:${AGENT_PORT};
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
@@ -25,7 +25,7 @@ server {
         rewrite ^/rag(/api/.*)$ $1 break;
         proxy_pass http://127.0.0.1:${RAG_PORT};
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
@@ -44,7 +44,7 @@ server {
         rewrite ^/ecommerce(/api/.*)$ $1 break;
         proxy_pass http://127.0.0.1:${ECOMMERCE_PORT};
         proxy_http_version 1.1;
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
@@ -53,7 +53,7 @@ server {
     }
     location ^~ /uploads/ {
         proxy_pass http://127.0.0.1:${ECOMMERCE_PORT};
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
     }
     location ^~ /ecommerce/ {
@@ -63,14 +63,14 @@ server {
 
     location ^~ /api/ {
         proxy_pass http://127.0.0.1:${HUB_PORT};
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;
     }
     location / {
         proxy_pass http://127.0.0.1:${HUB_PORT};
-        proxy_set_header Host $host;
+        proxy_set_header Host $http_host;
         proxy_set_header X-Real-IP $remote_addr;
         proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
         proxy_set_header X-Forwarded-Proto $http_x_forwarded_proto;

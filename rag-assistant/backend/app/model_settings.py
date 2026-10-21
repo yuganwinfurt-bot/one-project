@@ -8,13 +8,13 @@ from dataclasses import dataclass
 from pathlib import Path
 from urllib.parse import urlsplit
 
-from .config import DATA_DIR, OLLAMA_CHAT_MODEL
+from .config import BACKEND_DIR, DATA_DIR, OLLAMA_CHAT_MODEL
 
 SETTINGS_PATH = DATA_DIR / "answer_model.json"
-AGENT_PROFILES_PATH = Path(os.getenv(
-    "AGENT_MODEL_PROFILES_PATH",
-    str(Path(__file__).resolve().parents[3] / "yugan-agent" / ".yugan" / "model_profiles.json"),
-))
+AGENT_PROFILES_PATH = Path(
+    os.getenv("AGENT_MODEL_PROFILES_PATH")
+    or BACKEND_DIR.parent.parent / "yugan-agent" / ".yugan" / "model_profiles.json"
+)
 MODEL_PATTERN = re.compile(r"^[A-Za-z0-9._:/-]{1,128}$")
 PROFILE_ID_PATTERN = re.compile(r"^[0-9a-f]{32}$")
 

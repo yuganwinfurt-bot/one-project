@@ -13,7 +13,7 @@ COPY rag-assistant/frontend ./rag-assistant/frontend
 COPY yugan-agent/src/yugan_agent/web ./yugan-agent/src/yugan_agent/web
 COPY customer-service-system/customer-service-system/frontend ./customer-service-system/customer-service-system/frontend
 RUN npm --prefix project-hub run build:shared-ui \
-    && npm --prefix project-hub run build \
+    && VITE_USE_GATEWAY=true npm --prefix project-hub run build \
     && npm --prefix rag-assistant/frontend run build \
     && npm --prefix customer-service-system/customer-service-system/frontend run build -- --base=/ecommerce/
 

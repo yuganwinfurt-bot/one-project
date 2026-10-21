@@ -32,9 +32,11 @@ services:
     environment:
       RAG_PORT: ${RAG_PORT:-8000}
       RAG_DATA_DIR: /app/storage
+      AGENT_MODEL_PROFILES_PATH: /agent-state/model_profiles.json
     command: ["sh", "-c", "uvicorn app.main:app --host 127.0.0.1 --port \"$${RAG_PORT}\" --proxy-headers --forwarded-allow-ips=127.0.0.1"]
     volumes:
       - ./rag-assistant/backend/storage:/app/storage
+      - ./yugan-agent/.yugan:/agent-state:ro
     user: "${DOCKER_UID:-1000}:${DOCKER_GID:-1000}"
 
   ecommerce:
