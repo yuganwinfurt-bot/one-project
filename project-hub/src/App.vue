@@ -163,12 +163,17 @@ function cardTone(project, index) {
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
           <div class="art-heading"><span>SELECTED WORKS</span><b class="works-count">{{ String(projects.length).padStart(2, '0') }}</b></div>
           <div class="art-project-list">
-            <component :is="projectHref(project) ? 'a' : 'div'" v-for="(project, index) in projects.slice(0, 3)" :key="project.id" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
-              <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
-              <div><b>{{ project.shortName || project.name }}</b><small>{{ project.caption || project.category }}</small></div>
-              <span v-if="projectHref(project)" class="art-arrow" aria-hidden="true">↗</span>
-              <small v-else class="art-unavailable">暂未开放</small>
-            </component>
+            <div v-for="(project, index) in projects.slice(0, 3)" :key="project.id" class="art-project-row">
+              <component :is="projectHref(project) ? 'a' : 'div'" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
+                <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
+                <div><b>{{ project.shortName || project.name }}</b><small>{{ project.caption || project.category }}</small></div>
+                <span v-if="projectHref(project)" class="art-arrow" aria-hidden="true">↗</span>
+                <small v-else class="art-unavailable">暂未开放</small>
+              </component>
+              <a v-if="project.githubUrl" class="art-github-link" :href="project.githubUrl" target="_blank" rel="noopener noreferrer" :aria-label="`打开 ${project.name} 的 GitHub 仓库`">
+                GitHub <span aria-hidden="true">↗</span>
+              </a>
+            </div>
             <div v-if="projects.length > 3" class="art-more">还有 {{ projects.length - 3 }} 个项目，继续向下查看 ↓</div>
           </div>
           <div class="diagram-caption">YOUR PROJECTS, ONE PLACE</div>

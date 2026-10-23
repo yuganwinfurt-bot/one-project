@@ -25,10 +25,15 @@
 .art-project .diagram-icon{flex:none}
 .art-project .diagram-icon.tone-mint{background:#1ca789;color:#fff}
 .art-project .diagram-icon.tone-paper{background:#e9f1ed;color:#102237}
+.art-project-row{display:flex;align-items:center;gap:8px;min-width:0}
+.art-project-row .art-project{flex:1;min-width:0}
+.art-github-link{flex:none;display:inline-flex;align-items:center;gap:4px;border:1px solid #d3dfdc;border-radius:10px;background:#f7faf8;padding:9px 11px;color:#168e76;font-size:11px;font-weight:700;white-space:nowrap;transition:background .16s ease,border-color .16s ease}
+.art-github-link:hover{background:#e8f5ef;border-color:#82c9ad}
+.art-github-link:focus-visible{outline:3px solid #1a9c81;outline-offset:3px}
 .art-arrow{color:#1a9c81;font-size:20px}
 .art-more{padding:4px 15px;color:#52756b;font-size:11px}
 .flow-steps .unavailable-link{display:block;margin-top:13px;color:#83948e}
-@media(max-width:640px){.project-grid{grid-template-columns:1fr}.hero-art{height:300px}.art-heading{top:17px;left:20px;right:20px;font-size:9px}.art-project-list{inset:55px 20px 39px;gap:7px}.art-project{min-height:54px;padding:8px 10px;gap:9px}.art-project b{font-size:12px}.art-project small{font-size:9px}.art-arrow{font-size:16px}}
+@media(max-width:640px){.project-grid{grid-template-columns:1fr}.hero-art{height:300px}.art-heading{top:17px;left:20px;right:20px;font-size:9px}.art-project-list{inset:55px 20px 39px;gap:7px}.art-project-row{gap:5px}.art-project{min-height:54px;padding:8px 10px;gap:9px}.art-project b{font-size:12px}.art-project small{font-size:9px}.art-github-link{padding:8px 7px;font-size:9px}.art-arrow{font-size:16px}}
 
 /* The project rows in the hero are the actual navigation controls. */
 .art-project-link{cursor:pointer;transition:transform .16s ease,border-color .16s ease,box-shadow .16s ease}
