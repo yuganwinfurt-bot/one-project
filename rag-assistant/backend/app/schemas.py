@@ -66,6 +66,7 @@ ECOMMERCE_DOC_TYPES = {
     "user_summary", "address_summary", "cart_item", "favorite", "direct_conversation", "direct_message",
     "customer_notice", "shipment_notice", "review_notice", "staff_notice", "platform_feature",
     "inventory_state", "restock_notice",
+    "cart_variant", "brand", "catalog_category", "faq", "search_keyword", "advertisement", "topic", "coupon", "group_rule", "mall_notice", "role_definition", "mall_setting", "product_catalog", "customer_footprint", "customer_search", "mall_feedback", "coupon_claim", "coupon_stock", "order_promotion", "group_purchase", "group_member", "staff_permission", "region_reference", "storage_file", "statistics_summary",
 }
 
 

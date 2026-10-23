@@ -7,14 +7,17 @@
   <link rel="icon" href="static/icon.svg" type="image/svg+xml">
   <link rel="stylesheet" href="static/style.css?v=vision-model-picker-hero-2">
   <link rel="stylesheet" href="static/project-lab-theme.css?v=ecommerce-switcher-2">
+  <link rel="stylesheet" href="static/commerce-theme.css?v=tool-flow-1">
   <script type="module" src="static/knowledge-disclosure.js?v=1"></script>
   <script src="static/vue.global.prod.js?v=3.5.42" defer></script>
   <script src="static/vue-mount.js?v=vue3-shell-1" defer></script>
-  <script src="static/app.js?v=ecommerce-navigation-5" defer></script>
+  <script src="static/tool-flow.js?v=1" defer></script>
+  <script src="static/app.js?v=tool-flow-1" defer></script>
 </head>
 <body>
   <div class="app" id="agent-app">
-    <aside class="sidebar">
+    <button id="sidebar-scrim" class="sidebar-scrim" type="button" aria-label="关闭侧栏" hidden></button>
+    <aside id="agent-sidebar" class="sidebar">
       <div class="sidebar-scroll">
         <div class="brand">
           <div class="brand-switcher">
@@ -27,23 +30,25 @@
               <a id="brand-home-link" class="brand-switcher-link">项目主页 <span aria-hidden="true">→</span></a>
             </nav>
           </div>
-          <div><b>yugan-agent</b><small>YOUR LOCAL AGENT</small></div>
+          <div class="brand-copy"><b>Agent 智能体</b><small>YOUR LOCAL AGENT</small></div>
+          <button id="sidebar-close" class="sidebar-close" type="button" aria-label="关闭侧栏">×</button>
         </div>
-        <button id="sidebar-new-session" type="button" class="sidebar-new-chat"><span>＋</span> 新会话</button>
-        <nav class="sidebar-primary" aria-label="聊天导航"><button class="nav active" data-view="chat"><span>◈</span> 当前聊天</button></nav>
+        <button id="sidebar-new-session" type="button" class="sidebar-new-chat" title="新建会话" aria-label="新建会话"><span>＋</span><span class="new-session-label">新会话</span></button>
+        <nav class="sidebar-primary" aria-label="聊天导航"><button class="nav active" data-view="chat" title="当前聊天"><span class="nav-icon">◈</span><span class="nav-label">当前聊天</span></button></nav>
         <section class="workspace-list-section" aria-label="工作区">
-          <div class="workspace-list-heading"><strong>工作区</strong><span>拖入对话可移动</span><button id="create-workspace" type="button" title="创建工作区" aria-label="创建工作区">+</button></div>
+          <div class="workspace-list-heading"><button id="workspace-section-toggle" type="button" aria-expanded="true" aria-controls="workspace-list" title="收起工作区"><strong>工作区</strong><svg viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></button><button id="create-workspace" type="button" title="创建工作区；可将对话拖到工作区移动" aria-label="创建工作区">+</button></div>
           <div id="workspace-list" class="workspace-list"></div>
         </section>
         <div class="sidebar-conversations"><div class="sidebar-conversations-head"><strong>最近会话</strong></div><div id="sidebar-session-list" class="sidebar-session-list" aria-label="最近会话"></div></div>
       </div>
-      <details class="sidebar-tools"><summary>功能与设置 <span>⌄</span></summary><nav aria-label="全部页面"><button class="nav active" data-view="chat"><span>◈</span> 智能体会话</button><button class="nav" data-view="tools"><span>⌘</span> 工具系统</button><button class="nav" data-view="workflow"><span>◇</span> 工作流</button><button class="nav" data-view="context"><span>▤</span> 上下文</button><button class="nav" data-view="workspaces"><span>▰</span> 工作区</button><button class="nav" data-view="settings"><span>⚙</span> 模型设置</button></nav></details>
+      <details class="sidebar-tools"><summary title="功能与设置"><span class="sidebar-tools-icon" aria-hidden="true">⚙</span><span class="sidebar-tools-label">功能与设置</span><svg class="sidebar-tools-chevron" viewBox="0 0 24 24" width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg></summary><nav aria-label="全部页面"><button class="nav active" data-view="chat" title="智能体会话"><span class="nav-icon">◈</span><span class="nav-label">智能体会话</span></button><button class="nav" data-view="tools" title="工具系统"><span class="nav-icon">⌘</span><span class="nav-label">工具系统</span></button><button class="nav" data-view="workflow" title="工作流"><span class="nav-icon">◇</span><span class="nav-label">工作流</span></button><button class="nav" data-view="context" title="上下文"><span class="nav-icon">▤</span><span class="nav-label">上下文</span></button><button class="nav" data-view="workspaces" title="工作区"><span class="nav-icon">▰</span><span class="nav-label">工作区</span></button><button class="nav" data-view="settings" title="模型设置"><span class="nav-icon">⚙</span><span class="nav-label">模型设置</span></button></nav></details>
     </aside>
 
     <main class="main">
       <header class="topbar">
         <div class="topbar-left">
-          <div class="breadcrumb"><span id="breadcrumb-parent">工作区</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg><strong id="page-name">新会话</strong></div>
+          <button id="sidebar-toggle" class="sidebar-toggle" type="button" title="收起侧栏" aria-label="收起侧栏" aria-expanded="true" aria-controls="agent-sidebar"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16v16H4zM9 4v16m6-12-4 4 4 4"/></svg></button>
+          <div class="breadcrumb"><span class="breadcrumb-console">Agent 控制台</span><span class="breadcrumb-divider">/</span><span id="breadcrumb-parent">工作区</span><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg><strong id="page-name">新会话</strong></div>
           <div id="chat-top-title" class="topbar-subtitle"><span class="tiny-live" aria-hidden="true"></span><span id="session-label">正在创建会话…</span></div>
         </div>
         <div class="top-right">
@@ -53,6 +58,15 @@
           <a href="docs" target="_blank" rel="noopener">API 文档 ↗</a>
         </div>
       </header>
+
+      <nav class="workspace-tabs" aria-label="控制台页面">
+        <button class="workspace-tab active" data-view="chat" type="button" aria-current="page">智能体会话</button>
+        <button class="workspace-tab" data-view="tools" type="button">工具系统</button>
+        <button class="workspace-tab" data-view="workflow" type="button">工作流</button>
+        <button class="workspace-tab" data-view="context" type="button">上下文</button>
+        <button class="workspace-tab" data-view="workspaces" type="button">工作区</button>
+        <button class="workspace-tab" data-view="settings" type="button">模型设置</button>
+      </nav>
 
       <section id="view-chat" class="view active">
         <div id="messages" class="messages" aria-live="polite"><div class="empty"><div class="empty-icon">◇</div><b>从一个电脑任务开始</b><p>例如：打开记事本，写入“我的第一个电脑 Agent 任务”。</p></div></div>

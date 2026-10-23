@@ -14,7 +14,7 @@ def _repo_root() -> Path:
 
 def _ensure_pkg_path() -> None:
     root = _repo_root()
-    src = root / "cai-agent" / "src"
+    src = root / "yugan-agent" / "src"
     if str(src) not in sys.path:
         sys.path.insert(0, str(src))
 

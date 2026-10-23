@@ -7,7 +7,7 @@
     if (origin === window.location.origin) return true;
     try {
       const target = new URL(origin);
-      if (['localhost', '127.0.0.1', '[::1]'].includes(target.hostname) && ['4173', '5173', '8030'].includes(target.port)) return true;
+      if (['localhost', '127.0.0.1', '[::1]'].includes(target.hostname) && ['4173', '35173', '8030'].includes(target.port)) return true;
       return window.location.protocol === 'https:' && target.protocol === 'https:' && target.hostname === window.location.hostname && !target.port;
     } catch { return false; }
   };

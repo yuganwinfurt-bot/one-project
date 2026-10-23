@@ -1,11 +1,11 @@
 #!/usr/bin/env python3
 """Hermes S8-03 GA security gate (repo checkout).
 
-- Runs ``run_security_scan`` over ``cai-agent/src`` (SEC-GA-001 style: no **high** findings).
+- Runs ``run_security_scan`` over ``yugan-agent/src`` (SEC-GA-001 style: no **high** findings).
 - Optional quoted ``sk-…`` literal probe (SEC-GA-002 helper).
 
 Gateway allowlist bypass (SEC-GA-004) remains in automated tests:
-``cai-agent/tests/test_gateway_telegram_cli.py``.
+``yugan-agent/tests/test_gateway_telegram_cli.py``.
 
 Usage::
 
@@ -28,7 +28,7 @@ def _repo_root() -> Path:
 
 
 def _ensure_src_on_path(root: Path) -> None:
-    src = root / "cai-agent" / "src"
+    src = root / "yugan-agent" / "src"
     if not src.is_dir():
         print(f"error: missing {src}", file=sys.stderr)
         sys.exit(2)
@@ -42,7 +42,7 @@ def main() -> int:
     from cai_agent.config import Settings
     from cai_agent.security_scan import run_security_scan
 
-    src = root / "cai-agent" / "src"
+    src = root / "yugan-agent" / "src"
     with tempfile.TemporaryDirectory() as td:
         tdp = Path(td)
         (tdp / "cai-agent.toml").write_text(

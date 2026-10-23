@@ -7,7 +7,7 @@
 ## 2026-10-12 实施方式
 
 - 上游已从 `https://github.com/caizizhen/Cai_Agent` 克隆，基线提交 `d7155a7643d07f6c71c1083011df063d3dccd89b`，本地分支 `yugan-plan`，Git 历史保留。
-- 上游是大型终端编程 Agent，保留在本仓库的 `cai-agent/` 和其他原有目录；计划中的轻量通用框架位于新增的 `src/yugan_agent/`，以根目录 `pyproject.toml` 为默认安装入口。
+- 上游是大型终端编程 Agent，保留在本仓库的 `yugan-agent/` 和其他原有目录；计划中的轻量通用框架位于新增的 `src/yugan_agent/`，以根目录 `pyproject.toml` 为默认安装入口。
 - 旧的未验证初稿已备份至 `C:\Users\yugan\Desktop\yugan-agent-draft-20261012`，新增框架以该初稿为起点继续实施。
 - Web“工作流”页已改为可填写多步电脑任务的执行入口：每步调用 Agent，沿用同一会话；运行按钮旁可在发任务前选择逐项确认或仅本次自动批准。农业数据流程保留为 CLI/API 示例。
 - 实际完成状态与测试结果以 README 为准，不要把计划阶段视作已交付功能。

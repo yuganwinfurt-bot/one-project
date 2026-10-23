@@ -115,11 +115,11 @@ START → llm → route → END | tools → llm → …
 
 ## 环境与安装
 
-- **Python 3.11+**（见 `cai-agent/pyproject.toml` 的 `requires-python`）。
+- **Python 3.11+**（见 `yugan-agent/pyproject.toml` 的 `requires-python`）。
 - 任意提供 **OpenAI 兼容 Chat Completions** 的网关或本机推理服务。
 
 ```bash
-cd cai-agent
+cd yugan-agent
 pip install -e .
 cai-agent --version
 ```
@@ -638,7 +638,7 @@ cai-agent fix-build "修复当前测试失败"
 ## 开发与测试
 
 ```bash
-cd cai-agent
+cd yugan-agent
 pip install -e ".[dev]"
 python -m pytest -q
 ```

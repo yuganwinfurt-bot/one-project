@@ -18,7 +18,7 @@ class Settings(BaseSettings):
     base_url: str | None = None
     server_ollama_url: str = Field(default="http://127.0.0.1:11434", max_length=500)
     rag_web_origin: str = Field(default="http://127.0.0.1:4173", max_length=500)
-    ecommerce_web_origin: str = Field(default="http://127.0.0.1:5173", max_length=500)
+    ecommerce_web_origin: str = Field(default="http://127.0.0.1:35173", max_length=500)
     thinking: Literal["auto", "enabled", "disabled"] = "auto"
     workspace: Path = Path("workspace")
     database: Path = Path(".yugan/memory.db")

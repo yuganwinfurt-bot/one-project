@@ -16,7 +16,7 @@ dist/
 .coverage
 .coverage.*
 htmlcov/
-cai-agent/uv.lock
+yugan-agent/uv.lock
 
 # --- Editor / OS ---
 .vscode/
@@ -32,11 +32,11 @@ cai-agent.toml.bak
 
 # Cai Agent 的运行时缓存（last-workflow / observe 状态等）
 .cai/
-cai-agent/.cai/
+yugan-agent/.cai/
 
 # Memory / instinct 快照属于运行时产物，按时间命名，不入仓
 memory/instincts/instincts-*.md
-cai-agent/memory/instincts/instincts-*.md
+yugan-agent/memory/instincts/instincts-*.md
 
 # QA 临时驱动 / 实验脚本
 .tmp_qa/
@@ -50,7 +50,7 @@ cai-agent/memory/instincts/instincts-*.md
 .pytest-basetemp/
 .pytest-tmp/
 .pytest-tmp*/
-cai-agent/tests/.tmp-pytest/
+yugan-agent/tests/.tmp-pytest/
 tmp*/
 pytest-*-temp/
 scratch-test-dir/

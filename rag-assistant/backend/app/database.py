@@ -65,6 +65,8 @@ def initialize_database():
                 role TEXT NOT NULL CHECK (role IN ('user', 'assistant')),
                 content TEXT NOT NULL,
                 sources TEXT NOT NULL DEFAULT '[]',
+                execution_steps TEXT NOT NULL DEFAULT '[]',
+                execution_elapsed_ms INTEGER NOT NULL DEFAULT 0,
                 created_at TEXT NOT NULL
             );
             CREATE TABLE IF NOT EXISTS documents (
@@ -101,6 +103,11 @@ def initialize_database():
             CREATE INDEX IF NOT EXISTS idx_documents_knowledge_base ON documents(knowledge_base_id, uploaded_at DESC);
             """
         )
+        message_columns = {row["name"] for row in db.execute("PRAGMA table_info(messages)")}
+        if "execution_steps" not in message_columns:
+            db.execute("ALTER TABLE messages ADD COLUMN execution_steps TEXT NOT NULL DEFAULT '[]'")
+        if "execution_elapsed_ms" not in message_columns:
+            db.execute("ALTER TABLE messages ADD COLUMN execution_elapsed_ms INTEGER NOT NULL DEFAULT 0")
         document_columns = {row["name"] for row in db.execute("PRAGMA table_info(documents)")}
         if "embedding_profile" not in document_columns:
             db.execute("ALTER TABLE documents ADD COLUMN embedding_profile TEXT NOT NULL DEFAULT ''")

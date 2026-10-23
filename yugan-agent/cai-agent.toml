@@ -75,7 +75,7 @@ test_policy = "skip"
 lint_policy = "skip"
 # typecheck_policy: skip | fail_if_missing（未安装 mypy 时）
 typecheck_policy = "skip"
-# typecheck_paths = ["cai-agent/src"]
+# typecheck_paths = ["yugan-agent/src"]
 
 # 追加任意门禁命令（在工作区根目录执行）
 # [[quality_gate.extra]]
@@ -83,7 +83,7 @@ typecheck_policy = "skip"
 
 [security_scan]
 exclude_globs = [
-  "cai-agent/src/cai_agent/security_scan.py",
+  "yugan-agent/src/cai_agent/security_scan.py",
   "commands/security-scan.md",
   "skills/security-scan-light.md",
   "docs/**",

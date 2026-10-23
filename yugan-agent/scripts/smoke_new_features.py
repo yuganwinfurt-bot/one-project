@@ -20,7 +20,7 @@ memory list/search/export-entries/export --json envelopes.
 Run from repository root:
   python scripts/smoke_new_features.py
 
-Uses ``python -m cai_agent`` (and prepends ``cai-agent/src`` on ``PYTHONPATH``)
+Uses ``python -m cai_agent`` (and prepends ``yugan-agent/src`` on ``PYTHONPATH``)
 so the checkout is exercised even when the ``cai-agent`` console script is
 absent or shadowed on ``PATH`` — same idea as ``scripts/run_regression.py``.
 """
@@ -45,8 +45,8 @@ def _root() -> Path:
 
 
 def _ensure_repo_pythonpath(root: Path) -> None:
-    """Prepend cai-agent/src so `python -m cai_agent` uses this checkout."""
-    src = str((root / "cai-agent" / "src").resolve())
+    """Prepend yugan-agent/src so `python -m cai_agent` uses this checkout."""
+    src = str((root / "yugan-agent" / "src").resolve())
     prev = os.environ.get("PYTHONPATH", "").strip()
     os.environ["PYTHONPATH"] = src if not prev else f"{src}{os.pathsep}{prev}"
 

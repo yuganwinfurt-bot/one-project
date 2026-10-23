@@ -55,6 +55,38 @@ $publishTask = {
         }
     }
 
+    function Remove-PublishAliases {
+        Write-Output '上传已完成，正在清理上传用的本地名称，保留原来的项目镜像...'
+        try {
+            $containerImages = @(Invoke-Docker -DockerArguments @('container', 'ls', '--all', '--format', '{{.Image}}'))
+        }
+        catch {
+            Write-Output '无法核对容器引用，已跳过本地名称清理；镜像上传已完成。'
+            return
+        }
+        foreach ($serviceName in $serviceNames) {
+            $localImage = 'one-project/' + $serviceName + ':local'
+            $publishedImage = $repository + ':' + $serviceName + '-' + $version
+            try {
+                if ($containerImages -contains $publishedImage -or $containerImages -contains ('docker.io/' + $publishedImage)) {
+                    Write-Output ('保留正在被容器引用的名称：' + $publishedImage)
+                    continue
+                }
+                $localId = (@(Invoke-Docker -DockerArguments @('image', 'inspect', '--format', '{{.Id}}', $localImage)) -join '').Trim()
+                $publishedId = (@(Invoke-Docker -DockerArguments @('image', 'inspect', '--format', '{{.Id}}', $publishedImage)) -join '').Trim()
+                if ($localId -notmatch '^sha256:[0-9a-f]{64}$' -or $localId -cne $publishedId) {
+                    Write-Output ('两个名称指向的镜像不同，保留供检查：' + $publishedImage)
+                    continue
+                }
+                # Remove only this alias; the original local tag retains the image.
+                Invoke-Docker -DockerArguments @('image', 'rm', '--no-prune', $publishedImage)
+            }
+            catch {
+                Write-Output ('未能清理本地名称：' + $publishedImage + '。云端镜像已上传，请按上面的提示检查。')
+            }
+        }
+    }
+
     try {
         Write-Output ('发布仓库：' + $repository)
         Write-Output ('发布版本：' + $version)
@@ -105,6 +137,7 @@ $publishTask = {
 
         Write-Output '正在上传全部五个镜像，使用 Docker Desktop 当前登录的账号...'
         Invoke-Docker -DockerArguments @('compose', '--file', $publishCompose, 'push')
+        Remove-PublishAliases
         Write-Output '全部五个镜像已上传成功。'
         Write-Output ('仓库地址：https://hub.docker.com/r/' + $repository + '/tags')
     }
@@ -164,7 +197,7 @@ $rebuildBox.SetBounds(20, 143, 650, 28)
 $form.Controls.Add($rebuildBox)
 
 $note = New-Object System.Windows.Forms.Label
-$note.Text = '请先打开并登录 Docker Desktop。仓库公开或私有沿用 Docker Hub 设置。'
+$note.Text = '上传成功后会清理上传用的本地名称；原有项目镜像保留，云端镜像不受影响。'
 $note.SetBounds(20, 178, 790, 26)
 $note.Anchor = 'Top, Left, Right'
 $form.Controls.Add($note)
@@ -207,6 +240,7 @@ function Add-PublishLog {
 
 Add-PublishLog '默认发布本机已经构建好的五个镜像。'
 Add-PublishLog '修改代码后，请勾选“发布前重新构建”，以便上传最新代码。'
+Add-PublishLog '上传成功后自动清理上传用的本地名称；容器正在引用的名称会保留。'
 foreach ($service in $services) {
     Add-PublishLog ('  yuganwinfurt/one-project:' + $service + '-latest')
 }

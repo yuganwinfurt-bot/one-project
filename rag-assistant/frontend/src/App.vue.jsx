@@ -1,6 +1,8 @@
 import { Fragment, h, Teleport } from "vue";
 import { createStateFrame, useEffect, useMemo, useRef, useState } from "./vue-state.js";
 import Markdown from "./Markdown.js";
+import ExecutionProcess from "./ExecutionProcess.jsx";
+import { runBrowserRag } from "./rag-workflow.js";
 import {
   BookOpen, Bot, Check, ChevronDown, ChevronLeft, ChevronRight,
   CircleHelp, FileText, FolderKanban, Home, Layers3, MessageSquare,
@@ -31,7 +33,7 @@ if (localProjectHost && !import.meta.env.VITE_AGENT_URL) agentUrl.port = "8020";
 if (!agentUrl.pathname.endsWith("/")) agentUrl.pathname += "/";
 const ecommerceEnvUrl = import.meta.env.VITE_ECOM_URL;
 const ecommerceUrl = new URL(ecommerceEnvUrl || (localProjectHost ? "/" : "/ecommerce/"), window.location.href);
-if (localProjectHost && !ecommerceEnvUrl) ecommerceUrl.port = "5173";
+if (localProjectHost && !ecommerceEnvUrl) ecommerceUrl.port = "35173";
 if (!ecommerceUrl.pathname.endsWith("/")) ecommerceUrl.pathname += "/";
 
 async function requestBrowserModel(profile, messages) {
@@ -142,6 +144,15 @@ function renderApp() {
   const [renameValue, setRenameValue] = useState("");
   const [renameSaving, setRenameSaving] = useState(false);
   const [mobileNav, setMobileNav] = useState(false);
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(() => {
+    try { return window.localStorage.getItem("yugan-rag-sidebar-collapsed") === "1"; } catch { return false; }
+  });
+  const [projectSpaceCollapsed, setProjectSpaceCollapsed] = useState(() => {
+    try { return window.localStorage.getItem("yugan-rag-project-space-collapsed") === "1"; } catch { return false; }
+  });
+  const [processClock, setProcessClock] = useState(() => Date.now());
+  const [smallViewport, setSmallViewport] = useState(() => window.innerWidth <= 680);
+  const [brandMenuPosition, setBrandMenuPosition] = useState({ left: "8px", top: "50px" });
   const [managerOpen, setManagerOpen] = useState(false);
   const [activeKbId, setActiveKbId] = useState("");
   const [documents, setDocuments] = useState([]);
@@ -172,6 +183,7 @@ function renderApp() {
   const fileRef = useRef(null);
   const brandSwitchRef = useRef(null);
   const brandToggleRef = useRef(null);
+  const brandMenuRef = useRef(null);
   const sidebarMenuRef = useRef(null);
   const scopeRef = useRef(null);
   const generationRef = useRef(null);
@@ -197,6 +209,38 @@ function renderApp() {
   const activeScopeMode = scopeMode;
   const activeScopeIds = activeScopeMode === "project" ? (currentProject?.knowledge_base_ids || []) : selectedKbIds;
   const selectedKbs = useMemo(() => knowledgeBases.filter((kb) => activeScopeIds.includes(kb.id)), [knowledgeBases, activeScopeIds]);
+
+  useEffect(() => {
+    if (!busy) return;
+    setProcessClock(Date.now());
+    const timer = window.setInterval(() => setProcessClock(Date.now()), 500);
+    return () => window.clearInterval(timer);
+  }, [busy]);
+
+  function toggleProjectSpace() {
+    setProjectSpaceCollapsed((previous) => {
+      const collapsed = !previous;
+      try { window.localStorage.setItem("yugan-rag-project-space-collapsed", collapsed ? "1" : "0"); } catch {}
+      return collapsed;
+    });
+  }
+
+  useEffect(() => {
+    const resize = () => setSmallViewport(window.innerWidth <= 680);
+    window.addEventListener("resize", resize);
+    return () => window.removeEventListener("resize", resize);
+  }, []);
+
+  function toggleSidebar() {
+    setBrandMenuOpen(false);
+    if (smallViewport) {
+      setMobileNav((value) => !value);
+    } else {
+      const collapsed = !sidebarCollapsed;
+      setSidebarCollapsed(collapsed);
+      try { window.localStorage.setItem("yugan-rag-sidebar-collapsed", collapsed ? "1" : "0"); } catch {}
+    }
+  }
 
   function notify(message) {
     setToast(message);
@@ -492,8 +536,23 @@ function renderApp() {
 
   useEffect(() => {
     if (!brandMenuOpen) return undefined;
+    function positionMenu() {
+      const anchor = brandToggleRef.current?.getBoundingClientRect();
+      if (!anchor) return;
+      const width = Math.min(235, window.innerWidth - 16);
+      const height = brandMenuRef.current?.offsetHeight || 238;
+      setBrandMenuPosition({
+        width: `${width}px`,
+        left: `${Math.max(8, Math.min(anchor.left, window.innerWidth - width - 8))}px`,
+        top: `${Math.max(8, Math.min(anchor.bottom + 8, window.innerHeight - height - 8))}px`,
+      });
+    }
+    const frame = window.requestAnimationFrame(positionMenu);
+    window.addEventListener("resize", positionMenu);
+    document.addEventListener("scroll", positionMenu, true);
+    document.addEventListener("transitionend", positionMenu);
     function closeOnOutsideClick(event) {
-      if (brandSwitchRef.current && !brandSwitchRef.current.contains(event.target)) setBrandMenuOpen(false);
+      if (!brandSwitchRef.current?.contains(event.target) && !brandMenuRef.current?.contains(event.target)) setBrandMenuOpen(false);
     }
     function closeOnEscape(event) {
       if (event.key === "Escape") {
@@ -506,8 +565,12 @@ function renderApp() {
     return () => {
       document.removeEventListener("mousedown", closeOnOutsideClick);
       document.removeEventListener("keydown", closeOnEscape);
+      window.cancelAnimationFrame(frame);
+      window.removeEventListener("resize", positionMenu);
+      document.removeEventListener("scroll", positionMenu, true);
+      document.removeEventListener("transitionend", positionMenu);
     };
-  }, [brandMenuOpen]);
+  }, [brandMenuOpen, sidebarCollapsed, mobileNav]);
 
   useEffect(() => {
     if (!sidebarMenu) return undefined;
@@ -784,12 +847,26 @@ function renderApp() {
     setBusy(true);
     const requestId = uniqueId();
     const assistantId = `pending-${requestId}`;
+    const executionStartedAt = Date.now();
     const identity = { id: requestId, projectId, chatId };
     generationRef.current = identity;
     chatRequestRef.current += 1;
+    const updateStep = (step) => {
+      if (generationRef.current?.id !== requestId) return;
+      setMessages((items) => items.map((message) => {
+        if (message.id !== assistantId) return message;
+        const steps = [...(message.execution_steps || [])];
+        const index = steps.findIndex((item) => item.id === step.id);
+        const updated = { ...step, started_at: index >= 0 ? steps[index].started_at : Date.now() };
+        if (index < 0) steps.push(updated); else steps[index] = updated;
+        return { ...message, execution_steps: steps };
+      }));
+    };
     setMessages((items) => [...items,
       { id: `user-${requestId}`, role: "user", content, sources: [] },
-      { id: assistantId, role: "assistant", content: "", sources: [], streaming: true, retrievalStatus: browserModel ? { knowledge_bases: selectedKbs } : null },
+      { id: assistantId, role: "assistant", content: "", sources: [], streaming: true, executionStartedAt, processOpen: true,
+        execution_steps: [{ id: "dispatch", agent: "coordinator", label: "调度", stage: "scheduling", status: "running",
+          detail: "正在准备本轮对话与检索范围…", duration_ms: 0, started_at: executionStartedAt }] },
     ]);
     let activeChatId = chatId;
     try {
@@ -811,30 +888,17 @@ function renderApp() {
       if (generationRef.current?.id !== requestId) return;
       await scopeQueueRef.current;
       if (browserModel) {
-        const retrieved = await request(`/api/chats/${activeChatId}/retrieve`, jsonOptions("POST", { content, ...(scopeMode === "custom" ? { knowledge_base_ids: selectedKbIds } : {}) }));
+        const result = await runBrowserRag({
+          profile: browserModel, chatId: activeChatId, question: content,
+          history: messages.filter((item) => ["user", "assistant"].includes(item.role)),
+          knowledgeBases: selectedKbs, customIds: scopeMode === "custom" ? selectedKbIds : null,
+          callModel: requestBrowserModel, onStep: updateStep,
+        });
         if (generationRef.current?.id === requestId) {
           setMessages((items) => items.map((message) => message.id === assistantId ? {
-            ...message,
-            retrievalStatus: { answering: true, model: browserModel.name, knowledge_bases: retrieved.knowledge_bases || [] },
+            ...message, content: result.content, sources: result.sources, streaming: false,
+            execution_steps: result.execution_steps, execution_elapsed_ms: result.execution_elapsed_ms,
           } : message));
-        }
-        const material = (retrieved.contexts || []).map((item, index) => {
-          const details = [item.knowledge_base_name, item.filename, item.page != null ? `第 ${item.page} 页` : ""].filter(Boolean).join(" · ");
-          return `[资料${index + 1}]${details ? ` ${details}` : ""}\n${item.content || item.text || item.preview || ""}`;
-        }).join("\n\n");
-        const systemPrompt = [
-          "你是项目知识库问答助手。优先依据提供的检索资料回答；资料不足时明确说明，不要编造。引用资料时使用 [资料1] 这样的编号。",
-          material ? `本轮检索资料：\n${material}` : "本轮没有检索到相关资料。请说明知识库没有找到依据，并谨慎回答可由对话本身确定的内容。",
-        ].join("\n\n");
-        const modelMessages = [
-          { role: "system", content: systemPrompt },
-          ...(retrieved.history || []).filter((item) => ["user", "assistant"].includes(item.role) && typeof item.content === "string"),
-          { role: "user", content },
-        ];
-        const answer = await requestBrowserModel(browserModel, modelMessages);
-        await request(`/api/chats/${activeChatId}/answer`, jsonOptions("POST", { content: answer, sources: retrieved.sources || [] }));
-        if (generationRef.current?.id === requestId) {
-          setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: answer, sources: retrieved.sources || [], streaming: false, retrievalStatus: null } : message));
         }
         const refreshed = await request(`/api/projects/${projectId}/chats`);
         if (generationRef.current?.id === requestId) setChats(refreshed);
@@ -858,11 +922,17 @@ function renderApp() {
       let streamedAnswer = "";
       let finalAnswer = null;
       let finalSources = [];
+      let finalSteps = null;
+      let finalElapsed = 0;
       const handleEvent = (block) => {
         const line = block.split("\n").find((item) => item.startsWith("data: "));
         if (!line) return;
         const update = JSON.parse(line.slice(6));
-        if (update.type === "error") throw new Error(update.message || "回答生成失败");
+        if (update.type === "progress") { updateStep(update.step); return; }
+        if (update.type === "error") {
+          if (Array.isArray(update.execution_steps)) update.execution_steps.forEach(updateStep);
+          throw new Error(update.message || "回答生成失败");
+        }
         if (update.type === "token") {
           streamedAnswer += update.content || "";
           if (generationRef.current?.id === requestId) setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: streamedAnswer } : message));
@@ -871,6 +941,8 @@ function renderApp() {
         } else if (update.type === "done") {
           finalAnswer = update.answer || streamedAnswer;
           finalSources = update.sources || finalSources;
+          finalSteps = update.execution_steps || null;
+          finalElapsed = update.execution_elapsed_ms || 0;
         }
       };
       while (true) {
@@ -885,14 +957,23 @@ function renderApp() {
       }
       if (buffer.trim()) handleEvent(buffer);
       if (finalAnswer === null) throw new Error("实时连接中断，未收到回答结果");
-      if (generationRef.current?.id === requestId) setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: finalAnswer, sources: finalSources, streaming: false } : message));
+      if (generationRef.current?.id === requestId) setMessages((items) => items.map((message) => message.id === assistantId ? {
+        ...message, content: finalAnswer, sources: finalSources, streaming: false,
+        execution_steps: finalSteps || message.execution_steps, execution_elapsed_ms: finalElapsed || Date.now() - executionStartedAt,
+      } : message));
       const refreshed = await request(`/api/projects/${projectId}/chats`);
       if (generationRef.current?.id === requestId) setChats(refreshed);
     } catch (error) {
       if (generationRef.current?.id === requestId) {
         setInput(content);
         notify(error.message);
-        setMessages((items) => items.map((message) => message.id === assistantId ? { ...message, content: `${message.content}${message.content ? "\n\n" : ""}出错了：${error.message}`, error: true, streaming: false, retrievalStatus: null } : message));
+        setMessages((items) => items.map((message) => message.id === assistantId ? {
+          ...message, content: `${message.content}${message.content ? "\n\n" : ""}出错了：${error.message}`, error: true, streaming: false,
+          execution_elapsed_ms: Date.now() - executionStartedAt,
+          execution_steps: (message.execution_steps || []).map((step) => step.status === "running" ? {
+            ...step, status: "error", detail: "处理失败，请检查当前模型与知识库服务后重试。", duration_ms: Date.now() - (step.started_at || executionStartedAt),
+          } : step),
+        } : message));
       }
     } finally {
       if (generationRef.current?.id === requestId) {
@@ -1067,7 +1148,7 @@ function renderApp() {
   }
 
   return (
-    <div className="app-shell"
+    <div className={`app-shell app-shell--commerce ${sidebarCollapsed && !smallViewport ? "sidebar-collapsed" : ""}`}
       onDragenter={(event) => { if (auth?.role === "admin" && transferHasFiles(event)) { event.preventDefault(); dragDepthRef.current += 1; setDragActive(true); } }}
       onDragover={(event) => { if (auth?.role === "admin" && transferHasFiles(event)) { event.preventDefault(); event.dataTransfer.dropEffect = uploading ? "none" : "copy"; } }}
       onDragleave={(event) => { if (auth?.role === "admin" && transferHasFiles(event)) { dragDepthRef.current = Math.max(0, dragDepthRef.current - 1); if (!dragDepthRef.current) setDragActive(false); } }}
@@ -1079,37 +1160,40 @@ function renderApp() {
         <div className="brand-row">
           <div className="brand-switcher" ref={brandSwitchRef}>
             <button ref={brandToggleRef} className="brand-logo brand-switcher-toggle" type="button" aria-label="打开项目菜单" aria-expanded={brandMenuOpen} aria-controls="brand-switcher-menu" onClick={() => setBrandMenuOpen((value) => !value)}><Menu size={20} /></button>
-            <nav id="brand-switcher-menu" className="brand-switcher-menu" aria-label="项目入口" hidden={!brandMenuOpen}>
+            <Teleport to="body"><nav ref={brandMenuRef} id="brand-switcher-menu" className="brand-switcher-menu" style={brandMenuPosition} aria-label="项目入口" hidden={!brandMenuOpen}>
               <span className="brand-switcher-heading">项目入口</span>
               <a className="brand-switcher-link" href={ecommerceUrl.href}>电商分析平台 <span aria-hidden="true">→</span></a>
               <a className="brand-switcher-link" href={agentUrl.href}>Agent 控制台 <span aria-hidden="true">→</span></a>
               <span className="brand-switcher-current">RAG 知识库 <small>当前页面</small></span>
               <a className="brand-switcher-link" href={projectHomeUrl.href}>项目主页 <span aria-hidden="true">→</span></a>
-            </nav>
+            </nav></Teleport>
           </div>
-          <div className="brand-copy"><strong>知答</strong><span>LOCAL KNOWLEDGE</span></div>
+          <div className="brand-copy"><strong>RAG 知识库</strong><span>知答 · 本地知识助手</span></div>
           <button className="icon-button mobile-close" aria-label="关闭菜单" onClick={() => setMobileNav(false)}><X size={17} /></button>
         </div>
-        <button className="new-chat-button" onClick={startChat} disabled={busy || chatLoading || scopeSaving || !projectId}><Plus size={17} />新建对话</button>
+        <button className="new-chat-button" title="新建对话" aria-label="新建对话" onClick={startChat} disabled={busy || chatLoading || scopeSaving || !projectId}><Plus size={17} /><span>新建对话</span></button>
         <div className="sidebar-section project-section">
-          <div className="sidebar-label">项目空间 {auth?.role === "admin" && <button title="新建项目" onClick={() => openProjectDialog(false)}><Plus size={15} /></button>}</div>
-          <div className="project-list">
-            {projects.map((project) => <button key={project.id} className={`project-item ${project.id === projectId ? "selected" : ""}`} onClick={() => selectProject(project.id)} onContextmenu={(event) => openSidebarMenu(event, "project", project)} onKeydown={(event) => { if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) openSidebarMenu(event, "project", project); }}>
+          <div className="sidebar-label project-section-heading">
+            <button type="button" className="project-section-toggle" title={projectSpaceCollapsed ? "展开项目空间" : "收起项目空间"} aria-label={projectSpaceCollapsed ? "展开项目空间" : "收起项目空间"} aria-expanded={!projectSpaceCollapsed} aria-controls="rag-project-space" onClick={toggleProjectSpace}><span>项目空间</span><ChevronDown size={14} class={projectSpaceCollapsed ? "" : "is-open"} /></button>
+            {auth?.role === "admin" && <button type="button" className="project-section-add" title="新建项目" aria-label="新建项目" onClick={() => openProjectDialog(false)}><Plus size={15} /></button>}
+          </div>
+          <div className="project-list" id="rag-project-space" hidden={projectSpaceCollapsed}>
+            {projects.map((project) => <button key={project.id} title={project.name} aria-label={project.name} className={`project-item ${project.id === projectId ? "selected" : ""}`} onClick={() => selectProject(project.id)} onContextmenu={(event) => openSidebarMenu(event, "project", project)} onKeydown={(event) => { if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) openSidebarMenu(event, "project", project); }}>
               <span className="project-icon"><FolderKanban size={16} /></span><span className="project-name">{project.name}</span><span className="project-count">{project.knowledge_base_ids?.length || 0}</span>
             </button>)}
           </div>
         </div>
         <div className="sidebar-section conversation-section">
-          <div className="sidebar-label">最近对话 <span>{chats.length}</span></div>
+          <div className="sidebar-label"><span>最近对话</span><span className="conversation-count">{chats.length}</span></div>
           <div className="conversation-list">
-            {chats.map((chat) => <button key={chat.id} className={`conversation-item ${chat.id === chatId ? "active" : ""}`} onClick={() => selectChat(chat)} onContextmenu={(event) => openSidebarMenu(event, "chat", chat)} onKeydown={(event) => { if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) openSidebarMenu(event, "chat", chat); }}>
+            {chats.map((chat) => <button key={chat.id} title={chat.title} aria-label={chat.title} className={`conversation-item ${chat.id === chatId ? "active" : ""}`} onClick={() => selectChat(chat)} onContextmenu={(event) => openSidebarMenu(event, "chat", chat)} onKeydown={(event) => { if (event.key === "ContextMenu" || (event.shiftKey && event.key === "F10")) openSidebarMenu(event, "chat", chat); }}>
               <MessageSquare size={15} /><span>{chat.title}</span><i className="delete-chat" role="button" aria-label="删除对话" onClick={(event) => removeChat(chat, event)}><Trash2 size={13} /></i>
             </button>)}
             {!chats.length && <p className="sidebar-empty">还没有对话，点击上方开始。</p>}
           </div>
         </div>
         <div className="sidebar-bottom">
-          <button className="manage-link" onClick={() => { setManagerOpen(true); setShowKbForm(false); }}><BookOpen size={16} />管理知识库<ChevronRight size={15} /></button>
+          <button className="manage-link" title="管理知识库" aria-label="管理知识库" onClick={() => { setManagerOpen(true); setShowKbForm(false); }}><BookOpen size={16} /><span>管理知识库</span><ChevronRight size={15} /></button>
           <button type="button" className={`model-status ${browserModel || status?.ollama_connected ? "online" : "offline"}`} onClick={openModelDialog} title="查看并切换 RAG 回答模型">
             <span className="status-dot" />
             <div><strong>{browserModel ? "当前回答模型" : status?.ollama_connected ? "RAG 回答模型" : "等待 Ollama"}</strong><small>{browserModel ? (browserModel.mode === "server" ? `服务器模型 · ${browserModel.model}` : browserModel.name) : (status?.ollama_connected ? modelSettings.local_model || status.chat_model : "检查本地模型服务")}</small></div>
@@ -1122,8 +1206,8 @@ function renderApp() {
       <main className="main-panel">
         <header className="topbar">
           <div className="topbar-title">
-            <button className="icon-button mobile-menu" aria-label="打开侧边栏" onClick={() => setMobileNav(true)}><PanelLeftClose size={18} /></button>
-            <div className="breadcrumb"><span>{currentProject?.name || "项目空间"}</span><ChevronRight size={14} /><strong>{currentChat?.title || "新对话"}</strong></div>
+            <button className="icon-button sidebar-toggle" type="button" aria-label={smallViewport ? (mobileNav ? "收起侧栏" : "展开侧栏") : sidebarCollapsed ? "展开侧栏" : "收起侧栏"} aria-expanded={smallViewport ? mobileNav : !sidebarCollapsed} onClick={toggleSidebar}><PanelLeftClose size={18} /></button>
+            <div className="breadcrumb"><a href={projectHomeUrl.href}>首页</a><span className="breadcrumb-divider">/</span><span>RAG 知识库</span><span className="breadcrumb-divider">/</span><span>{currentProject?.name || "项目空间"}</span><ChevronRight size={14} /><strong>{currentChat?.title || "新对话"}</strong></div>
             <div className="topbar-subtitle"><span className="tiny-live" />每轮自动检索{activeScopeMode === "project" ? "项目关联的" : "自定义的"}知识库</div>
           </div>
           <div className="topbar-actions">
@@ -1151,27 +1235,42 @@ function renderApp() {
             {auth?.role === "admin" && <button className="settings-top-button" title="项目设置" disabled={!projectId || busy} onClick={() => openProjectDialog(true)}><Settings2 size={17} /><span>设置</span></button>}
           </div>
         </header>
+        <nav className="workspace-tabs" aria-label="知识库功能">
+          <span className="workspace-tab active" aria-current="page"><i />知识库问答</span>
+          <button className="workspace-tab" type="button" onClick={() => { setManagerOpen(true); setShowKbForm(false); }}>知识库管理</button>
+          <span className="workspace-current-project">当前项目：{currentProject?.name || "加载中"}</span>
+        </nav>
 
         {status?.ollama_connected === false && <div className="connection-banner"><CircleHelp size={16} /><span>知识检索服务暂不可用，请检查 RAG 服务端的向量模型配置。</span></div>}
 
         <section className="chat-area">
           {chatLoading ? <div className="loading-state"><span className="spinner" />正在读取对话…</div> : messages.length === 0 ? <div className="welcome-screen">
-            <div className="welcome-orb"><Sparkles size={22} /></div>
-            <p className="eyebrow">PROJECT KNOWLEDGE ASSISTANT</p>
-            <h1>把项目资料，<span>变成答案。</span></h1>
-            <p className="welcome-copy">在 <b>{currentProject?.name || "当前项目"}</b> 中向多个知识库提问。每轮会自动检索关联资料，并显示来源。</p>
-            <div className="active-kb-row">
-              {selectedKbs.slice(0, 4).map((kb) => <span className="kb-chip" key={kb.id}><BookOpen size={13} />{kb.name}</span>)}
-              {!selectedKbs.length && <button className="empty-scope-chip" onClick={() => setScopeOpen(true)}>选择一个知识库</button>}
-              <button className="add-scope-chip" onClick={() => { setScopeOpen(true); }}><Plus size={13} /></button>
+            <section className="workspace-welcome-card">
+              <div className="welcome-heading"><span className="workspace-title-icon"><MessageSquare size={21} /></span><div><h1>知识库问答</h1><p>检索项目资料，结合来源生成回答。</p></div></div>
+              <button className="quiet-button" type="button" onClick={() => { setManagerOpen(true); setShowKbForm(false); }}><BookOpen size={15} />管理知识库</button>
+            </section>
+            <div className="knowledge-overview" aria-label="当前项目资料概况">
+              <div className="overview-card"><span>检索知识库</span><strong>{projectId ? selectedKbs.length : "—"}</strong><small>{activeScopeMode === "project" ? "跟随项目自动检索" : "当前对话自定义范围"}</small></div>
+              <div className="overview-card"><span>可检索资料</span><strong>{projectId ? selectedKbs.reduce((count, kb) => count + Number(kb.document_count || 0), 0) : "—"}</strong><small>当前检索范围内的文件数量</small></div>
+              <div className="overview-card"><span>最近会话</span><strong>{projectId ? chats.length : "—"}</strong><small>当前项目已保存的历史对话</small></div>
             </div>
-            {auth?.role === "admin" && <button className="welcome-upload" disabled={uploading} onClick={() => fileRef.current?.click()}><Upload size={17} /><span>拖入资料或点击上传<small>选择知识库后，自动读取、分片并建立索引</small></span></button>}
+            <section className="welcome-question-card">
+              <div className="workspace-section-heading"><h2>开始知识检索</h2><span><i className="tiny-live" />每轮自动检索</span></div>
+              <p className="welcome-copy">在 <b>{currentProject?.name || "当前项目"}</b> 中向多个知识库提问。每轮会自动检索关联资料，并显示来源。</p>
+              <div className="active-kb-row">
+                {selectedKbs.slice(0, 4).map((kb) => <span className="kb-chip" key={kb.id}><BookOpen size={13} />{kb.name}</span>)}
+                {!selectedKbs.length && <button className="empty-scope-chip" onClick={() => setScopeOpen(true)}>选择一个知识库</button>}
+                <button className="add-scope-chip" title="调整检索知识库" aria-label="调整检索知识库" onClick={() => { setScopeOpen(true); }}><Plus size={13} /></button>
+              </div>
+              {auth?.role === "admin" && <button className="welcome-upload" disabled={uploading} onClick={() => fileRef.current?.click()}><Upload size={20} /><span>拖入资料或点击上传<small>支持 PDF、DOCX、TXT、Markdown 和 CSV，导入后自动建立索引</small></span></button>}
+            </section>
           </div> : <div className="messages-list">
             {messages.map((message) => <article key={message.id} className={`message-row ${message.role === "user" ? "user-row" : "assistant-row"}`}>
               <div className={`message-avatar ${message.role}`}>
                 {message.role === "user" ? <img src="default-user-avatar.svg" alt="" /> : <Bot size={17} />}
               </div>
               <div className="message-body">
+                {message.role === "assistant" && <ExecutionProcess message={message} clock={processClock} onToggle={() => setMessages((items) => items.map((item) => item.id === message.id ? { ...item, processOpen: item.processOpen === false } : item))} />}
                 <div className="message-meta"><b>{message.role === "user" ? "你" : "知答"}</b>{message.role === "assistant" && <span>· 基于知识库</span>}</div>
                 {message.retrievalStatus && <div className="retrieval-status"><span className="spinner" /><span>{message.retrievalStatus.answering ? `正在使用 ${message.retrievalStatus.model} 生成回答…` : message.retrievalStatus.knowledge_bases?.length ? `正在检索：${message.retrievalStatus.knowledge_bases.map((kb) => kb.name).join("、")}` : "当前范围没有知识库，请在项目设置中关联资料。"}</span></div>}
                 <div className={`message-content ${message.error ? "message-error" : ""}`}>

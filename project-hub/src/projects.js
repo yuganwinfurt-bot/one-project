@@ -79,7 +79,7 @@ export const projects = [
     description: '围绕商品、订单和评价进行自然语言分析，结合数据查询与语义检索整理经营诊断。',
     caption: '商品 · 订单 · 评价分析',
     tone: 'paper',
-    localUrl: 'http://127.0.0.1:5173/',
+    localUrl: 'http://127.0.0.1:35173/',
     publicUrl: '/ecommerce/',
     action: '进入电商分析平台',
   },

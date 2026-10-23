@@ -37,7 +37,7 @@ def _repo_root() -> Path:
 
 
 def _ensure_src_on_path(root: Path) -> None:
-    src = root / "cai-agent" / "src"
+    src = root / "yugan-agent" / "src"
     if not src.is_dir():
         print(f"error: missing {src}", file=sys.stderr)
         sys.exit(2)

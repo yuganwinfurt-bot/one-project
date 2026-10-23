@@ -8,7 +8,7 @@ Writes a Markdown report under docs/qa/runs/ unless QA_SKIP_LOG=1.
 See docs/QA_REGRESSION_LOGGING.md (EN) and docs/QA_REGRESSION_LOGGING.zh-CN.md (ZH).
 
 Notes:
-  - Uses `python -m cai_agent` and prepends `cai-agent/src` on PYTHONPATH so this
+  - Uses `python -m cai_agent` and prepends `yugan-agent/src` on PYTHONPATH so this
     checkout is exercised even when another `cai-agent` entrypoint is earlier on PATH.
   - mcp-check may exit 2 when MCP is disabled or unreachable; that is expected.
   - models may exit 0 or 2 depending on LM_BASE_URL; set REGRESSION_STRICT_MODELS=1
@@ -34,8 +34,8 @@ def _repo_root() -> Path:
 
 
 def _ensure_repo_pythonpath(root: Path) -> None:
-    """Prepend cai-agent/src so unittest and `python -m cai_agent` use this checkout."""
-    src = str((root / "cai-agent" / "src").resolve())
+    """Prepend yugan-agent/src so unittest and `python -m cai_agent` use this checkout."""
+    src = str((root / "yugan-agent" / "src").resolve())
     prev = os.environ.get("PYTHONPATH", "").strip()
     os.environ["PYTHONPATH"] = src if not prev else f"{src}{os.pathsep}{prev}"
 
@@ -228,7 +228,7 @@ def main() -> int:
     models_expected: tuple[int, ...] = (0, 2) if not strict_models else (0,)
 
     steps: list[tuple[str, list[str], tuple[int, ...]]] = [
-        ("compileall", [sys.executable, "-m", "compileall", "cai-agent/src"], (0,)),
+        ("compileall", [sys.executable, "-m", "compileall", "yugan-agent/src"], (0,)),
         (
             "unittest",
             [
@@ -237,7 +237,7 @@ def main() -> int:
                 "unittest",
                 "discover",
                 "-s",
-                "cai-agent/tests",
+                "yugan-agent/tests",
                 "-p",
                 "test*.py",
                 "-q",

@@ -119,6 +119,7 @@ class BrowserTurn(BaseModel):
     prompt: str = Field(min_length=1, max_length=12000)
     answer: str = Field(min_length=1, max_length=60000)
     model: str = Field(default="", max_length=128)
+    elapsed_ms: int = Field(default=0, ge=0, le=86_400_000)
     execution: list[ExecutionEntry] = Field(default_factory=list, max_length=100)
 
 
@@ -1151,12 +1152,13 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
                         created_at=datetime.now(timezone.utc).isoformat(),
                         turn_index=turn_index,
                         model=body.model,
+                        elapsed_ms=body.elapsed_ms,
                         entries=body.execution,
                     )
                 )
                 snapshot.execution_traces = snapshot.execution_traces[-500:]
             agent.memory.save(stored_id, snapshot)
-        return {"saved": True}
+        return {"saved": True, "turn_index": turn_index}
 
     @app.get("/api/tools/management", dependencies=auth)
     async def tool_management(request: Request):

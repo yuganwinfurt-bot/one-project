@@ -4,7 +4,7 @@
 
 ## Checklist
 
-- [ ] **Tests**: `cd cai-agent && python -m pytest tests -q`（或说明豁免原因）
+- [ ] **Tests**: `cd yugan-agent && python -m pytest tests -q`（或说明豁免原因）
 - [ ] **CHANGELOG**: 已更新根目录 **`CHANGELOG.md`**（英文）
 - [ ] **CHANGELOG.zh-CN**: 已同步更新 **`CHANGELOG.zh-CN.md`**（中文；流程见 **`docs/CHANGELOG_SYNC.zh-CN.md`**）
 - [ ] **Docs**: 若改 CLI/JSON 契约 → 已更新 **`docs/schema/README.zh-CN.md`** 或相关子文档

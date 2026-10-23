@@ -2,7 +2,7 @@
 
 一个可以在本机运行的 Python Agent 项目：**Agent 决策、工具调用、JSON 工作流、会话记忆**，并提供命令行与中文浏览器操作页。
 
-本仓库基于 [caizizhen/Cai_Agent](https://github.com/caizizhen/Cai_Agent) 的 Git 历史建立。上游原有的终端编程 Agent 仍在 `cai-agent/`；本项目新增的轻量通用框架位于 `src/yugan_agent/`，默认运行命令为 `yugan-agent`。见 [上游来源说明](UPSTREAM.md) 与 [开发计划](PLAN.md)。
+本仓库基于 [caizizhen/Cai_Agent](https://github.com/caizizhen/Cai_Agent) 的 Git 历史建立。上游原有的终端编程 Agent 仍在 `yugan-agent/`；本项目新增的轻量通用框架位于 `src/yugan_agent/`，默认运行命令为 `yugan-agent`。见 [上游来源说明](UPSTREAM.md) 与 [开发计划](PLAN.md)。
 
 ## 5 分钟运行
 
@@ -117,4 +117,4 @@ YUGAN_BASE_URL=该供应商的OpenAI兼容接口地址
 .\.venv\Scripts\python.exe scripts\verify_yugan_web.py
 ```
 
-原上游的运行方式、文档与代码仍保留在 `cai-agent/` 及其他原有目录。新包和旧包是两个独立入口；原上游的大型测试集不等于新包的验收结果。
+原上游的运行方式、文档与代码仍保留在 `yugan-agent/` 及其他原有目录。新包和旧包是两个独立入口；原上游的大型测试集不等于新包的验收结果。

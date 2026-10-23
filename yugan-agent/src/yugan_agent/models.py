@@ -61,6 +61,7 @@ class ExecutionTrace(BaseModel):
     created_at: str = Field(min_length=1, max_length=40)
     turn_index: int | None = Field(default=None, ge=0)
     model: str = Field(default="", max_length=128)
+    elapsed_ms: int = Field(default=0, ge=0, le=86_400_000)
     entries: list[ExecutionEntry] = Field(default_factory=list, max_length=100)
 
 

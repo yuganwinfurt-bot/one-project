@@ -11,6 +11,8 @@ from collections import Counter
 from contextlib import asynccontextmanager
 from contextvars import ContextVar
 from pathlib import Path
+from time import perf_counter
+from typing import Literal
 from uuid import uuid4
 
 import httpx
@@ -31,6 +33,7 @@ from . import ecommerce_sync_jobs
 from .auth import AuthManager
 from .model_settings import AnswerModelSettings, load_settings, save_settings, validate_settings
 from .rag.graph import create_rag_graph
+from .rag.agents import merge_contexts, source_summaries
 from .rag.ecommerce_index import embedding_profile, index_ecommerce_snapshot, snapshot_changes
 from .rag.pipeline import (
     ALLOWED_EXTENSIONS,
@@ -242,7 +245,8 @@ def project_dict(row, db):
 
 
 def serialize_message(row):
-    return {**dict(row), "sources": parse_json(row["sources"])}
+    return {**dict(row), "sources": parse_json(row["sources"]),
+            "execution_steps": parse_json(row["execution_steps"])}
 
 
 def effective_knowledge_bases(db, chat):
@@ -590,9 +594,26 @@ class AnswerModelUpdate(BaseModel):
     agent_profile_id: str = Field(default="", max_length=32)
 
 
+class ExecutionStep(BaseModel):
+    id: str = Field(min_length=1, max_length=64)
+    agent: Literal["coordinator", "planner", "retriever", "reviewer", "writer"]
+    label: str = Field(min_length=1, max_length=60)
+    stage: str = Field(min_length=1, max_length=40)
+    status: Literal["running", "completed", "warning", "error"]
+    detail: str = Field(default="", max_length=800)
+    duration_ms: int = Field(default=0, ge=0, le=86400000)
+
+
+class BrowserRetrieveRequest(MessageCreate):
+    search_query: str | None = Field(default=None, min_length=1, max_length=400)
+    retry: bool = False
+
+
 class AssistantAnswer(BaseModel):
     content: str = Field(min_length=1, max_length=60000)
     sources: list[dict] = Field(default_factory=list, max_length=16)
+    execution_steps: list[ExecutionStep] = Field(default_factory=list, max_length=32)
+    execution_elapsed_ms: int = Field(default=0, ge=0, le=86400000)
 
 
 @app.get("/api/model-settings")
@@ -954,7 +975,7 @@ def delete_chat(chat_id: str, request: Request):
 
 
 @app.post("/api/chats/{chat_id}/retrieve")
-async def retrieve_for_browser_model(chat_id: str, payload: MessageCreate, request: Request):
+async def retrieve_for_browser_model(chat_id: str, payload: BrowserRetrieveRequest, request: Request):
     """保存用户问题并只返回检索资料；回答模型由浏览器直接调用。"""
     chat_id = accessible_chat_id(chat_id, request)
     question = payload.content.strip()
@@ -989,16 +1010,25 @@ async def retrieve_for_browser_model(chat_id: str, payload: MessageCreate, reque
             "UPDATE chats SET knowledge_base_ids = ?, updated_at = ? WHERE id = ?",
             (json.dumps(kb_ids), stamp, chat_id),
         )
-        db.execute(
-            "INSERT INTO messages (chat_id, role, content, sources, created_at) VALUES (?, 'user', ?, '[]', ?)",
-            (chat_id, question, stamp),
-        )
+        if payload.retry:
+            previous = db.execute(
+                "SELECT role, content FROM messages WHERE chat_id = ? ORDER BY id DESC LIMIT 1", (chat_id,),
+            ).fetchone()
+            if not previous or previous["role"] != "user" or previous["content"] != question:
+                raise HTTPException(status_code=409, detail="对话已发生变化，请重新发送问题")
+        else:
+            db.execute(
+                "INSERT INTO messages (chat_id, role, content, sources, created_at) VALUES (?, 'user', ?, '[]', ?)",
+                (chat_id, question, stamp),
+            )
         if chat["title"] == "新对话":
             title = re.sub(r"\s+", " ", question)[:28].strip() or "新对话"
             db.execute("UPDATE chats SET title = ? WHERE id = ?", (title, chat_id))
 
     try:
-        contexts = await asyncio.to_thread(retrieve_contexts, question, kb_ids, names_by_id)
+        contexts = merge_contexts(await asyncio.to_thread(
+            retrieve_contexts, payload.search_query or question, kb_ids, names_by_id,
+        )) if kb_ids else []
     except Exception as exc:
         logger.exception("知识库检索失败")
         raise HTTPException(status_code=503, detail="知识库检索失败，请检查向量服务") from exc
@@ -1033,8 +1063,11 @@ def save_browser_generated_answer(chat_id: str, payload: AssistantAnswer, reques
             raise HTTPException(status_code=404, detail="对话不存在")
         stamp = now_iso()
         db.execute(
-            "INSERT INTO messages (chat_id, role, content, sources, created_at) VALUES (?, 'assistant', ?, ?, ?)",
-            (chat_id, payload.content, json.dumps(payload.sources, ensure_ascii=False), stamp),
+            "INSERT INTO messages (chat_id, role, content, sources, execution_steps, execution_elapsed_ms, created_at) "
+            "VALUES (?, 'assistant', ?, ?, ?, ?, ?)",
+            (chat_id, payload.content, json.dumps(payload.sources, ensure_ascii=False),
+             json.dumps([step.model_dump() for step in payload.execution_steps], ensure_ascii=False),
+             payload.execution_elapsed_ms, stamp),
         )
         db.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (stamp, chat_id))
     return {"saved": True}
@@ -1086,12 +1119,31 @@ async def stream_message(chat_id: str, payload: MessageCreate):
         answer_parts = []
         retrieved_contexts = []
         final_answer = ""
+        execution_steps = []
+        started = perf_counter()
+        step_started = {}
+
+        def record_step(step):
+            if step["status"] == "running":
+                step_started[step["id"]] = perf_counter()
+            for index, previous in enumerate(execution_steps):
+                if previous["id"] == step["id"]:
+                    execution_steps[index] = step
+                    break
+            else:
+                execution_steps.append(step)
+
         try:
             yield sse({
                 "type": "status", "stage": "retrieving", "scope_mode": scope_mode,
                 "knowledge_bases": [{"id": kb_id, "name": names_by_id[kb_id]} for kb_id in kb_ids],
             })
             graph = app.state.rag_graph
+            ready = {"id": "dispatch", "agent": "coordinator", "label": "调度", "stage": "scheduling",
+                     "status": "completed", "duration_ms": 0,
+                     "detail": f"已确认 {len(kb_ids)} 个知识库范围；交给检索规划 Agent，按规划、检索、审核、回答依次执行。"}
+            record_step(ready)
+            yield sse({"type": "progress", "step": ready})
             async for event in graph.astream_events(
                 {
                     "question": question,
@@ -1101,6 +1153,10 @@ async def stream_message(chat_id: str, payload: MessageCreate):
                 },
                 version="v2",
             ):
+                if event.get("event") == "on_custom_event" and event.get("name") == "rag_progress":
+                    step = event["data"]
+                    record_step(step)
+                    yield sse({"type": "progress", "step": step})
                 if event.get("event") == "on_custom_event" and event.get("name") == "rag_answer_token":
                     token = event.get("data", {}).get("content", "")
                     if token:
@@ -1144,14 +1200,18 @@ async def stream_message(chat_id: str, payload: MessageCreate):
                 }
                 for item in retrieved_contexts
             ]
+            elapsed_ms = round((perf_counter() - started) * 1000)
             with connect() as db:
                 db.execute(
-                    "INSERT INTO messages (chat_id, role, content, sources, created_at) VALUES (?, 'assistant', ?, ?, ?)",
-                    (chat_id, answer, json.dumps(sources, ensure_ascii=False), now_iso()),
+                    "INSERT INTO messages (chat_id, role, content, sources, execution_steps, execution_elapsed_ms, created_at) "
+                    "VALUES (?, 'assistant', ?, ?, ?, ?, ?)",
+                    (chat_id, answer, json.dumps(sources, ensure_ascii=False),
+                     json.dumps(execution_steps, ensure_ascii=False), elapsed_ms, now_iso()),
                 )
                 db.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (now_iso(), chat_id))
             yield sse({"type": "sources", "sources": sources})
-            yield sse({"type": "done", "answer": answer, "sources": sources})
+            yield sse({"type": "done", "answer": answer, "sources": sources,
+                       "execution_steps": execution_steps, "execution_elapsed_ms": elapsed_ms})
         except Exception as exc:
             message = str(exc) or "未知错误"
             if isinstance(exc, (httpx.ConnectError, ConnectionError)) or "connection" in message.lower():
@@ -1159,7 +1219,36 @@ async def stream_message(chat_id: str, payload: MessageCreate):
                     message = "连接不到所选 API 模型。请检查接口地址、网络和 API Key。"
                 else:
                     message = f"连接不到 Ollama（{OLLAMA_BASE_URL}）。请先启动 Ollama，并确认已下载聊天模型和 bge-m3。"
-            yield sse({"type": "error", "message": message})
+            # Only show the outcome of tool/model calls, never a stack trace or provider credentials.
+            if not isinstance(exc, (httpx.ConnectError, ConnectionError)) and "connection" not in str(exc).lower():
+                message = "处理失败，请检查所选模型与知识库服务后重试。"
+            had_running_step = False
+            for step in execution_steps:
+                if step["status"] == "running":
+                    had_running_step = True
+                    step.update(status="error", detail=message,
+                                duration_ms=round((perf_counter() - step_started.get(step["id"], started)) * 1000))
+                    yield sse({"type": "progress", "step": step})
+            if not had_running_step:
+                failed = {"id": "workflow-error", "agent": "coordinator", "label": "调度",
+                          "stage": "failed", "status": "error", "detail": message, "duration_ms": 0}
+                record_step(failed)
+                yield sse({"type": "progress", "step": failed})
+            elapsed_ms = round((perf_counter() - started) * 1000)
+            try:
+                with connect() as db:
+                    db.execute(
+                        "INSERT INTO messages (chat_id, role, content, sources, execution_steps, execution_elapsed_ms, created_at) "
+                        "VALUES (?, 'assistant', ?, ?, ?, ?, ?)",
+                        (chat_id, "".join(answer_parts) + f"\n\n出错了：{message}",
+                         json.dumps(source_summaries(retrieved_contexts), ensure_ascii=False),
+                         json.dumps(execution_steps, ensure_ascii=False), elapsed_ms, now_iso()),
+                    )
+                    db.execute("UPDATE chats SET updated_at = ? WHERE id = ?", (now_iso(), chat_id))
+            except Exception:
+                logger.warning("无法保存本轮错误执行记录")
+            yield sse({"type": "error", "message": message,
+                       "execution_steps": execution_steps, "execution_elapsed_ms": elapsed_ms})
 
     return StreamingResponse(
         generate_events(),

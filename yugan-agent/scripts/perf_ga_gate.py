@@ -3,7 +3,7 @@
 
 Runs recall 200-session benchmark thresholds (PERF-GA-001 / PERF-GA-002) in-process.
 Schedule daemon 100-cycle stability (PERF-GA-003) is covered by
-``cai-agent/tests/test_perf_ga_s8_02.py`` (mocked execute + zero sleep).
+``yugan-agent/tests/test_perf_ga_s8_02.py`` (mocked execute + zero sleep).
 
 Usage (from repository root)::
 
@@ -27,7 +27,7 @@ def _repo_root() -> Path:
 
 
 def _ensure_src_on_path(root: Path) -> None:
-    src = root / "cai-agent" / "src"
+    src = root / "yugan-agent" / "src"
     if not src.is_dir():
         print(f"error: missing {src}", file=sys.stderr)
         sys.exit(2)
@@ -87,7 +87,7 @@ def main() -> int:
         node = "tests/test_perf_ga_s8_02.py::PerfGaS802Tests::test_schedule_daemon_100_cycles_execute_stability"
         r = subprocess.run(
             [sys.executable, "-m", "pytest", node, "-q", "--tb=short"],
-            cwd=str(root / "cai-agent"),
+            cwd=str(root / "yugan-agent"),
             check=False,
         )
         if r.returncode != 0:

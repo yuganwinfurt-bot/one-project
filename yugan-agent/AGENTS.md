@@ -8,10 +8,10 @@ This repository now has two independent Python entry points. The new project req
 by the user is `src/yugan_agent/`, installed from the root `pyproject.toml`. Start with
 `README.md` and `PLAN.md`, then read the relevant new source file and its test. Run
 `pytest -q tests`, `ruff check src/yugan_agent tests examples`, and `uv build --wheel`
-for new-package changes. The original upstream app remains under `cai-agent/`.
+for new-package changes. The original upstream app remains under `yugan-agent/`.
 
 The CAI-specific backlog and completion instructions below apply when modifying the
-original `cai-agent/` app or its upstream docs. Do not treat its backlog as the next
+original `yugan-agent/` app or its upstream docs. Do not treat its backlog as the next
 task for `yugan-agent`. For new-package status, follow the root README and PLAN.
 
 ## Read Order
@@ -39,14 +39,14 @@ task for `yugan-agent`. For new-package status, follow the root README and PLAN.
 
 ## Project Map
 
-- `cai-agent/src/cai_agent/__main__.py`: CLI command wiring and subcommands.
-- `cai-agent/src/cai_agent/tui.py`: Textual TUI, slash commands, model/status UI.
-- `cai-agent/src/cai_agent/config.py`: TOML/env settings and runtime configuration.
-- `cai-agent/src/cai_agent/context.py`: project context and git summary injection.
-- `cai-agent/src/cai_agent/doctor.py`: diagnostics and repair recommendations.
-- `cai-agent/src/cai_agent/feedback.py`: feedback reports, bundles, sanitization.
-- `cai-agent/src/cai_agent/command_registry.py`: command/template discovery.
-- `cai-agent/tests/`: pytest coverage; prefer narrow tests for narrow changes.
+- `yugan-agent/src/cai_agent/__main__.py`: CLI command wiring and subcommands.
+- `yugan-agent/src/cai_agent/tui.py`: Textual TUI, slash commands, model/status UI.
+- `yugan-agent/src/cai_agent/config.py`: TOML/env settings and runtime configuration.
+- `yugan-agent/src/cai_agent/context.py`: project context and git summary injection.
+- `yugan-agent/src/cai_agent/doctor.py`: diagnostics and repair recommendations.
+- `yugan-agent/src/cai_agent/feedback.py`: feedback reports, bundles, sanitization.
+- `yugan-agent/src/cai_agent/command_registry.py`: command/template discovery.
+- `yugan-agent/tests/`: pytest coverage; prefer narrow tests for narrow changes.
 - `scripts/smoke_new_features.py`: main smoke check for user-visible features.
 
 ## Token Discipline
@@ -73,7 +73,7 @@ Keep `NEXT_ACTIONS` short. Move detail to the full backlog docs and link it.
 When a task is actually finished, run verification, then run:
 
 ```powershell
-uv run --project cai-agent python scripts/finalize_task.py --task-id <ID> --summary "<what changed>" --verification "<command: PASS>"
+uv run --project yugan-agent python scripts/finalize_task.py --task-id <ID> --summary "<what changed>" --verification "<command: PASS>"
 ```
 
 This removes the task from `NEXT_ACTIONS` current work, appends completion evidence
