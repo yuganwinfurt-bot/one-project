@@ -13,7 +13,15 @@ import sys
 import tempfile
 
 ROOT = Path(__file__).resolve().parent
-ECOM = ROOT / 'customer-service-system' / 'customer-service-system' / 'backend'
+ECOM_CANDIDATES = (
+    ROOT / 'customer-service-system' / 'customer-service-system' / 'backend',
+    ROOT / 'customer-service-system' / 'backend',
+    Path.home() / 'Desktop' / '新建文件夹' / 'customer-service-system' / 'backend',
+)
+ECOM = next(
+    (path for path in ECOM_CANDIDATES if (path / 'app' / 'main.py').is_file()),
+    ECOM_CANDIDATES[0],
+)
 ENV_FILES = (ROOT / 'yugan-agent' / '.env', ROOT / 'rag-assistant' / 'backend' / '.env')
 AUTH_KEYS = ('YUGAN_ADMIN_USERNAME', 'YUGAN_ADMIN_PASSWORD_HASH', 'YUGAN_AUTH_SIGNING_SECRET')
 
