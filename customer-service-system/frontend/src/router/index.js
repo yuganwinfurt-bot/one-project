@@ -5,7 +5,19 @@ const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
   routes: [
     { path: '/', redirect: '/manager/home' },
-    { path: '/mini-store', name: 'MiniStore', component: () => import('@/views/MiniStore.vue') },
+    { path:'/mini-store',name:'MiniStore',component:()=>import('@/views/MiniStore.vue'),children:[
+      {path:'products/:id',component:()=>import('@/views/mini/MiniProduct.vue'),meta:{title:'商品详情'}},
+      {path:'cart',component:()=>import('@/views/mini/MiniCart.vue'),meta:{title:'购物车'}},
+      {path:'orders',component:()=>import('@/views/mini/MiniOrders.vue'),meta:{title:'订单记录'}},
+      {path:'favorites',component:()=>import('@/views/mini/MiniFavorites.vue'),meta:{title:'我的收藏'}},
+      {path:'messages',component:()=>import('@/views/mini/MiniMessages.vue'),meta:{title:'我的消息'}},
+      {path:'addresses',component:()=>import('@/views/mini/MiniAddresses.vue'),meta:{title:'收货地址'}},
+      {path:'profile',component:()=>import('@/views/mini/MiniProfile.vue'),meta:{title:'个人资料'}},
+      {path:'password',component:()=>import('@/views/mini/MiniPassword.vue'),meta:{title:'修改密码'}},
+      {path:'offers',component:()=>import('@/views/mini/MiniServices.vue'),meta:{title:'优惠与团购',mallMode:'offers'}},
+      {path:'help',component:()=>import('@/views/mini/MiniServices.vue'),meta:{title:'公告与帮助',mallMode:'help'}},
+      {path:'feedback',component:()=>import('@/views/mini/MiniServices.vue'),meta:{title:'意见反馈',mallMode:'feedback'}}
+    ] },
     {
       path: '/manager',
       name: 'Layout',
@@ -41,7 +53,7 @@ const router = createRouter({
           props: true
         },
         { path: 'orders', name: 'Orders', component: () => import('@/views/OrderList.vue') },
-        { path: 'after-sales', name: 'AfterSales', component: () => import('@/views/AfterSales.vue') },
+        { path: 'after-sales', name: 'AfterSales', component: () => import('@/views/AfterSaleTickets.vue') },
         { path: 'message-center', name: 'StaffMessageCenter', component: () => import('@/views/StaffMessageCenter.vue') },
         { path: 'reviews', name: 'Reviews', component: () => import('@/views/ReviewList.vue') },
         { path: 'reports', name: 'Reports', component: () => import('@/views/ReportList.vue') },
@@ -67,7 +79,11 @@ const router = createRouter({
 
 // 路由守卫：验证token
 router.beforeEach((to) => {
-  if (to.path === '/mini-store') return true
+  if (to.path === '/mini-store' || to.path.startsWith('/mini-store/')) {
+    const publicPage = to.path === '/mini-store' || to.path === '/mini-store/help' || (to.path.startsWith('/mini-store/products/') && getToken())
+    if (!publicPage && (!getToken() || getUserInfo()?.role !== 'customer')) return {path:'/mini-store',query:{tab:'login',next:to.fullPath}}
+    return true
+  }
   const token = getToken()
   const user = getUserInfo()
 

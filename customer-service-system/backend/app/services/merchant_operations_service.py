@@ -91,6 +91,10 @@ def send_after_sale_message(db, editor, after_sale_id, payload, *, commit=True):
         raise BusinessException(message='售后申请不存在', code=404)
     if record.status in CLOSED_STATUSES:
         raise BusinessException(message='售后会话已关闭，不能继续发送消息')
+    from app.models.customer_support import SupportConversation
+    conversation = db.query(SupportConversation).filter_by(after_sale_id=record.id).with_for_update().first()
+    if conversation and conversation.closed:
+        raise BusinessException(message='本次人工会话已结束，不能继续发送消息')
     message = AfterSaleMessage(after_sale_id=record.id, user_id=record.user_id, sender_user_id=editor.id,
                                sender_role=editor.role, sender_name=editor.name or editor.username,
                                content=payload.content, read_by_customer=False, read_by_staff=True)

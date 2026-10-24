@@ -7,7 +7,7 @@
     if (origin === window.location.origin) return true;
     try {
       const target = new URL(origin);
-      if (['localhost', '127.0.0.1', '[::1]'].includes(target.hostname) && ['4173', '35173', '8030'].includes(target.port)) return true;
+      if (['localhost', '127.0.0.1', '[::1]'].includes(target.hostname) && ['4173', '35173', '8030', '3000'].includes(target.port)) return true;
       return window.location.protocol === 'https:' && target.protocol === 'https:' && target.hostname === window.location.hostname && !target.port;
     } catch { return false; }
   };
@@ -38,6 +38,13 @@
         const activeProfile = profile.mode === 'server'
           ? { ...profile, api_token: sessionStorage.getItem('yugan-api-token') || '' }
           : profile;
+        // Restore the local customer-service relay when a staff page reads this model.
+        try {
+          const token = sessionStorage.getItem('yugan-api-token') || '';
+          await fetch(agentApi('api/support-model/active'), {method: 'POST', credentials: 'same-origin',
+            headers: {'Content-Type': 'application/json', ...(token ? {Authorization: `Bearer ${token}`} : {})},
+            body: JSON.stringify(profile)});
+        } catch { /* Staff-side direct model calls remain available. */ }
         event.source.postMessage({ type: 'yugan-active-model', nonce, profile: activeProfile }, event.origin);
       } else {
         const profiles = (Array.isArray(stored.models) ? stored.models : [])

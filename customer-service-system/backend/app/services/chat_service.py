@@ -98,6 +98,12 @@ def _stream_answer(
 
     rows_for_llm = _shrink_rows(evidence)
     signals = final_state.get("route_signals") or {}
+    yield _sse("status", {"stage": "retrieving_knowledge", "message": "正在检索电商分析平台和售后工单系统知识库…"})
+    from app.services.semantic_search_service import search_assistant_knowledge
+    knowledge_sources = search_assistant_knowledge(signals.get("retrieval_question") or question)
+    _record_step(run_id, step_name="platform_knowledge", summary="自动检索电商与售后知识库",
+                 success=all(item["状态"] == "检索完成" for item in knowledge_sources),
+                 detail={"sources": [{"name": item["知识库"], "status": item["状态"], "hits": len(item["资料"])} for item in knowledge_sources]})
     context = {
         "用户原始问题": question,
         "最近对话_仅供理解追问": final_state.get("conversation_history") or [],
@@ -117,6 +123,7 @@ def _stream_answer(
         "本次提供给模型的条数": len(rows_for_llm),
         "提示词证据已裁剪": len(rows_for_llm) < len(evidence),
         "证据": rows_for_llm,
+        "自动检索的电商与售后知识库": knowledge_sources,
         "待确认配置或商品操作": [{"type": a.get("type"), "summary": a.get("summary") or a.get("title"), "changes": a.get("changes")} for a in final_state.get("pending_actions") or []],
         "已执行动作": final_state.get("actions_executed") or [],
         "用户已确认执行": final_state.get("human_approved"),

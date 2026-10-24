@@ -45,6 +45,7 @@ from .rag.pipeline import (
     retrieve_contexts,
 )
 from .schemas import (
+    SupportSyncRequest,
     AgentRetrieveRequest,
     ChatCreate,
     ChatUpdate,
@@ -62,6 +63,7 @@ ECOMMERCE_PROJECT_ID = "ecommerce-platform"
 ECOMMERCE_EXPORT_FILENAME = "电商分析平台_后台业务快照.csv"
 _private_access = ContextVar("rag_private_access", default=False)
 _ecommerce_sync_lock = asyncio.Lock()
+_support_sync_lock = asyncio.Lock()
 logger = logging.getLogger(__name__)
 
 auth_manager = AuthManager(
@@ -150,7 +152,7 @@ async def authenticate_and_limit_guests(request: Request, call_next):
         )
         local_ecommerce_sync = (
             request.method == "POST"
-            and path in {"/api/integrations/agent/sync-ecommerce", "/api/integrations/agent/sync-ecommerce/jobs"}
+            and path in {"/api/integrations/agent/sync-ecommerce", "/api/integrations/agent/sync-ecommerce/jobs", "/api/integrations/agent/sync-support/jobs"}
             and request.client is not None
             and request.client.host in {"127.0.0.1", "::1"}
         )
@@ -370,15 +372,15 @@ async def retrieve_for_agent(payload: AgentRetrieveRequest, request: Request):
     )
 
 
-def require_ecommerce_integration(request: Request):
+def require_ecommerce_integration(request: Request, *, source="ecommerce"):
     if not request.client or request.client.host not in {"127.0.0.1", "::1"}:
         raise HTTPException(status_code=403, detail="此同步接口仅允许本机 Agent 调用")
-    expected_token = os.getenv("ECOM_RAG_SYNC_TOKEN", "").strip()
+    expected_token = os.getenv("SUPPORT_RAG_SYNC_TOKEN" if source == "support" else "ECOM_RAG_SYNC_TOKEN", "").strip()
     supplied_token = request.headers.get("x-integration-key", "")
     if not expected_token:
-        raise HTTPException(status_code=503, detail="未配置电商 RAG 同步密钥")
+        raise HTTPException(status_code=503, detail="未配置RAG 集成同步密钥")
     if not secrets.compare_digest(supplied_token, expected_token):
-        raise HTTPException(status_code=403, detail="电商 RAG 同步密钥无效")
+        raise HTTPException(status_code=403, detail="RAG 集成同步密钥无效")
 
 
 @app.post("/api/integrations/agent/sync-ecommerce", include_in_schema=False)
@@ -418,6 +420,35 @@ def ecommerce_sync_status(job_id: str, request: Request):
     return JSONResponse(job, headers={"Cache-Control": "no-store"})
 
 
+@app.post("/api/integrations/agent/sync-support/jobs", include_in_schema=False)
+async def start_support_sync(payload: SupportSyncRequest, request: Request):
+    require_ecommerce_integration(request, source="support")
+
+    async def run(progress):
+        result = await _sync_ecommerce_records(payload, progress, source="support")
+        result["by_type"] = dict(Counter(record.doc_type for record in payload.records))
+        result["privacy_note"] = "同步启用的知识条目和匿名统计报表，不包含买家身份、联系方式、会话原文或模型密钥。"
+        return result
+
+    return JSONResponse(ecommerce_sync_jobs.start_job(len(payload.records), run, _support_sync_lock, source="support"),
+                        status_code=202, headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/integrations/agent/sync-support/jobs/latest", include_in_schema=False)
+def latest_support_sync(request: Request):
+    require_ecommerce_integration(request, source="support")
+    return JSONResponse(ecommerce_sync_jobs.get_job(source="support"), headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/integrations/agent/sync-support/jobs/{job_id}", include_in_schema=False)
+def support_sync_status(job_id: str, request: Request):
+    require_ecommerce_integration(request, source="support")
+    job = ecommerce_sync_jobs.get_job(job_id, source="support")
+    if job is None:
+        raise HTTPException(status_code=404, detail="同步任务不存在")
+    return JSONResponse(job, headers={"Cache-Control": "no-store"})
+
+
 async def ecommerce_embedding_profile():
     try:
         response = await app.state.ollama_status_client.get(f"{OLLAMA_BASE_URL}/api/tags")
@@ -434,11 +465,18 @@ async def ecommerce_embedding_profile():
     raise HTTPException(status_code=503, detail=f"服务器尚未安装向量模型 {OLLAMA_EMBED_MODEL}，请先用 ollama pull 下载。")
 
 
-async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
+async def _sync_ecommerce_records(payload: EcommerceSyncRequest | SupportSyncRequest, progress=None, *, source="ecommerce"):
+    support = source == "support"
+    kb_name = "售后工单系统" if support else ECOMMERCE_KB_NAME
+    default_kb_id = "after-sales-ticket-system" if support else ECOMMERCE_KB_ID
+    project_id = "after-sales-ticket-system" if support else ECOMMERCE_PROJECT_ID
+    export_filename = "售后工单系统_知识与数据分析快照.csv" if support else ECOMMERCE_EXPORT_FILENAME
+    access_level = "staff" if support else "public"
+    description = "售后知识条目、数据分析与功能规则，已排除停用条目和买家身份信息" if support else "电商后台完整业务快照及功能规则，已排除凭证并脱敏个人信息"
     model_key = await ecommerce_embedding_profile()
     with connect() as db:
-        existing = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (ECOMMERCE_KB_NAME,)).fetchone()
-        kb_id = existing["id"] if existing else ECOMMERCE_KB_ID
+        existing = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (kb_name,)).fetchone()
+        kb_id = existing["id"] if existing else default_kb_id
         if not existing and db.execute("SELECT id FROM knowledge_bases WHERE id = ?", (kb_id,)).fetchone():
             kb_id = new_id()
 
@@ -454,10 +492,10 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
         writer.writerow(record.model_dump())
     content = output.getvalue().encode("utf-8")
     if len(content) > MAX_UPLOAD_BYTES:
-        raise HTTPException(status_code=413, detail=f"电商资料超过 {MAX_UPLOAD_MB} MB 限制")
+        raise HTTPException(status_code=413, detail=f"{kb_name}资料超过 {MAX_UPLOAD_MB} MB 限制")
 
     with connect() as db:
-        previous = db.execute("SELECT * FROM documents WHERE knowledge_base_id = ? AND filename = ?", (kb_id, ECOMMERCE_EXPORT_FILENAME)).fetchall()
+        previous = db.execute("SELECT * FROM documents WHERE knowledge_base_id = ? AND filename = ?", (kb_id, export_filename)).fetchall()
         if any(row["embedding_profile"] and row["embedding_profile"] != model_key for row in previous):
             raise HTTPException(status_code=409, detail="向量模型或版本已变更，不能复用旧索引；请使用独立知识库重建新模型索引。")
         legacy = any(not row["embedding_profile"] for row in previous)
@@ -465,8 +503,8 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
             raise HTTPException(status_code=409, detail="旧快照未记录向量模型，不能自动迁移到新模型；请使用独立知识库重建。")
         snapshot_same = len(previous) == 1 and Path(previous[0]["stored_path"]).is_file() and Path(previous[0]["stored_path"]).read_bytes() == content
         if snapshot_same and not legacy:
-            db.execute("UPDATE knowledge_bases SET access_level = 'public' WHERE id = ?", (kb_id,))
-            return {"knowledge_base_id": kb_id, "knowledge_base_name": ECOMMERCE_KB_NAME,
+            db.execute("UPDATE knowledge_bases SET access_level = ? WHERE id = ?", (access_level, kb_id))
+            return {"knowledge_base_id": kb_id, "knowledge_base_name": kb_name,
                     "record_count": len(payload.records), "chunk_count": previous[0]["chunk_count"],
                     "collection_size": get_vector_store(kb_id)._collection.count(), "unchanged": True, "cleanup_warning": False,
                     "incremental": True, "embedded_chunks": 0, "reused_chunks": previous[0]["chunk_count"],
@@ -486,7 +524,7 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
             kb_id,
             document_id,
             stored_path,
-            ECOMMERCE_EXPORT_FILENAME,
+            export_filename,
             previous_ids,
             model_key,
             legacy,
@@ -495,27 +533,28 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
         with connect() as db:
             old_docs = db.execute(
                 "SELECT id, stored_path, vector_ids FROM documents WHERE knowledge_base_id = ? AND filename = ?",
-                (kb_id, ECOMMERCE_EXPORT_FILENAME),
+                (kb_id, export_filename),
             ).fetchall()
             stamp = now_iso()
             db.execute(
-                "INSERT OR IGNORE INTO knowledge_bases (id, name, description, created_at, access_level) VALUES (?, ?, ?, ?, 'public')",
-                (kb_id, ECOMMERCE_KB_NAME, "电商后台完整业务快照及功能规则，已排除凭证并脱敏个人信息", stamp),
+                "INSERT OR IGNORE INTO knowledge_bases (id, name, description, created_at, access_level) VALUES (?, ?, ?, ?, ?)",
+                (kb_id, kb_name, description, stamp, access_level),
             )
-            db.execute("UPDATE knowledge_bases SET access_level = 'public' WHERE id = ?", (kb_id,))
+            db.execute("UPDATE knowledge_bases SET access_level = ? WHERE id = ?", (access_level, kb_id))
             db.execute(
                 "INSERT OR IGNORE INTO projects (id, name, created_at) VALUES (?, ?, ?)",
-                (ECOMMERCE_PROJECT_ID, "电商分析平台", stamp),
+                (project_id, kb_name, stamp),
             )
             db.execute(
                 "INSERT OR IGNORE INTO project_knowledge_bases (project_id, knowledge_base_id) VALUES (?, ?)",
-                (ECOMMERCE_PROJECT_ID, kb_id),
+                (project_id, kb_id),
             )
             # 旧商品评价库保留，项目改用新的完整业务库，避免重复检索同一批商品评价。
-            db.execute("DELETE FROM project_knowledge_bases WHERE project_id = ? AND knowledge_base_id IN (SELECT id FROM knowledge_bases WHERE id = 'ecommerce-platform' AND name = '电商商品与评价') AND knowledge_base_id != ?", (ECOMMERCE_PROJECT_ID, kb_id))
+            if not support:
+                db.execute("DELETE FROM project_knowledge_bases WHERE project_id = ? AND knowledge_base_id IN (SELECT id FROM knowledge_bases WHERE id = 'ecommerce-platform' AND name = '电商商品与评价') AND knowledge_base_id != ?", (project_id, kb_id))
             db.execute(
                 "INSERT INTO documents (id, knowledge_base_id, filename, stored_path, chunk_count, vector_ids, uploaded_at, embedding_profile) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-                (document_id, kb_id, ECOMMERCE_EXPORT_FILENAME, str(stored_path), chunk_count, json.dumps(vector_ids), stamp, model_key),
+                (document_id, kb_id, export_filename, str(stored_path), chunk_count, json.dumps(vector_ids), stamp, model_key),
             )
             for old_doc in old_docs:
                 db.execute("DELETE FROM documents WHERE id = ?", (old_doc["id"],))
@@ -529,7 +568,7 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
         if isinstance(exc, HTTPException):
             raise
         logger.exception("电商资料同步到 RAG 失败")
-        raise HTTPException(status_code=503, detail=f"电商资料索引失败，请检查 RAG 的 {OLLAMA_EMBED_MODEL} 向量服务及服务日志") from exc
+        raise HTTPException(status_code=503, detail=f"{kb_name}资料索引失败，请检查 RAG 的 {OLLAMA_EMBED_MODEL} 向量服务及服务日志") from exc
 
     cleanup_warning = False
     for old_doc in old_docs:
@@ -546,8 +585,8 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
 
     return {
         "knowledge_base_id": kb_id,
-        "knowledge_base_name": ECOMMERCE_KB_NAME,
-        "project_name": "电商分析平台",
+        "knowledge_base_name": kb_name,
+        "project_name": kb_name,
         "record_count": len(payload.records),
         "chunk_count": chunk_count,
         "collection_size": get_vector_store(kb_id)._collection.count(),
@@ -556,7 +595,6 @@ async def _sync_ecommerce_records(payload: EcommerceSyncRequest, progress=None):
         **changes,
         **index_stats,
     }
-
 
 @app.get("/api/status")
 async def status():

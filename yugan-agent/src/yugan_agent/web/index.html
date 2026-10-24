@@ -25,6 +25,7 @@
             <nav id="brand-switcher-menu" class="brand-switcher-menu" aria-label="项目入口" hidden>
               <span class="brand-switcher-heading">项目入口</span>
           <a id="brand-ecom-link" class="brand-switcher-link" href="/ecommerce/">电商分析平台 <span aria-hidden="true">→</span></a>
+              <a class="brand-switcher-link" href="http://127.0.0.1:3000/tickets">售后工单系统 <span aria-hidden="true">→</span></a>
               <span class="brand-switcher-current">Agent 控制台 <small>当前页面</small></span>
               <a id="brand-rag-link" class="brand-switcher-link" href="/rag/">RAG 知识库 <span aria-hidden="true">→</span></a>
               <a id="brand-home-link" class="brand-switcher-link">项目主页 <span aria-hidden="true">→</span></a>
@@ -161,13 +162,13 @@
             <div id="model-key-field" class="model-field"><label id="model-key-label" for="model-key">API Key</label><input id="model-key" type="password" autocomplete="off" spellcheck="false" placeholder="粘贴你的 API Key" required></div>
             <div id="model-endpoint-field" class="model-field"><label id="model-endpoint-label" for="model-endpoint">接口地址 Base URL（可选）</label><input id="model-endpoint" type="url" spellcheck="false" placeholder="留空默认 https://api.deepseek.com"></div>
             <div class="model-field"><label id="model-id-label" for="model-id">模型 ID（DeepSeek 可留空）</label><input id="model-id" type="text" spellcheck="false" placeholder="例如 kimi-k3、deepseek-flash；填写账户可用的模型 ID"></div>
-            <p id="model-settings-help" class="settings-help">API Key 保存在当前浏览器的本地存储中，模型请求从浏览器直连所填接口，不经过 Agent 服务。</p>
+            <p id="model-settings-help" class="settings-help">API Key 保存在当前浏览器。当前选中模型会同步给本机售后客服服务，供买家AI咨询使用；服务只在内存中保留密钥。</p>
             <div class="model-form-actions"><button id="save-model" class="primary" type="submit">保存并启用 →</button><button id="cancel-model-edit" class="secondary" type="button" hidden>取消编辑</button></div>
             <p id="model-settings-status" role="status"></p>
           </form>
           <div class="card saved-models">
             <div class="card-head"><div><span class="kicker">SAVED MODELS</span><h2>已保存的模型</h2></div></div>
-            <p class="saved-model-hint">模型配置只保存在当前浏览器；聊天请求直接发送到所选模型接口。密钥不会显示在列表中。</p>
+            <p class="saved-model-hint">聊天与售后AI使用当前选中模型。服务重启后，打开控制台或客服工作台即可重新同步；密钥不会显示在列表中。</p>
             <div id="saved-model-list" class="saved-model-list" aria-live="polite"></div>
           </div>
         </div>

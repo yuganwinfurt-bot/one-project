@@ -190,3 +190,5 @@ async function dispatchSseEvent(event, handlers) {
       break
   }
 }
+
+export function prepareCustomerPage(question) { return request.post("/api/chat/customer-page", {question}) }

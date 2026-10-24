@@ -3,7 +3,7 @@
     <!-- 消息列表 -->
     <div class="content-card chat-page__messages" ref="messagesRef" @scroll="handleMessagesScroll">
       <div v-if="!messages.length" class="chat-page__empty">
-        <p class="chat-page__empty-text">分析商品和订单，也可以新建多规格商品、维护价格库存、处理售后和修改后台配置；账号及角色权限不可修改。</p>
+        <p class="chat-page__empty-text">分析商品和订单，也可以新建多规格商品、维护价格库存、处理售后和修改后台配置；还可以在新标签页打开用户页面；账号及角色权限不可修改。</p>
         <div class="chat-page__examples">
           <span class="chat-page__examples-label">可以试试：</span>
           <el-button
@@ -76,6 +76,7 @@
           <div v-if="msg.content || msg.meta || msg.runId" class="chat-page__bubble">
             <div class="chat-page__role">助手</div>
             <div class="chat-page__content" v-html="renderMarkdown(msg.content)"></div>
+            <el-button v-if="msg.customerEntry" type="primary" plain :disabled="loading" @click="reopenCustomerPage(msg)">打开用户页面 ↗</el-button>
             <div v-if="msg.meta" class="chat-page__meta">{{ msg.meta }}</div>
             <div
               v-if="msg.runId || msg.content || msg.runState === 'error'"
@@ -243,8 +244,9 @@ import { Close, DocumentCopy, RefreshRight, Select } from '@element-plus/icons-v
 import DOMPurify from 'dompurify'
 import { marked } from 'marked'
 import { useRoute, useRouter } from 'vue-router'
+import { isCustomerPageCommand, openCustomerPage } from '@/utils/customerPage'
 import { getUserInfo } from '@/utils/auth'
-import { streamChat, confirmActions, getRunAnswerContext, submitModelResult, saveRunReport } from '@/api/chat'
+import { streamChat, prepareCustomerPage, confirmActions, getRunAnswerContext, submitModelResult, saveRunReport } from '@/api/chat'
 import { submitFeedback, updateRunAnswer } from '@/api/observability'
 import { clearChatMessages, loadChatMessages, saveChatMessages } from '@/utils/chatCache'
 import {
@@ -828,6 +830,40 @@ onMounted(async () => {
   }))
 })
 
+async function handleCustomerPage(question) {
+  const popup = window.open('about:blank','_blank')
+  loading.value = true
+  input.value = ''
+  messages.value.push({id: ++messageSeq, role:'user', content:question})
+  const message = createAssistantMessage(question)
+  messages.value.push(message)
+  pushStep(message,{stage:'打开用户页面',message:'复用管理员现有登录入口，创建独立标签页会话'})
+  try {
+    const response = await prepareCustomerPage(question)
+    message.customerEntry = response.data
+    if (!popup) {
+      message.content = '用户页面已准备好。浏览器拦截了自动打开的新标签页，请点击下方“打开用户页面”。'
+    } else {
+      const result = await openCustomerPage(response.data,popup)
+      message.content = result.loggedIn ? `已在新标签页登录为「${result.label}」，原后台会话保持登录。` : '已在新标签页打开用户登录入口，登录后进入用户页面。'
+    }
+    message.runState = 'done'
+  } catch (error) {
+    if (popup && !popup.closed) popup.close()
+    message.content = error.message || '打开用户页面失败，请重试'
+    message.runState = 'error'
+  } finally {
+    message.processOpen = false
+    message.elapsedMs = Date.now()-message.startedAt
+    loading.value = false
+    await scrollToBottom(true)
+  }
+}
+async function reopenCustomerPage(message) {
+  try { await openCustomerPage(message.customerEntry); ElMessage.success('用户页面已打开') }
+  catch (error) { ElMessage.error(error.message || '打开用户页面失败') }
+}
+
 async function handleSend(presetQuestion) {
   const question = (presetQuestion ?? input.value).trim()
   if (!question) {
@@ -835,6 +871,7 @@ async function handleSend(presetQuestion) {
     return
   }
   if (loading.value) return
+  if (isCustomerPageCommand(question)) { await handleCustomerPage(question); return }
 
   loading.value = true
   const modelProfile = await loadAgentModel()

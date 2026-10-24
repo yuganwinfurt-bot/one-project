@@ -219,7 +219,7 @@ def create_app(settings: Settings | None = None, env_path: Path | None = None) -
 
     app = FastAPI(title="yugan-agent", version=__version__, lifespan=lifespan)
     trusted_web_origins = set()
-    for configured_origin in (settings.rag_web_origin, settings.ecommerce_web_origin):
+    for configured_origin in (settings.rag_web_origin, settings.ecommerce_web_origin, settings.support_web_origin):
         origin = configured_origin.rstrip("/")
         trusted_web_origins.add(origin)
         if origin.startswith("http://127.0.0.1:"):
@@ -1329,4 +1329,6 @@ if ($dialog.ShowDialog() -eq [System.Windows.Forms.DialogResult]::OK) {
     async def favicon():
         return RedirectResponse("/static/icon.svg")
 
+    from .support_models import install_support_model_routes
+    install_support_model_routes(app, settings, auth_manager, authorize)
     return app

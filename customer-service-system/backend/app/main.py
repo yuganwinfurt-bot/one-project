@@ -49,6 +49,7 @@ Base.metadata.create_all(bind=engine)  # 自动帮我们创数据库表
 
 # create_all 不会修改已有表；启动时补齐兼容旧数据库所需的可空字段。
 _ADDITIVE_COLUMNS = {
+    "support_ai_requests": {"claimed_at": "DATETIME NULL", "error": "TEXT NULL"},
     "demo_login_credentials": {"is_customer_demo": "BOOLEAN NOT NULL DEFAULT 0"},
     "agent_runs": {"answer_text": "TEXT NULL", "answer_context": "JSON NULL"},
     "customer_favorite_products": {"restock_waiting": "BOOLEAN NOT NULL DEFAULT 0"},
@@ -142,9 +143,14 @@ async def lifespan(app: FastAPI):
             await asyncio.sleep(60)
 
     group_task = asyncio.create_task(group_clock())
+    from app.services.customer_support_service import ai_clock
+    support_ai_task = asyncio.create_task(ai_clock())
     try:
         yield
     finally:
+        support_ai_task.cancel()
+        with suppress(asyncio.CancelledError):
+            await support_ai_task
         group_task.cancel()
         with suppress(asyncio.CancelledError):
             await group_task

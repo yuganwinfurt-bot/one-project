@@ -1,23 +1,28 @@
 <template>
-  <main class="mini-store" :class="{ 'mini-store--staff': !isCustomer }">
+  <main class="mini-store" :class="{ 'mini-store--staff': !isCustomer }" :style="{'--mini-vh': miniViewportHeight}">
     <div class="mini-store__shell">
-      <header class="mini-header">
+      <header v-if="!miniPage" class="mini-header">
         <div class="mini-header__brand">
-          <strong>{{ shopName }}</strong>
+          <strong>{{ activeTab === 'profile' ? '个人中心' : shopName }}</strong>
           <div class="mini-header__actions">
+            <button type="button" class="mini-header__browser" @click="openMiniPage('messages', {tab:'inbox'})">消息 <b v-if="unreadMessages" class="mini-unread">{{ unreadMessages > 99 ? '99+' : unreadMessages }}</b></button>
             <button class="mini-header__browser" type="button" title="打开用户商品浏览页" @click="openUserBrowserPage">跳转浏览器</button>
             <button v-if="user && !isCustomer" class="mini-header__back" type="button" @click="router.push('/manager/home')">返回后台</button>
           </div>
         </div>
-        <form class="mini-search" role="search" @submit.prevent="search">
+        <form v-if="['home','category'].includes(activeTab)" class="mini-search" role="search" @submit.prevent="search">
           <el-icon><Search /></el-icon>
           <input v-model="keyword" aria-label="搜索商品" placeholder="点击前往搜索" />
           <button v-if="keyword" type="button" aria-label="清空搜索" @click="keyword = ''; search()">×</button>
         </form>
       </header>
 
-      <div class="mini-content" v-loading="loading">
-        <section v-if="activeTab === 'home'" class="mini-home">
+      <div ref="miniContent" class="mini-content" :class="{'mini-content--detail':miniPage}" v-loading="loading">
+        <section v-if="miniPage" class="mini-shared-page">
+
+          <router-view v-slot="{ Component }"><component :is="Component" :key="route.path" v-on="route.path === '/mini-store/cart' ? {'cart-updated': syncCartCount} : {}" /></router-view>
+        </section>
+        <section v-else-if="activeTab === 'home'" class="mini-home">
           <section class="mini-hero" aria-label="商城推荐">
             <el-carousel v-if="portal.ads?.length" height="270px" :interval="5000" :autoplay="portal.ads.length > 1" arrow="always">
               <el-carousel-item v-for="ad in portal.ads" :key="ad.id">
@@ -69,12 +74,12 @@
           </section>
 
           <section id="mini-products" class="mini-section mini-product-section">
-            <div class="mini-section__heading"><div><small>HAND PICKED FOR YOU</small><h2>{{ keyword ? '搜索结果' : '猜你喜欢' }}</h2></div><button type="button" @click="activeTab = 'category'">全部分类　›</button></div>
+            <div class="mini-section__heading"><div><small>HAND PICKED FOR YOU</small><h2>{{ keyword ? '搜索结果' : '猜你喜欢' }}</h2></div><button type="button" @click="showCategoryTab">全部分类　›</button></div>
             <div v-if="products.length" class="mini-products">
               <button v-for="product in products" :key="product.id" class="mini-product" type="button" @click="openProduct(product)">
                 <div class="mini-product__image"><img v-if="product.image_url" :src="product.image_url" :alt="product.name" /><span v-else>好物</span><small v-if="product.has_variants">多规格</small></div>
                 <strong>{{ product.name }}</strong><span class="mini-product__description">{{ product.description || product.category || '精选好物' }}</span>
-                <span class="mini-product__price"><b>¥{{ money(product.price) }}</b><small>已售 {{ product.sold_quantity || 0 }}</small></span>
+                <span class="mini-product__rating">{{ Number(product.review_count || 0) ? `★ ${Number(product.avg_rating || 0).toFixed(1)} · ${product.review_count} 条评价` : '暂无评价' }}</span><span class="mini-product__price"><b>¥{{ money(product.price) }}</b><small>已售 {{ product.sold_quantity || 0 }}</small></span>
               </button>
             </div>
             <el-empty v-else-if="!loading" description="暂时没有找到商品" />
@@ -92,26 +97,19 @@
             <button v-for="product in products" :key="product.id" class="mini-product" type="button" @click="openProduct(product)">
               <div class="mini-product__image"><img v-if="product.image_url" :src="product.image_url" :alt="product.name" /><span v-else>好物</span><small v-if="product.has_variants">多规格</small></div>
               <strong>{{ product.name }}</strong><span class="mini-product__description">{{ product.description || product.category || '精选好物' }}</span>
-              <span class="mini-product__price"><b>¥{{ money(product.price) }}</b><small>已售 {{ product.sold_quantity || 0 }}</small></span>
+              <span class="mini-product__rating">{{ Number(product.review_count || 0) ? `★ ${Number(product.avg_rating || 0).toFixed(1)} · ${product.review_count} 条评价` : '暂无评价' }}</span><span class="mini-product__price"><b>¥{{ money(product.price) }}</b><small>已售 {{ product.sold_quantity || 0 }}</small></span>
             </button>
           </div>
           <el-empty v-if="!loading && !products.length" description="这个分类暂时没有商品" />
           <button v-if="total > products.length" class="mini-load-more" type="button" :disabled="loading" @click="loadMore">{{ loading ? '加载中…' : '查看更多商品' }}</button>
         </section>
-        <section v-else-if="activeTab === 'cart' && isCustomer" class="mini-cart-page">
-          <CustomerCart embedded @continue-shopping="goHome" @open-product="openProduct" @manage-addresses="showAddresses" @show-coupons="showCoupons" @order-created="syncCartCount" @cart-updated="syncCartCount" />
-        </section>
         <section v-else-if="activeTab === 'profile'" class="mini-profile-page">
           <template v-if="isCustomer">
-            <section class="mini-profile-card">
-              <div class="mini-profile-avatar">{{ (user?.name || user?.username || '买').slice(0, 1) }}</div>
-              <div><small>买家账号</small><strong>{{ user?.name || user?.username || '商城用户' }}</strong><span>{{ user?.username || '' }}</span></div>
-            </section>
-            <section class="mini-profile-actions">
-              <button type="button" @click="showAddresses">收货地址 <span>›</span></button>
-              <button type="button" @click="switchBuyerAccount">切换买家账号 <span>›</span></button>
-              <button type="button" @click="signOutBuyerAccount">退出登录 <span>›</span></button>
-            </section>
+            <section class="mini-me-banner"><div class="mini-me-avatar"><img v-if="user?.avatar" :src="user.avatar" alt="头像" /><span v-else>{{ (user?.name || user?.username || '我').slice(0,1) }}</span></div><div><strong>{{ user?.name || user?.username }}</strong><p>{{ user?.username }}</p></div><button type="button" @click="openMiniPage('profile')">编辑 ›</button></section>
+            <section class="mini-me-card"><header><strong>我的订单</strong><button type="button" @click="openMiniPage('orders')">全部订单 ›</button></header><div class="mini-order-shortcuts"><button v-for="entry in [['unpaid','◷','待付款'],['paid','▣','待发货'],['shipped','⌁','待收货'],['review','☆','待评价']]" :key="entry[0]" type="button" @click="openMiniPage('orders',{status:entry[0]})"><span>{{ entry[1] }}</span>{{ entry[2] }}</button></div></section>
+            <section class="mini-me-card mini-me-services"><button v-for="entry in [['favorites','♡','我的收藏'],['messages','◌','我的消息'],['support','♧','联系客服'],['offers','◇','优惠团购'],['feedback','✎','意见反馈'],['help','ⓘ','公告帮助']]" :key="entry[0]" type="button" @click="openMiniPage(entry[0] === 'support' ? 'messages' : entry[0],entry[0] === 'support' ? {tab:'support'} : {})"><span>{{ entry[1] }}<i v-if="entry[0] === 'messages' && unreadMessages">{{ unreadMessages > 99 ? '99+' : unreadMessages }}</i></span>{{ entry[2] }}</button></section>
+            <section class="mini-me-card mini-me-settings"><button type="button" @click="showAddresses">收货地址 <span>›</span></button><button type="button" @click="openMiniPage('profile')">个人资料 <span>›</span></button><button type="button" @click="openMiniPage('password')">账号安全 <span>›</span></button></section>
+            <div class="mini-me-signout"><button type="button" @click="switchBuyerAccount">切换买家账号</button><button type="button" @click="signOutBuyerAccount">退出登录</button></div>
           </template>
           <section v-else class="mini-login-card">
             <div class="mini-login-card__avatar">♡</div>
@@ -135,13 +133,9 @@
             <button class="mini-auth-toggle" type="button" @click="toggleMiniAuthMode">{{ miniAuthMode === 'login' ? '没有账号？立即注册' : '已有账号？返回登录' }}</button>
           </section>
         </section>
-        <section v-else-if="activeTab === 'addresses' && isCustomer" class="mini-addresses-page">
-          <button class="mini-addresses-back" type="button" @click="goProfile">‹　返回我的</button>
-          <CustomerAddresses />
-        </section>
       </div>
 
-      <nav class="mini-tabbar" aria-label="商城导航">
+      <nav v-if="showTabbar" class="mini-tabbar" aria-label="商城导航">
         <button type="button" :class="{ active: activeTab === 'home' }" @click="goHome">
           <svg class="mini-tabbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3.5 14.1 9.9 20.5 12l-6.4 2.1L12 20.5l-2.1-6.4L3.5 12l6.4-2.1L12 3.5Z"/><circle cx="12" cy="12" r="9"/></svg>
           <span>精选</span>
@@ -154,77 +148,12 @@
           <svg class="mini-tabbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3.5 4h2l2.1 11.1a2 2 0 0 0 2 1.6h8.8a2 2 0 0 0 1.9-1.5L22 8H6.1"/><circle cx="10" cy="20" r="1.2"/><circle cx="18" cy="20" r="1.2"/></svg>
           <span>购物车</span><i v-if="cartCount">{{ cartCount > 99 ? '99+' : cartCount }}</i>
         </button>
-        <button type="button" :class="{ active: activeTab === 'profile' || activeTab === 'addresses' }" @click="goProfile">
+        <button type="button" :class="{ active: activeTab === 'profile' || (miniPage && !route.path.includes('/products/') && activeTab !== 'cart') }" @click="goProfile">
           <svg class="mini-tabbar__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="8" r="3.5"/><path d="M4.5 20a7.5 7.5 0 0 1 15 0"/></svg>
           <span>我的</span>
         </button>
       </nav>
     </div>
-
-    <el-dialog v-model="productDialogVisible" class="mini-detail-dialog" :title="productDetail?.product?.name || '商品详情'" width="min(760px, 94vw)" append-to-body>
-      <div v-if="productLoading" class="mini-detail-loading"><span class="mini-loading-spinner"></span>正在加载商品详情…</div>
-      <div v-else-if="selectedProduct" class="mini-product-detail">
-        <div class="mini-product-detail__image">
-          <img v-if="selectedProduct.image_urls?.[detailImageIndex] || selectedProduct.image_url" :src="selectedProduct.image_urls?.[detailImageIndex] || selectedProduct.image_url" :alt="selectedProduct.name" />
-          <span v-else>暂无商品图片</span>
-          <small v-if="selectedProduct.image_urls?.length > 1">{{ detailImageIndex + 1 }} / {{ selectedProduct.image_urls.length }}</small>
-          <div v-if="selectedProduct.image_urls?.length > 1" class="mini-product-detail__thumbs">
-            <button v-for="(image, index) in selectedProduct.image_urls" :key="image" type="button" :class="{ active: detailImageIndex === index }" @click="detailImageIndex = index"><img :src="image" :alt="`${selectedProduct.name}图片${index + 1}`" /></button>
-          </div>
-        </div>
-        <div class="mini-product-detail__copy">
-          <h2>{{ selectedProduct.name }}</h2>
-          <p>{{ selectedProduct.description || '暂无商品介绍' }}</p>
-          <strong class="mini-product-detail__price">¥{{ money(selectedVariantPrice) }}<small v-if="selectedProduct.variants?.length"> 起</small></strong>
-          <div class="mini-product-detail__meta"><span>{{ selectedProduct.category || '精选商品' }}</span><span>库存 {{ selectedProduct.stock }} 件</span></div>
-          <button v-if="selectedProduct.variants?.length" class="mini-product-detail__variant" type="button" @click="startPurchase('cart')">{{ selectedProduct.variant_name || '商品规格' }}：请选择规格　›</button>
-          <div class="mini-product-detail__actions">
-            <template v-if="isCustomer">
-              <button type="button" class="mini-product-detail__cart" @click="startPurchase('cart')">加入购物车</button>
-              <button type="button" class="mini-product-detail__buy" @click="startPurchase('buy')">立即购买</button>
-            </template>
-            <button v-else class="mini-product-detail__buyer-hint" type="button" @click="openMiniLogin">买家账号登录后可购买</button>
-          </div>
-        </div>
-      </div>
-      <el-empty v-else description="商品详情暂不可用" />
-    </el-dialog>
-
-    <SkuSelectionDialog
-      v-if="selectedProduct && isCustomer"
-      v-model="skuDialogVisible"
-      :product="selectedProduct"
-      :selected-key="selectedVariantKey"
-      :quantity="purchaseQuantity"
-      :max-quantity="purchaseMaxQuantity"
-      :show-quantity="true"
-      :loading="purchaseBusy"
-      @update:selected-key="selectPurchaseVariant"
-      @update:quantity="purchaseQuantity = $event || 1"
-      @confirm="confirmPurchase"
-    >
-      <template v-if="purchaseAction === 'buy'" #extra>
-        <el-form label-position="top" class="mini-checkout-form">
-          <el-form-item label="收货地址">
-            <el-select v-model="purchaseAddressId" placeholder="请选择收货地址" style="width:100%">
-              <el-option v-for="address in purchaseAddresses" :key="address.id" :label="addressLabel(address)" :value="address.id" />
-            </el-select>
-          </el-form-item>
-          <el-form-item label="优惠券">
-            <el-select v-model="purchaseCouponId" clearable placeholder="选择优惠券（可选）" style="width:100%" no-data-text="暂无符合条件的优惠券">
-              <el-option v-for="coupon in usablePurchaseCoupons" :key="coupon.claim_id" :value="coupon.claim_id" :label="couponLabel(coupon)" />
-            </el-select>
-          </el-form-item>
-        </el-form>
-        <div class="mini-checkout-total"><span>商品 {{ money(purchaseTotals.subtotal) }} · 优惠 {{ money(purchaseTotals.discount) }} · 运费 {{ money(purchaseTotals.shipping) }}</span><strong>应付 ¥{{ money(purchaseTotals.payable) }}</strong></div>
-        <p class="mini-checkout-note">提交后会生成待付款订单，请在 {{ purchaseOrderSettings.unpaid_timeout_minutes || 30 }} 分钟内完成付款。</p>
-      </template>
-      <template #footer="{ valid }">
-        <el-button :disabled="purchaseBusy" @click="skuDialogVisible = false">取消</el-button>
-        <el-button v-if="purchaseAction === 'cart'" type="warning" :loading="purchaseBusy" :disabled="!valid || !productCanOrder" @click="confirmPurchase">加入购物车</el-button>
-        <el-button v-else type="danger" :loading="purchaseBusy" :disabled="!valid || !purchaseAddressId || !productCanOrder || !purchaseOrderSettings.checkout_enabled" @click="confirmPurchase">立即购买</el-button>
-      </template>
-    </SkuSelectionDialog>
 
     <el-dialog v-model="topicVisible" :title="selectedTopic?.name || '专题商品'" width="min(680px, 92vw)">
       <p class="mini-dialog-copy">{{ selectedTopic?.content }}</p>
@@ -237,20 +166,17 @@
 </template>
 
 <script setup>
-import { computed, nextTick, onMounted, reactive, ref } from 'vue'
+import '@/assets/css/mini-mobile.css'
+import { computed, onMounted, onUnmounted, watch, reactive, ref } from 'vue'
 import { ElMessage } from 'element-plus'
 import { useRoute, useRouter } from 'vue-router'
 import { Search } from '@element-plus/icons-vue'
 import { loginApi, registerApi } from '@/api/auth'
-import { getProductDetail, getStorefrontProducts } from '@/api/ecommerce'
-import { addCartItem, buyNowProduct, getAddresses, getCart } from '@/api/customer'
+import { getStorefrontProducts } from '@/api/ecommerce'
+import { getCart, getCustomerMessages } from '@/api/customer'
 import { claimCoupon, customerCoupons, mallActivity, mallPortal, mallTopicProducts } from '@/api/mall'
 import { logout as clearAuth } from '@/utils/auth'
-import { checkoutTotals, couponLabel } from '@/utils/checkout'
 import { useUser } from '@/utils/user'
-import SkuSelectionDialog from '@/components/SkuSelectionDialog.vue'
-import CustomerCart from '@/views/CustomerCart.vue'
-import CustomerAddresses from '@/views/CustomerAddresses.vue'
 
 const router = useRouter()
 const route = useRoute()
@@ -258,7 +184,31 @@ const { userInfo, saveLoginData, reloadUser } = useUser()
 const user = computed(() => userInfo.value)
 const isCustomer = computed(() => userInfo.value?.role === 'customer')
 const shopName = ref('商城精选')
-const activeTab = ref(route.query.tab === 'profile' ? 'profile' : 'home')
+const miniPage = computed(() => route.path !== '/mini-store')
+const miniContent = ref(null)
+const miniViewportHeight = ref('100dvh')
+const showTabbar = computed(() => !miniPage.value || ['/mini-store/cart','/mini-store/favorites'].includes(route.path) || (route.path === '/mini-store/messages' && !route.query.afterSaleId && !route.query.conversationId && route.query.tab !== 'support'))
+function fitMiniViewport() { miniViewportHeight.value = `${window.visualViewport?.height || window.innerHeight}px` }
+const activeTab = computed({
+  get: () => miniPage.value ? (route.path === '/mini-store/cart' ? 'cart' : 'detail') : (['home','category','profile','login'].includes(route.query.tab) ? route.query.tab : 'home'),
+  set: tab => router.push({path:'/mini-store',query:tab === 'home' ? {} : {tab}})
+})
+const unreadMessages = ref(0)
+let buyerTimer
+function syncCartCount(items) {
+  cartCount.value = (Array.isArray(items) ? items : []).reduce((sum,item)=>sum + Number(item.quantity || 0), 0)
+}
+function refreshBuyerState() { if (isCustomer.value) void loadBuyerState() }
+async function refreshMessages() {
+  if (!isCustomer.value) { unreadMessages.value = 0; return }
+  try { unreadMessages.value = Number((await getCustomerMessages()).data?.unread_count || 0) } catch {}
+}
+function openMiniPage(path, query = {}) {
+  if (!isCustomer.value && !['help'].includes(path)) { router.push({path:'/mini-store',query:{tab:'login',next:`/mini-store/${path}`}}); return }
+  router.push({path:`/mini-store/${path}`,query})
+}
+watch(() => `${route.path}|${route.path === '/mini-store' ? route.query.tab || '' : ''}`, () => { if (miniContent.value) miniContent.value.scrollTop = 0; refreshMessages(); if (isCustomer.value) loadBuyerState() })
+watch(() => userInfo.value?.id, () => { refreshMessages(); if (isCustomer.value) loadBuyerState() })
 const miniAuthMode = ref('login')
 const miniAuthForm = reactive({ username: '', password: '', confirmPassword: '' })
 const miniAuthFormRef = ref(null)
@@ -289,32 +239,7 @@ const topicVisible = ref(false)
 const topicLoading = ref(false)
 const selectedTopic = ref(null)
 const topicProducts = ref([])
-const productDialogVisible = ref(false)
-const productLoading = ref(false)
-const productDetail = ref(null)
-const detailImageIndex = ref(0)
-const skuDialogVisible = ref(false)
-const selectedVariantKey = ref('')
-const purchaseQuantity = ref(1)
-const purchaseAction = ref('buy')
-const purchaseBusy = ref(false)
-const purchaseAddresses = ref([])
-const purchaseAddressId = ref(null)
-const purchaseCoupons = ref([])
-const purchaseCouponId = ref(null)
-const purchaseShipping = ref({ base_fee: 0, free_over: 0 })
-const purchaseOrderSettings = ref({ checkout_enabled: true, max_quantity: 99, unpaid_timeout_minutes: 30 })
 const groupRules = computed(() => portal.value['group-rules'] || [])
-const selectedProduct = computed(() => productDetail.value?.product || null)
-const selectedVariant = computed(() => selectedProduct.value?.variants?.find(item => item.key === selectedVariantKey.value) || null)
-const selectedVariantPrice = computed(() => Number(selectedVariant.value?.price ?? selectedProduct.value?.price ?? 0))
-const selectedVariantStock = computed(() => Number(selectedVariant.value?.stock ?? selectedProduct.value?.stock ?? 0))
-const purchaseMaxQuantity = computed(() => Math.max(1, Math.min(selectedVariantStock.value || 1, Number(purchaseOrderSettings.value.max_quantity) || 99, 99)))
-const productCanOrder = computed(() => selectedProduct.value?.shelf_status === 'on_sale' && selectedProduct.value?.review_status === 'normal' && selectedVariantStock.value > 0 && (!selectedProduct.value?.variants?.length || Boolean(selectedVariant.value)))
-const usablePurchaseCoupons = computed(() => purchaseCoupons.value.filter(item => item.available && item.claim_id && !item.used_at && !item.reserved && Number(item.min_amount) <= selectedVariantPrice.value * purchaseQuantity.value))
-const selectedPurchaseCoupon = computed(() => usablePurchaseCoupons.value.find(item => item.claim_id === purchaseCouponId.value))
-const purchaseTotals = computed(() => checkoutTotals(selectedVariantPrice.value * purchaseQuantity.value, selectedPurchaseCoupon.value, purchaseShipping.value))
-
 function money(value) { return Number(value || 0).toFixed(2).replace(/\.00$/, '') }
 function formatDate(value) { return value ? String(value).slice(0, 10) : '长期有效' }
 function categoryIcon(name, index) {
@@ -369,21 +294,9 @@ function showCategoryTab() {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 function scrollToProducts() { document.getElementById('mini-products')?.scrollIntoView({ behavior: 'smooth', block: 'start' }) }
-async function openProduct(product) {
-  const productId = Number(typeof product === 'object' ? product.id : product)
-  if (!Number.isInteger(productId) || productId < 1) return
-  productDialogVisible.value = true
-  productLoading.value = true
-  productDetail.value = null
-  detailImageIndex.value = 0
-  try {
-    const response = await getProductDetail(productId)
-    productDetail.value = response.data || null
-    if (isCustomer.value) mallActivity({ kind: 'footprint', product_id: productId }).catch(() => {})
-  } catch (error) {
-    productDialogVisible.value = false
-    ElMessage.error(error?.message || '商品详情加载失败')
-  } finally { productLoading.value = false }
+function openProduct(product) {
+  const id = Number(typeof product === 'object' ? product.id : product)
+  if (Number.isInteger(id) && id > 0) { topicVisible.value = false; router.push({path:`/mini-store/products/${id}`,query:{from:'store'}}) }
 }
 function openAd(ad) {
   if (ad.product_id) { openProduct({ id: ad.product_id }); return }
@@ -402,68 +315,6 @@ function couponButtonState(coupon) {
   if (claim?.claim_id) return { label: claim.used_at ? '已使用' : '已领取', disabled: true }
   if (Number(coupon.claimed || 0) >= Number(coupon.quantity || 0)) return { label: '已领完', disabled: true }
   return { label: '立即领取', disabled: false }
-}
-function selectPurchaseVariant(key) {
-  selectedVariantKey.value = key
-  purchaseQuantity.value = 1
-  purchaseCouponId.value = null
-}
-function addressLabel(address) {
-  return `${address.receiver_name} · ${address.phone} · ${address.province}${address.city}${address.district}${address.detail}`
-}
-async function startPurchase(action) {
-  if (!isCustomer.value) {
-    openMiniLogin()
-    return
-  }
-  if (!selectedProduct.value || selectedProduct.value.shelf_status !== 'on_sale' || selectedProduct.value.review_status !== 'normal') {
-    ElMessage.warning('该商品暂不可购买')
-    return
-  }
-  if (!selectedProduct.value.variants?.length && Number(selectedProduct.value.stock) <= 0) {
-    ElMessage.warning('商品暂时缺货')
-    return
-  }
-  purchaseAction.value = action
-  selectedVariantKey.value = ''
-  purchaseQuantity.value = 1
-  purchaseCouponId.value = null
-  if (action === 'buy') {
-    try {
-      const [addressResponse, portalResponse, couponResponse] = await Promise.all([getAddresses(), mallPortal(), customerCoupons()])
-      purchaseAddresses.value = addressResponse.data?.list || []
-      if (!purchaseAddresses.value.length) {
-        ElMessage.warning('请先在“我的”中添加收货地址，再购买商品')
-        return
-      }
-      purchaseAddressId.value = purchaseAddresses.value.find(item => item.is_default)?.id || purchaseAddresses.value[0]?.id
-      purchaseShipping.value = portalResponse.data?.shipping || { base_fee: 0, free_over: 0 }
-      purchaseOrderSettings.value = portalResponse.data?.order || purchaseOrderSettings.value
-      purchaseCoupons.value = couponResponse.data?.list || []
-    } catch (error) {
-      ElMessage.error(error?.message || '读取下单信息失败')
-      return
-    }
-  }
-  skuDialogVisible.value = true
-}
-async function confirmPurchase() {
-  if (!productCanOrder.value || purchaseBusy.value) return
-  purchaseBusy.value = true
-  try {
-    if (purchaseAction.value === 'cart') {
-      await addCartItem(selectedProduct.value.id, purchaseQuantity.value, selectedVariant.value?.key || null)
-      cartCount.value += purchaseQuantity.value
-      ElMessage.success('已加入购物车')
-    } else {
-      if (!purchaseAddressId.value || !purchaseOrderSettings.value.checkout_enabled) return
-      const response = await buyNowProduct(selectedProduct.value.id, purchaseQuantity.value, purchaseAddressId.value, selectedVariant.value?.key || null, selectedPurchaseCoupon.value?.claim_id || null)
-      ElMessage.success(response.message || '订单已生成')
-    }
-    skuDialogVisible.value = false
-  } catch (error) {
-    ElMessage.error(error?.message || (purchaseAction.value === 'cart' ? '加入购物车失败' : '下单失败'))
-  } finally { purchaseBusy.value = false }
 }
 async function claim(coupon) {
   if (!isCustomer.value) { openMiniLogin(); return }
@@ -488,35 +339,23 @@ async function openTopic(topic) {
   finally { topicLoading.value = false }
 }
 function openGroup(rule) {
-  if (rule.product_id) openProduct({ id: rule.product_id })
-  else ElMessage.info('该拼团活动暂未关联商品')
+  openMiniPage('offers')
 }
 function goCart() {
   if (!isCustomer.value) { openMiniLogin(); return }
-  productDialogVisible.value = false
-  skuDialogVisible.value = false
-  activeTab.value = 'cart'
+  router.push('/mini-store/cart')
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-function syncCartCount(items) {
-  cartCount.value = (items || []).reduce((sum, item) => sum + Number(item.quantity || 0), 0)
-}
 function goProfile() {
-  productDialogVisible.value = false
-  skuDialogVisible.value = false
   activeTab.value = 'profile'
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 function showAddresses() {
   if (!isCustomer.value) { openMiniLogin(); return }
-  activeTab.value = 'addresses'
+  router.push('/mini-store/addresses')
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
-function showCoupons() {
-  if (!portal.value.coupons?.length) { ElMessage.info('当前没有可领取的优惠券'); goHome(); return }
-  activeTab.value = 'home'
-  nextTick(() => document.getElementById('mini-coupons')?.scrollIntoView({ behavior: 'smooth', block: 'start' }))
-}
+function showCoupons() { openMiniPage('offers') }
 function validateMiniConfirmPassword(_rule, value, callback) {
   if (!value) callback(new Error('请确认密码'))
   else if (value !== miniAuthForm.password) callback(new Error('两次密码输入不一致'))
@@ -575,7 +414,8 @@ async function submitMiniAuth() {
     if (response.data?.user?.role !== 'customer') throw new Error('该账号不是买家账号，请使用买家账号登录')
     saveLoginData(response.data)
     await loadBuyerState()
-    activeTab.value = 'profile'
+    const next = String(route.query.next || '')
+    await router.replace(next.startsWith('/mini-store/') && !next.startsWith('//') ? next : {path:'/mini-store',query:{tab:'profile'}})
     window.scrollTo({ top: 0, behavior: 'smooth' })
     ElMessage.success('登录成功')
   } catch (error) {
@@ -593,6 +433,15 @@ function openUserBrowserPage() {
 }
 
 onMounted(async () => {
+  fitMiniViewport()
+  window.visualViewport?.addEventListener('resize',fitMiniViewport)
+  window.addEventListener('resize',fitMiniViewport)
+  refreshMessages()
+  buyerTimer = setInterval(() => { if (!document.hidden) refreshMessages() }, 8000)
+  window.addEventListener('customer-messages-updated', refreshMessages)
+  window.addEventListener('customer-messages-read', refreshMessages)
+  window.addEventListener('customer-cart-updated', refreshBuyerState)
+  window.addEventListener('focus', refreshBuyerState)
   const requests = [mallPortal(), loadProducts()]
   if (isCustomer.value) requests.push(loadBuyerState())
   const [portalResult] = await Promise.allSettled(requests)
@@ -601,9 +450,39 @@ onMounted(async () => {
     shopName.value = portal.value.shop?.name || '商城精选'
   }
 })
+onUnmounted(() => {
+  window.visualViewport?.removeEventListener('resize',fitMiniViewport)
+  window.removeEventListener('resize',fitMiniViewport)
+  clearInterval(buyerTimer)
+  window.removeEventListener('customer-messages-updated', refreshMessages)
+  window.removeEventListener('customer-messages-read', refreshMessages)
+  window.removeEventListener('customer-cart-updated', refreshBuyerState)
+  window.removeEventListener('focus', refreshBuyerState)
+})
 </script>
 
 <style scoped>
+
+.mini-page-nav { display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid #edf0f2; }
+.mini-page-nav button { border:0; color:#348bea; background:none; cursor:pointer; }
+.mini-unread { display:inline-block; padding:1px 6px; border-radius:12px; background:#f05b51; color:white; font-size:11px; }
+.mini-product__rating { color:#bb7840; font-size:11px; }
+.mini-shared-page { padding-bottom:12px; min-width:0; }
+.mini-shared-page :deep(.page-container) { width:100%; max-width:none; margin:0; padding:14px; min-width:0; }
+.mini-shared-page :deep(.content-card) { min-width:0; }
+@media(max-width:640px) {
+  .mini-store { padding-left:0; padding-right:0; }
+  .mini-shared-page :deep(.page-container) { padding:10px; }
+  .mini-shared-page :deep(.content-card) { padding:14px; }
+  .mini-shared-page :deep(.customer-message-center__body) { grid-template-columns:minmax(0,1fr); }
+  .mini-shared-page :deep(.customer-message-list__items) { max-height:230px; }
+  .mini-shared-page :deep(.support-panel) { grid-template-columns:minmax(0,1fr); }
+  .mini-shared-page :deep(.support-panel__history) { max-height:180px; overflow:auto; }
+  .mini-shared-page :deep(.order-card__body) { flex-direction:column; align-items:stretch; }
+  .mini-shared-page :deep(.order-card__amount) { flex-wrap:wrap; }
+  .mini-shared-page :deep(.coupon-grid), .mini-shared-page :deep(.group-grid) { grid-template-columns:minmax(0,1fr); }
+}
+
 .mini-store { min-height:100dvh; background:#f3f4f2; color:#243447; padding:0 16px 82px; }
 .mini-store__shell { width:min(100%, 860px); min-height:100dvh; margin:0 auto; background:#fff; box-shadow:0 0 28px #1b30400a; }
 .mini-header { position:sticky; z-index:5; top:0; display:grid; gap:10px; padding:12px 16px; background:#fff; border-bottom:1px solid #f1f2f2; }
@@ -780,4 +659,29 @@ onMounted(async () => {
   .mini-detail-dialog :deep(.el-dialog__body) { padding:12px 14px 16px; }
   .mini-checkout-total { align-items:flex-start; flex-direction:column; }
 }
+
+.mini-store { position:fixed; inset:0; height:var(--mini-vh,100dvh); min-height:0; padding:0; overflow:hidden; background:#edf0f2; }
+.mini-store__shell { display:flex; flex-direction:column; width:min(100%,480px); height:100%; min-height:0; overflow:hidden; background:#f5f6f8; }
+.mini-header { position:relative; flex:none; min-height:52px; padding:10px 14px; gap:8px; z-index:4; }
+.mini-header__brand strong { font-size:15px; }
+.mini-header__actions { gap:12px; }
+.mini-search { height:38px; }
+.mini-search input { font-size:16px; }
+.mini-content { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; -webkit-overflow-scrolling:touch; padding:0 0 14px; }
+.mini-content--detail { overflow:hidden; padding:0; display:flex; }
+.mini-shared-page { width:100%; height:100%; padding:0; min-height:0; overflow:hidden; }
+.mini-tabbar { position:relative; inset:auto; transform:none; display:flex; flex:none; align-items:center; width:100%; height:calc(58px + env(safe-area-inset-bottom)); min-height:58px; margin:0; padding:5px 0 calc(5px + env(safe-area-inset-bottom)); z-index:5; border-top:1px solid #eef1f3; }
+.mini-tabbar>button { min-height:46px; flex:1; font-size:10px; }
+.mini-tabbar__icon { width:21px; height:21px; }
+.mini-products { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+.mini-home { gap:8px; }.mini-section { padding:14px 12px 3px; }.mini-section__heading h2 {font-size:17px;}.mini-section__heading small{display:none}.mini-product-section{padding-bottom:12px}.mini-product__rating{display:block;margin:5px 8px 0}
+.mini-profile-page { padding:0 12px 16px; display:block; }
+.mini-me-banner { display:flex; align-items:center; gap:14px; margin:0 -12px 12px; padding:28px 22px; background:linear-gradient(120deg,#fff1e5,#fff9f0); }
+.mini-me-avatar { display:grid;place-items:center;flex:none;width:62px;height:62px;border-radius:50%;background:#f3ccb2;color:#fff;font-size:25px;overflow:hidden; }
+.mini-me-avatar img{width:100%;height:100%;object-fit:cover}.mini-me-banner>div:nth-child(2){flex:1}.mini-me-banner strong{font-size:19px;font-weight:600}.mini-me-banner p{font-size:11px;color:#b19d8f;margin:6px 0 0}.mini-me-banner>button{border:0;background:none;color:#bd977e;font-size:11px;padding:10px}
+.mini-me-card{padding:16px;margin-bottom:12px;border-radius:14px;background:#fff}.mini-me-card>header{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}.mini-me-card>header strong{font-size:14px}.mini-me-card>header button{border:0;background:none;color:#a9b1b9;font-size:11px}
+.mini-order-shortcuts{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px}.mini-order-shortcuts>button{display:grid;justify-items:center;gap:9px;padding:3px 0;border:0;background:none;font-size:11px;color:#7a8995}.mini-order-shortcuts span{color:#de9a77;font-size:25px;line-height:1}
+.mini-me-services{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));row-gap:22px;padding:20px 10px}.mini-me-services>button{display:grid;justify-items:center;gap:8px;min-height:58px;border:0;background:none;color:#7e8e99;font-size:11px}.mini-me-services>button>span{position:relative;color:#b6a9bc;font-size:26px;line-height:1}.mini-me-services i{position:absolute;top:-5px;left:18px;border-radius:12px;padding:2px 5px;background:#ed6957;color:#fff;font-size:10px;font-style:normal}
+.mini-me-settings{padding:0 16px}.mini-me-settings>button{display:flex;align-items:center;justify-content:space-between;width:100%;min-height:48px;border:0;border-bottom:1px solid #f2f4f6;background:none;color:#748792;font-size:13px}.mini-me-settings>button:last-child{border-bottom:0}.mini-me-settings span{color:#bfc7ce;font-size:20px}.mini-me-signout{display:flex;justify-content:center;gap:20px;padding:6px 0}.mini-me-signout>button{min-height:40px;border:0;background:none;color:#a6afb8;font-size:12px}
+
 </style>

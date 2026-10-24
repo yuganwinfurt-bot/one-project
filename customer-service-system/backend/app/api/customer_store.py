@@ -533,6 +533,18 @@ def get_customer_messages(user: CurrentUser, db: DbSession):
         messages.append(conversation)
     private_conversations = direct_inbox(db, user)
     messages.extend(private_conversations)
+    from app.models.customer_support import SupportConversation
+    from app.services import customer_support_service as support
+    support_unread = 0
+    for conversation in db.query(SupportConversation).filter_by(user_id=user.id, after_sale_id=None).all():
+        chat = support.rows(db, conversation)
+        if not chat:
+            continue
+        unread = sum(not m.read_by_customer and m.sender_role != "customer" for m in chat)
+        support_unread += unread
+        messages.append({"id": f"support-{conversation.id}", "type": "support_chat", "support_conversation_id": conversation.id,
+                         "title": conversation.title, "preview": chat[-1].content, "unread_count": unread, "is_read": not unread,
+                         "create_time": chat[-1].create_time.strftime("%Y-%m-%d %H:%M:%S"), "sort_id": chat[-1].id})
     notifications = db.query(ReviewReplyNotification).filter_by(user_id=user.id).all()
     restock_notices = db.query(CustomerRestockMessage).filter_by(user_id=user.id).all()
     for record in restock_notices:
@@ -552,7 +564,7 @@ def get_customer_messages(user: CurrentUser, db: DbSession):
             "list": messages,
             "unread_count": unread_price_count + unread_shipment_count + unread_after_sale_count
             + sum(item["unread_count"] for item in private_conversations) + sum(not record.is_read for record in notifications)
-            + sum(not record.is_read for record in restock_notices),
+            + sum(not record.is_read for record in restock_notices) + support_unread,
         }
     )
 
@@ -592,10 +604,15 @@ def mark_customer_messages_read(user: CurrentUser, db: DbSession):
     updated_restock = db.query(CustomerRestockMessage).filter_by(user_id=user.id, is_read=False).update(
         {CustomerRestockMessage.is_read: True}, synchronize_session=False
     )
+    from app.models.customer_support import SupportConversation, SupportChatMessage
+    updated_support = db.query(SupportChatMessage).filter(
+        SupportChatMessage.conversation_id.in_(db.query(SupportConversation.id).filter_by(user_id=user.id)),
+        SupportChatMessage.read_by_customer.is_(False),
+    ).update({SupportChatMessage.read_by_customer: True}, synchronize_session=False)
     db.commit()
     return Response.success(
         message="消息已全部标为已读",
-        data={"updated": updated_price + updated_shipments + updated_after_sale + updated_private + updated_replies + updated_restock},
+        data={"updated": updated_price + updated_shipments + updated_after_sale + updated_private + updated_replies + updated_restock + updated_support},
     )
 
 
@@ -667,6 +684,12 @@ def get_customer_after_sale_messages(after_sale_id: int, user: CurrentUser, db: 
         db.commit()
     product = db.query(Product).filter(Product.id == after_sale.product_id).first()
     application = _after_sale_data(after_sale)
+    from app.services import customer_support_service as support
+    conversation = support.for_after_sale(db, after_sale) if after_sale.status not in CLOSED_STATUSES else None
+    application.update(support.state(conversation))
+    application["conversation_closed"] = bool(application.get("conversation_closed") or (conversation and conversation.closed))
+    application.update(support.ai_state(db, conversation))
+    db.commit()
     application["image_url"] = product.image_url if product else None
     return Response.success(
         data={
@@ -693,6 +716,11 @@ def create_customer_after_sale_message(
         raise BusinessException(message="售后申请不存在", code=404)
     if after_sale.status in CLOSED_STATUSES:
         raise BusinessException(message="售后沟通通道已关闭")
+    from app.services import customer_support_service as support
+    conversation = support.for_after_sale(db, after_sale)
+    conversation = support.get_conversation(db, conversation.id, user.id, lock=True)
+    if conversation.closed:
+        raise BusinessException(message="本次人工会话已结束，可发起新的客服咨询")
     message = AfterSaleMessage(
         after_sale_id=after_sale.id,
         user_id=user.id,
@@ -706,7 +734,11 @@ def create_customer_after_sale_message(
     db.add(message)
     db.commit()
     db.refresh(message)
-    return Response.success(message="消息已发送", data=_after_sale_message_data(message))
+    from app.services import customer_support_service as support
+    conversation = support.for_after_sale(db, after_sale)
+    ai_request = support.prepare_ai(db, conversation)
+    db.commit()
+    return Response.success(message="消息已发送", data={**_after_sale_message_data(message), "ai_pending": bool(ai_request)})
 
 
 @router.post("/after-sales/{after_sale_id}/service-rating")

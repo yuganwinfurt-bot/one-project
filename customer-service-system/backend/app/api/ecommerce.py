@@ -440,7 +440,7 @@ def list_after_sales(
 
 @router.get("/message-center")
 def get_staff_message_center(_editor: CurrentProductEditor, db: DbSession):
-    """后台消息中心：售后会话、新订单和业务事件通知。"""
+    """后台消息中心：新订单、人工接待和业务事件通知。"""
     event_rows = (
         db.query(StaffInboxEvent)
         .order_by(StaffInboxEvent.create_time.desc(), StaffInboxEvent.id.desc())
@@ -452,45 +452,6 @@ def get_staff_message_center(_editor: CurrentProductEditor, db: DbSession):
         .filter(StaffInboxEvent.is_read.is_(False))
         .scalar()
         or 0
-    )
-    unread_chat_count = (
-        db.query(func.count(AfterSaleMessage.id))
-        .filter(
-            AfterSaleMessage.sender_role == "customer",
-            AfterSaleMessage.read_by_staff.is_(False),
-        )
-        .scalar()
-        or 0
-    )
-    unread_by_after_sale = dict(
-        db.query(AfterSaleMessage.after_sale_id, func.count(AfterSaleMessage.id))
-        .filter(
-            AfterSaleMessage.sender_role == "customer",
-            AfterSaleMessage.read_by_staff.is_(False),
-        )
-        .group_by(AfterSaleMessage.after_sale_id)
-        .all()
-    )
-    latest_message_ids = (
-        db.query(
-            AfterSaleMessage.after_sale_id.label("after_sale_id"),
-            func.max(AfterSaleMessage.id).label("message_id"),
-        )
-        .group_by(AfterSaleMessage.after_sale_id)
-        .subquery()
-    )
-    latest_message = aliased(AfterSaleMessage)
-    conversation_rows = (
-        db.query(AfterSaleRequest, User.username, User.name, latest_message)
-        .join(User, User.id == AfterSaleRequest.user_id)
-        .outerjoin(latest_message_ids, latest_message_ids.c.after_sale_id == AfterSaleRequest.id)
-        .outerjoin(latest_message, latest_message.id == latest_message_ids.c.message_id)
-        .order_by(
-            func.coalesce(latest_message.create_time, AfterSaleRequest.create_time).desc(),
-            AfterSaleRequest.id.desc(),
-        )
-        .limit(200)
-        .all()
     )
     events = [
         {
@@ -506,33 +467,6 @@ def get_staff_message_center(_editor: CurrentProductEditor, db: DbSession):
         }
         for event in event_rows
     ]
-    conversations = []
-    for record, username, user_name, message in conversation_rows:
-        conversations.append(
-            {
-                "after_sale_id": record.id,
-                **after_sale_flow_data(record),
-                "order_no": record.order_no,
-                "product_name": record.product_name,
-                "service_type": record.service_type,
-                "status": record.status,
-                "return_shipped": record.return_shipped,
-                "return_tracking_no": record.return_tracking_no,
-                "exchange_shipping_address": record.exchange_shipping_address,
-                "exchange_tracking_no": record.exchange_tracking_no,
-                "user_id": record.user_id,
-                "username": username,
-                "user_name": user_name,
-                "preview": message.content if message else f"售后申请：{record.reason}",
-                "create_time": message.create_time.strftime("%Y-%m-%d %H:%M:%S")
-                if message and message.create_time
-                else record.create_time.strftime("%Y-%m-%d %H:%M:%S")
-                if record.create_time
-                else None,
-                "unread_count": int(unread_by_after_sale.get(record.id, 0)),
-            }
-        )
-    private_conversations = direct_inbox(db, _editor)
     reply_notifications = db.query(ReviewReplyNotification).filter_by(user_id=_editor.id).all()
     for notification in reply_notifications:
         item = notification_data(notification)
@@ -541,10 +475,9 @@ def get_staff_message_center(_editor: CurrentProductEditor, db: DbSession):
     return Response.success(
         data={
             "events": events,
-            "conversations": conversations,
-            "direct_conversations": private_conversations,
-            "unread_count": int(unread_event_count + unread_chat_count)
-            + sum(item["unread_count"] for item in private_conversations) + sum(not item.is_read for item in reply_notifications),
+            "conversations": [],
+            "direct_conversations": [],
+            "unread_count": int(unread_event_count) + sum(not item.is_read for item in reply_notifications),
         }
     )
 

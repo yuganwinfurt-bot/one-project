@@ -72,7 +72,7 @@ def _clean_record_text(raw: str) -> str:
 
 def search_similar(
     query: str, top_k: int = 5, product_ids: list[int] | None = None,
-    doc_types: list[str] | None = None,
+    doc_types: list[str] | None = None, *, knowledge_base_name: str = "电商分析平台",
 ) -> dict[str, Any]:
     """Search the e-commerce knowledge base hosted by the standalone RAG app."""
     query = query.strip()
@@ -83,7 +83,7 @@ def search_similar(
         {
             "query": query,
             "knowledge_base_ids": [settings.RAG_ECOM_KNOWLEDGE_BASE_ID],
-            "knowledge_base_name": "电商分析平台",
+            "knowledge_base_name": knowledge_base_name,
             "top_k": max(1, min(int(top_k or 5), 20)),
             "product_ids": product_ids or None,
             "doc_types": doc_types or None,
@@ -96,6 +96,8 @@ def search_similar(
         raw = str(match.get("content") or "")
         supplied_metadata = match.get("metadata") or {}
         metadata = dict(supplied_metadata) if isinstance(supplied_metadata, dict) else {}
+        metadata["knowledge_base_id"] = match.get("knowledge_base_id")
+        metadata["knowledge_base_name"] = match.get("knowledge_base_name")
         for key in ("record_id", "doc_type", "source_table", "source_id", "product_id", "review_id", "rating", "name", "category", "has_image", "create_time", "update_time"):
             if metadata.get(key) in (None, ""):
                 value = _field(raw, key)
@@ -181,3 +183,19 @@ def get_sync_job(job_id: str | None = None) -> dict[str, Any] | None:
         f"/api/integrations/agent/sync-ecommerce/jobs/{job_id or 'latest'}",
         None, 10.0, sync=True, method="GET",
     )
+
+
+def search_assistant_knowledge(query: str) -> list[dict[str, Any]]:
+    """Always consult both platform libraries before composing an operations answer."""
+    from concurrent.futures import ThreadPoolExecutor
+
+    def retrieve(name):
+        try:
+            result = search_similar(query[:1000], top_k=3, knowledge_base_name=name)
+            return {"知识库": name, "状态": "检索完成", "性质": "手动同步快照，不能代替实时订单或商品状态",
+                    "资料": [{"内容": hit["text"][:2600], "来源": hit["metadata"], "距离": hit["distance"]} for hit in result["hits"]]}
+        except BusinessException as error:
+            return {"知识库": name, "状态": "不可用或尚未同步", "原因": str(error)[:300], "资料": []}
+
+    with ThreadPoolExecutor(max_workers=2) as pool:
+        return list(pool.map(retrieve, ("电商分析平台", "售后工单系统")))

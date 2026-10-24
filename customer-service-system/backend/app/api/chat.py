@@ -94,3 +94,9 @@ def confirm_actions(
         body.thread_id, body.approved, user_id=current_user.id
     )
     return Response.success(data=result)
+
+
+@router.post("/customer-page")
+def prepare_customer_page(body: ChatRequest, db: DbSession, current_user: CurrentProductEditor):
+    from app.services.customer_page_service import prepare_customer_page
+    return Response.success(data=prepare_customer_page(db, current_user, body.question))

@@ -30,3 +30,8 @@ api.include_router(customer_store_router)
 api.include_router(community_router)
 from app.api.mall import router as mall_router
 api.include_router(mall_router)
+from app.api.support_bridge import router as support_bridge_router
+api.include_router(support_bridge_router)
+from app.api.customer_support import router as customer_support_router, staff_router as support_tickets_router
+api.include_router(customer_support_router)
+api.include_router(support_tickets_router)

@@ -1,0 +1,45 @@
+.shell { display:flex; height:100dvh; overflow:hidden; background:#f0f2f5; color:#303133; font-family:"Helvetica Neue",Helvetica,"PingFang SC","Microsoft YaHei",Arial,sans-serif; font-size:14px; }
+.sidebar { display:flex; width:210px; flex:none; flex-direction:column; background:#304156; color:#bfcbd9; transition:width .2s ease; }
+.collapsed { width:54px; }
+.brand { display:flex; align-items:center; gap:10px; height:50px; flex:none; padding:0 14px; border-bottom:1px solid rgba(255,255,255,.06); }
+.brand a { font-size:15px; font-weight:600; color:#fff; white-space:nowrap; text-decoration:none; }
+.collapsed .brand { justify-content:center; padding:0; }
+.collapsed .brand>a { display:none; }
+.navigation { padding:0 0 12px; overflow-y:auto; flex:1; }
+.navLink { display:flex; align-items:center; gap:12px; height:50px; padding:0 20px; color:#bfcbd9; text-decoration:none; white-space:nowrap; }
+.navLink:hover { background:#263445; color:#fff; }
+.active,.active:hover { color:#409eff; background:#304156; font-weight:600; }
+.collapsed .navLink { justify-content:center; padding:0; }
+.collapsed .navLink span { display:none; }
+.footer { flex:none; padding:16px 14px; border-top:1px solid rgba(255,255,255,.08); }
+.footer>div { border-radius:4px; background:#263445; padding:12px; font-size:12px; }
+.footer strong { display:flex; align-items:center; gap:8px; font-weight:500; color:#dbe5ee; }
+.footer i { width:7px; height:7px; border-radius:50%; background:#20c997; }
+.footer>p { margin:12px 0 0; color:#82919f; font-size:11px; }
+.collapsed .footer { display:none; }
+.body { display:flex; min-width:0; flex:1; flex-direction:column; }
+.header { display:flex; flex:none; align-items:center; justify-content:space-between; height:50px; padding:0 15px; border-bottom:1px solid #d8dce5; background:#fff; }
+.breadcrumb { display:flex; align-items:center; gap:12px; min-width:0; color:#606266; }
+.breadcrumb a { color:#606266; text-decoration:none; }
+.breadcrumb>span:last-child { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+.fold { display:flex; align-items:center; justify-content:center; width:34px; height:34px; padding:0; border:0; color:#303133; background:transparent; font-size:20px; cursor:pointer; }
+.fold:hover { background:#f0f2f5; }
+.mobileMenu { display:none; }
+.right { display:flex; align-items:center; gap:16px; }
+.deployment { color:#909399; font-size:12px; }
+.account { position:relative; }
+.accountTrigger { display:flex; align-items:center; gap:10px; padding:0; border:0; background:none; cursor:pointer; color:#606266; font:inherit; }
+.avatar { position:relative; display:flex; align-items:center; justify-content:center; width:36px; height:36px; border-radius:50%; color:#fff; background:#13283e; font-weight:600; overflow:hidden; }
+.avatar img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; }
+.accountMenu { position:absolute; top:calc(100% + 12px); right:0; min-width:136px; z-index:1000; padding:6px 0; border:1px solid #e4e7ed; border-radius:4px; background:#fff; box-shadow:0 2px 12px rgba(0,0,0,.1); }
+.accountMenu a,.accountMenu button { display:block; width:100%; padding:10px 18px; border:0; background:none; color:#606266; text-decoration:none; font:inherit; cursor:pointer; text-align:left; }
+.accountMenu a:hover,.accountMenu button:hover { color:#409eff; background:#ecf5ff; }
+.tags { display:flex; flex:none; align-items:center; gap:5px; height:34px; padding:0 8px; border-bottom:1px solid #d8dce5; box-shadow:0 1px 3px rgba(0,0,0,.08); background:#fff; }
+.tags>a { padding:3px 8px; border:1px solid #d8dce5; color:#606266; font-size:12px; text-decoration:none; }
+.tagActive { display:inline-flex; align-items:center; gap:5px; padding:4px 8px; color:#fff; background:#42b983; font-size:12px; }
+.tagActive i { width:8px; height:8px; border-radius:50%; background:#fff; }
+.main { flex:1; min-height:0; overflow-y:auto; overscroll-behavior:contain; }
+.loading { display:grid; min-height:100dvh; place-items:center; color:#909399; background:#f0f2f5; }
+@media(max-width:767px) { .sidebar,.fold { display:none; } .mobileMenu { display:block; } .right { gap:10px; } .deployment,.accountTrigger>span:first-child { display:none; } }
+
+.conversationMain { display:flex; flex-direction:column; overflow:hidden; }

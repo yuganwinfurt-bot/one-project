@@ -26,16 +26,18 @@ SERVICES = {item.name: item for item in core.SERVICES}
 LABELS = {
     'ollama': 'Ollama 本地模型', 'rag': 'RAG 知识库服务', 'rag_ui': 'RAG 网页',
     'agent': 'Agent 智能体', 'ecom_backend': '电商后台服务', 'ecom_ui': '电商网页', 'hub': '项目主页',
+    'support_backend': '售后工单后台', 'support_ui': '售后工单网页',
 }
 APPLICATIONS = (
     ('项目主页', ('hub',), 'http://127.0.0.1:8030/'),
     ('电商平台', ('ecom_backend', 'ecom_ui'), f"http://127.0.0.1:{SERVICES['ecom_ui'].port}/"),
+    ('售后工单系统', ('ecom_backend', 'support_backend', 'support_ui'), 'http://127.0.0.1:3000/login'),
     ('Agent 智能体', ('agent',), 'http://127.0.0.1:8020/'),
     ('RAG 知识库', ('rag', 'rag_ui'), 'http://127.0.0.1:4173/'),
     ('Ollama 本地模型', ('ollama',), ''),
 )
-STOP_ORDER = ('hub', 'ecom_ui', 'ecom_backend', 'agent', 'rag_ui', 'rag', 'ollama')
-LOG_KEYS = {'电商平台': 'ecom_backend', 'Agent 智能体': 'agent', 'RAG 知识库': 'rag', '项目主页': 'hub', 'Ollama 本地模型': 'ollama'}
+STOP_ORDER = ('hub', 'support_ui', 'support_backend', 'ecom_ui', 'ecom_backend', 'agent', 'rag_ui', 'rag', 'ollama')
+LOG_KEYS = {'售后工单系统': 'support_backend', '电商平台': 'ecom_backend', 'Agent 智能体': 'agent', 'RAG 知识库': 'rag', '项目主页': 'hub', 'Ollama 本地模型': 'ollama'}
 
 
 class LogWriter:
@@ -105,7 +107,7 @@ class ProjectWindow:
         header = ttk.Frame(self.window, padding=(22, 18, 22, 12))
         header.pack(fill='x')
         ttk.Label(header, text='我的本地项目', style='Title.TLabel').pack(anchor='w')
-        ttk.Label(header, text='电商平台 · Agent 智能体 · RAG 知识库 · 项目主页', style='Muted.TLabel').pack(anchor='w', pady=(6, 0))
+        ttk.Label(header, text='电商平台 · 售后工单系统 · Agent 智能体 · RAG 知识库 · 项目主页', style='Muted.TLabel').pack(anchor='w', pady=(6, 0))
         controls = ttk.Frame(self.window, padding=(22, 0, 22, 12))
         controls.pack(fill='x')
         self.start_button = ttk.Button(controls, text='启动全部', style='Primary.TButton', command=self.start)
@@ -142,7 +144,7 @@ class ProjectWindow:
             stop_button.grid(row=index, column=4, padx=(0, 6))
             self.row_buttons.extend((start_button, stop_button))
             if url:
-                ttk.Button(apps, text='打开网页', width=7, command=lambda name=name, keys=keys, url=url: self.open_page(name, keys, url)).grid(row=index, column=5)
+                ttk.Button(apps, text='登录系统' if name == '售后工单系统' else '打开网页', width=7, command=lambda name=name, keys=keys, url=url: self.open_page(name, keys, url)).grid(row=index, column=5)
 
         log_bar = ttk.Frame(self.window, padding=(22, 0, 22, 7))
         log_bar.pack(fill='x')
@@ -340,6 +342,8 @@ class ProjectWindow:
 
     def request_stop(self, app_name=None):
         keys = tuple(SERVICES) if not app_name else next(app[1] for app in APPLICATIONS if app[0] == app_name)
+        if app_name == '售后工单系统':
+            keys = tuple(key for key in keys if key != 'ecom_backend')
         self.pending_stop.update(keys)
         if self.busy:
             self.cancel.set()

@@ -111,6 +111,8 @@ def initialize_database():
         document_columns = {row["name"] for row in db.execute("PRAGMA table_info(documents)")}
         if "embedding_profile" not in document_columns:
             db.execute("ALTER TABLE documents ADD COLUMN embedding_profile TEXT NOT NULL DEFAULT ''")
+        if "source" not in {row["name"] for row in db.execute("PRAGMA table_info(ecommerce_sync_jobs)")}:
+            db.execute("ALTER TABLE ecommerce_sync_jobs ADD COLUMN source TEXT NOT NULL DEFAULT 'ecommerce'")
         job_columns = {row["name"] for row in db.execute("PRAGMA table_info(ecommerce_sync_jobs)")}
         for column in ("reused_chunks", "embedded_chunks"):
             if column not in job_columns:

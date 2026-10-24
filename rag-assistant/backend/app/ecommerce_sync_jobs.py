@@ -29,14 +29,14 @@ def _serialize(row):
     return job
 
 
-def get_job(job_id=None):
+def get_job(job_id=None, *, source="ecommerce"):
     with connect() as db:
         if job_id is None:
             row = db.execute(
-                "SELECT * FROM ecommerce_sync_jobs ORDER BY rowid DESC LIMIT 1"
+                "SELECT * FROM ecommerce_sync_jobs WHERE source = ? ORDER BY rowid DESC LIMIT 1", (source,)
             ).fetchone()
         else:
-            row = db.execute("SELECT * FROM ecommerce_sync_jobs WHERE id = ?", (job_id,)).fetchone()
+            row = db.execute("SELECT * FROM ecommerce_sync_jobs WHERE id = ? AND source = ?", (job_id, source)).fetchone()
     return _serialize(row)
 
 
@@ -53,13 +53,13 @@ def update_job(job_id, *, only_running=False, **values):
         db.execute(f"UPDATE ecommerce_sync_jobs SET {columns} WHERE id = ?{condition}", (*values.values(), job_id))
 
 
-def start_job(record_count, runner, lock):
+def start_job(record_count, runner, lock, *, source="ecommerce"):
     # BEGIN IMMEDIATE 防止两次点击同时创建全量任务。
     with connect() as db:
         db.execute("BEGIN IMMEDIATE")
         row = db.execute(
-            "SELECT * FROM ecommerce_sync_jobs WHERE status IN ('queued', 'running') "
-            "ORDER BY rowid DESC LIMIT 1"
+            "SELECT * FROM ecommerce_sync_jobs WHERE source = ? AND status IN ('queued', 'running') "
+            "ORDER BY rowid DESC LIMIT 1", (source,)
         ).fetchone()
         if row:
             return {**_serialize(row), "reused": True}
@@ -67,13 +67,13 @@ def start_job(record_count, runner, lock):
         stamp = now_iso()
         db.execute(
             "INSERT INTO ecommerce_sync_jobs "
-            "(id, status, stage, record_count, created_at, updated_at) VALUES (?, 'queued', 'queued', ?, ?, ?)",
-            (job_id, record_count, stamp, stamp),
+            "(id, source, status, stage, record_count, created_at, updated_at) VALUES (?, ?, 'queued', 'queued', ?, ?, ?)",
+            (job_id, source, record_count, stamp, stamp),
         )
     task = asyncio.create_task(_run(job_id, runner, lock), name=f"ecommerce-sync-{job_id}")
     _tasks.add(task)
     task.add_done_callback(_tasks.discard)
-    return get_job(job_id)
+    return get_job(job_id, source=source)
 
 
 async def _run(job_id, runner, lock):

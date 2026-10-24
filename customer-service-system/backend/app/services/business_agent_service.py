@@ -1,4 +1,4 @@
-"""AI 后台业务工具：复用业务校验、人工确认和事务；永不操作账号或角色。"""
+"""AI 后台业务工具：复用业务校验、人工确认和事务；禁止修改账号密码或角色；现有用户页面可由独立导航入口打开。"""
 import json
 import re
 from datetime import datetime

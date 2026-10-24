@@ -36,6 +36,9 @@
           >
             <span class="brand-switcher-heading">项目入口</span>
             <span class="brand-switcher-current">电商分析平台 <small>当前页面</small></span>
+            <a class="brand-switcher-link" :href="customerServiceUrl" @click="closeBrandMenu">
+              售后工单系统 <span aria-hidden="true">→</span>
+            </a>
             <a class="brand-switcher-link" :href="agentUrl" @click="closeBrandMenu">
               Agent 控制台 <span aria-hidden="true">→</span>
             </a>
@@ -223,6 +226,7 @@ watch([brandMenuOpen, effectiveSidebarCollapsed], async () => {
 const projectHomeUrl = new URL('/', window.location.href)
 const agentUrl = new URL('/', window.location.href)
 const ragUrl = new URL('/', window.location.href)
+const customerServiceUrl = new URL('http://127.0.0.1:3000/tickets')
 if (['127.0.0.1', 'localhost', '[::1]'].includes(window.location.hostname)) {
   projectHomeUrl.port = '8030'
   agentUrl.port = '8020'
@@ -290,7 +294,7 @@ const TITLE_MAP = {
   '/manager/products': '商品列表',
   '/manager/product-listing': '商品上架',
   '/manager/orders': '订单数据',
-  '/manager/after-sales': '售后中心',
+  '/manager/after-sales': '售后工单',
   '/manager/message-center': '消息中心',
   '/manager/reviews': '评价数据',
   '/manager/reports': '诊断报告',
@@ -438,6 +442,15 @@ async function refreshStaffMessageUnread() {
     const response = await getStaffMessageCenter()
     if (layoutDisposed) return
     staffMessageUnread.value = Number(response.data?.unread_count || 0)
+    const humanEvents = (response.data?.events || []).filter(event => event.event_type === 'human_support')
+    for (const event of humanEvents) {
+      const key = `human:${event.id}`
+      if (!event.is_read && !observedOrderNotices.has(key)) {
+        ElNotification({title: '买家申请人工客服', message: event.content, type: 'warning', duration: 8000,
+          onClick: () => router.push({path: '/manager/message-center', query: {tab: 'events'}})})
+      }
+      observedOrderNotices.add(key)
+    }
     const orderEvents = (response.data?.events || []).filter(event => event.event_type === 'order_paid')
     const newOrders = orderEvents.filter(event => !event.is_read && !observedOrderNotices.has(event.id))
     for (const event of orderEvents) observedOrderNotices.add(event.id)

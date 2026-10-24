@@ -9,6 +9,10 @@ class Settings(BaseSettings):
     JWT_SECRET_KEY: str
     JWT_EXPIRE_HOURS: int = 24
     JWT_ALGORITHM: str = "HS256"
+    SUPPORT_BRIDGE_TOKEN: str = ""
+    SUPPORT_OPERATOR_ID: int = 0
+    SUPPORT_API_URL: str = "http://127.0.0.1:8002"
+    AGENT_SERVICE_URL: str = "http://127.0.0.1:8020"
     # 大模型（OpenAI 兼容：DeepSeek / Qwen / 硅基流动等）
     LLM_API_KEY: str = ""
     LLM_BASE_URL: str = "https://api.deepseek.com/v1"

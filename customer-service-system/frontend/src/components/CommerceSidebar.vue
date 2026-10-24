@@ -8,11 +8,13 @@
       <el-menu-item v-for="item in analysisItems" :key="item[0]" :index="item[0]">{{ item[1] }}</el-menu-item>
     </el-sub-menu>
     <template v-if="!staff">
+      <el-menu-item index="/manager/messages?tab=support"><el-icon><Service /></el-icon><template #title>联系客服</template></el-menu-item>
+      <el-menu-item index="/manager/feedback"><el-icon><ChatDotRound /></el-icon><template #title>意见反馈</template></el-menu-item>
+      <el-menu-item index="/manager/help"><el-icon><Service /></el-icon><template #title>公告与帮助</template></el-menu-item>
+      <el-menu-item index="/manager/offers"><el-icon><Present /></el-icon><template #title>优惠与团购</template></el-menu-item>
       <el-sub-menu index="shopping"><template #title><el-icon><ShoppingCart /></el-icon><span>我的购物</span><el-icon class="menu-chevron"><ArrowDown /></el-icon></template>
         <el-menu-item index="/manager/cart">购物车</el-menu-item><el-menu-item index="/manager/favorites">我的收藏</el-menu-item><el-menu-item index="/manager/my-orders">订单记录</el-menu-item><el-menu-item index="/manager/addresses">我的地址</el-menu-item>
       </el-sub-menu>
-      <el-menu-item index="/manager/offers"><el-icon><Present /></el-icon><template #title>优惠与团购</template></el-menu-item>
-      <el-menu-item index="/manager/feedback"><el-icon><ChatDotRound /></el-icon><template #title>意见反馈</template></el-menu-item>
       <el-sub-menu index="system"><template #title><el-icon><Setting /></el-icon><span>系统管理</span><el-icon class="menu-chevron"><ArrowDown /></el-icon></template>
         <el-menu-item index="/manager/messages"><span>我的消息 <el-badge v-if="customerUnread" :value="customerUnread" :max="99" class="nav-badge" /></span></el-menu-item>
         <el-menu-item index="/manager/profile">个人资料</el-menu-item>
@@ -23,7 +25,7 @@
         <el-sub-menu :index="group.id"><template #title><el-icon><component :is="group.icon" /></el-icon><span>{{ group.title }}</span><el-icon class="menu-chevron"><ArrowDown /></el-icon></template>
           <el-menu-item v-for="[key,label] in group.items" :key="key" :index="mallPath(key)">{{ label }}</el-menu-item>
           <template v-if="group.id === 'goods'"><el-menu-item index="/manager/products">商品列表</el-menu-item><el-menu-item v-if="['admin','user'].includes(user?.role)" index="/manager/product-listing">商品上架</el-menu-item><el-menu-item index="/manager/reviews">商品评论</el-menu-item></template>
-          <template v-if="group.id === 'mall'"><el-menu-item index="/manager/orders">订单管理</el-menu-item><el-menu-item index="/manager/after-sales">售后管理</el-menu-item></template>
+          <template v-if="group.id === 'mall'"><el-menu-item index="/manager/orders">订单管理</el-menu-item><el-menu-item index="/manager/after-sales">售后工单</el-menu-item></template>
           <template v-if="group.id === 'system'">
             <el-menu-item v-if="user?.role === 'admin'" index="/manager/user">账号管理</el-menu-item>
             <el-menu-item index="/manager/platform-logs">操作日志</el-menu-item>
@@ -33,7 +35,7 @@
         </el-sub-menu>
       </template>
     </template>
-    <el-menu-item index="/manager/help"><el-icon><Service /></el-icon><template #title>公告与帮助</template></el-menu-item>
+    <el-menu-item v-if="staff" index="/manager/help"><el-icon><Service /></el-icon><template #title>公告与帮助</template></el-menu-item>
   </el-menu>
 </template>
 

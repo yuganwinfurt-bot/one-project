@@ -606,7 +606,8 @@
   const modelStorageKey = () => `yugan-model-profiles:${auth.subject}`;
   const disabledToolsKey = () => `yugan-disabled-tools:${auth.subject}`;
   let disabledTools = new Set();
-  const persistModels = () => localStorage.setItem(modelStorageKey(), JSON.stringify({ active_id: activeModelId, vision_model_id: visionModelId, models: modelProfiles }));
+  const syncSupportModel = () => api('/api/support-model/active', {method: 'POST', body: JSON.stringify(modelProfiles.find((item) => item.id === activeModelId) || {})}).catch(() => {});
+  const persistModels = () => { localStorage.setItem(modelStorageKey(), JSON.stringify({ active_id: activeModelId, vision_model_id: visionModelId, models: modelProfiles })); void syncSupportModel(); };
   const loadBrowserModels = () => {
     try {
       const stored = JSON.parse(localStorage.getItem(modelStorageKey()) || '{}');
@@ -614,6 +615,7 @@
       activeModelId = modelProfiles.some((item) => item.id === stored.active_id) ? stored.active_id : modelProfiles[0]?.id || null;
       visionModelId = modelProfiles.some((item) => item.id === stored.vision_model_id && item.mode === 'api') ? stored.vision_model_id : null;
     } catch { modelProfiles = []; activeModelId = null; visionModelId = null; }
+    void syncSupportModel();
     renderModels();
   };
   const loadBrowserToolPreferences = () => {
@@ -1416,7 +1418,7 @@
       response = await fetch(url, { method: 'POST', headers, body: JSON.stringify(body), signal: AbortSignal.timeout(120000) });
     } catch (error) {
       if (error.name === 'TimeoutError') throw new Error('模型请求超时。');
-      if (error instanceof TypeError) throw new Error('浏览器无法直连模型接口，可能是接口未开放跨源访问；API Key 没有发送到 Agent 服务。');
+      if (error instanceof TypeError) throw new Error('浏览器无法直连模型接口，请检查接口地址及跨源访问配置。');
       throw error;
     }
     const raw = await response.text();

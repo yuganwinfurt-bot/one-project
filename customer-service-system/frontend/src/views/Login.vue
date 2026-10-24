@@ -81,11 +81,13 @@ import { ElMessage } from 'element-plus'
 import router from '@/router'
 import { useRoute } from 'vue-router'
 import { loginApi } from '@/api/auth'
+import { beginSessionAuthOverride } from '@/utils/auth'
 import { useUser } from '@/utils/user'
 import LoginDemoAccounts from './LoginDemoAccounts.vue'
 
 const { saveLoginData } = useUser()
 const route = useRoute()
+if (route.query.isolated === '1') beginSessionAuthOverride()
 
 const formRef = ref()
 const loginMode = ref(route.query.mode === 'user' ? 'user' : 'backend')

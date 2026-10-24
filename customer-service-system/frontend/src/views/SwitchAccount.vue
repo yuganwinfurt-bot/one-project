@@ -40,7 +40,7 @@ const handleHandoff = async (event) => {
     { type: 'account-switch-complete', username: loginData.user.username },
     window.location.origin
   )
-  await router.replace('/manager/home')
+  await router.replace(loginData.user.role === 'customer' ? '/manager/store' : '/manager/home')
 }
 
 onMounted(() => {

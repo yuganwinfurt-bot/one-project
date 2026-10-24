@@ -293,3 +293,5 @@ export function markAllAlertsRead() {
     method: 'post'
   })
 }
+
+export const listSupportTickets = (params) => request({url: '/api/ecommerce/support-tickets', method: 'get', params})

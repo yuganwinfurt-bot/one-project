@@ -95,6 +95,20 @@ class EcommerceSyncRequest(BaseModel):
     records: list[EcommerceRecord] = Field(min_length=1, max_length=100000)
 
 
+class SupportRecord(BaseModel):
+    record_id: str = Field(min_length=1, max_length=80)
+    doc_type: Literal["support_knowledge", "support_overview", "support_category", "support_keyword", "support_gap", "support_escalation", "support_rules"]
+    source_table: str = Field(default="", max_length=80)
+    source_id: str = Field(default="", max_length=80)
+    name: str = Field(default="", max_length=200)
+    category: str = Field(default="", max_length=100)
+    content: str = Field(min_length=1, max_length=30000)
+
+
+class SupportSyncRequest(BaseModel):
+    records: list[SupportRecord] = Field(min_length=1, max_length=100000)
+
+
 class ChatCreate(BaseModel):
     scope_mode: Literal["project", "custom"] = "project"
     knowledge_base_ids: list[str] | None = None

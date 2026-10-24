@@ -363,6 +363,17 @@ function renderApp() {
     return () => { live = false; };
   }, []);
 
+  const knowledgeLinkOpened = useRef(false);
+  useEffect(() => {
+    if (knowledgeLinkOpened.current || auth?.role !== "admin" || !knowledgeBases.length) return;
+    const params = new URLSearchParams(window.location.search);
+    if (params.get("manage") !== "knowledge") return;
+    const target = knowledgeBases.find((kb) => kb.id === params.get("knowledge_base_id") || kb.name === params.get("knowledge_base_name"));
+    if (target) setActiveKbId(target.id);
+    setManagerOpen(true);
+    knowledgeLinkOpened.current = true;
+  }, [knowledgeBases, auth?.role]);
+
   useEffect(() => {
     const onFocus = async () => {
       const previousRole = currentRoleRef.current;
@@ -1163,6 +1174,7 @@ function renderApp() {
             <Teleport to="body"><nav ref={brandMenuRef} id="brand-switcher-menu" className="brand-switcher-menu" style={brandMenuPosition} aria-label="项目入口" hidden={!brandMenuOpen}>
               <span className="brand-switcher-heading">项目入口</span>
               <a className="brand-switcher-link" href={ecommerceUrl.href}>电商分析平台 <span aria-hidden="true">→</span></a>
+              <a className="brand-switcher-link" href="http://127.0.0.1:3000/tickets">售后工单系统 <span aria-hidden="true">→</span></a>
               <a className="brand-switcher-link" href={agentUrl.href}>Agent 控制台 <span aria-hidden="true">→</span></a>
               <span className="brand-switcher-current">RAG 知识库 <small>当前页面</small></span>
               <a className="brand-switcher-link" href={projectHomeUrl.href}>项目主页 <span aria-hidden="true">→</span></a>
