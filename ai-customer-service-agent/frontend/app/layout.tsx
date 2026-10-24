@@ -4,7 +4,7 @@ import { AuthProvider } from "@/components/AuthProvider";
 import AppShell from "@/components/AppShell";
 
 export const metadata: Metadata = {
-  title: "售后工单系统",
+  title: "客服工单系统",
   description: "AI 客服工单处理与知识库管理平台",
 };
 

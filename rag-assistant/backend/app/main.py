@@ -81,9 +81,23 @@ WEB_ORIGINS = {
 }
 
 
+def rename_support_library():
+    """Rename the existing library in place; retain IDs, documents and vectors."""
+    with connect() as db:
+        current = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", ("客服工单系统",)).fetchone()
+        legacy = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", ("售后工单系统",)).fetchone()
+        if not current and legacy:
+            db.execute("UPDATE knowledge_bases SET name = ? WHERE id = ?", ("客服工单系统", legacy["id"]))
+            current = legacy
+        if current:
+            db.execute("UPDATE documents SET filename = ? WHERE knowledge_base_id = ? AND filename = ?", ("客服工单系统_知识与数据分析快照.csv", current["id"], "售后工单系统_知识与数据分析快照.csv"))
+        db.execute("UPDATE projects SET name = ? WHERE id = ? AND name = ?", ("客服工单系统", "after-sales-ticket-system", "售后工单系统"))
+
+
 @asynccontextmanager
 async def lifespan(_app: FastAPI):
     initialize_database()
+    rename_support_library()
     ecommerce_sync_jobs.recover_interrupted_jobs()
     try:
         _app.state.answer_model_settings = load_settings()
@@ -327,8 +341,11 @@ async def retrieve_for_agent(payload: AgentRetrieveRequest, request: Request):
     if payload.knowledge_base_name:
         with connect() as db:
             row = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", (payload.knowledge_base_name,)).fetchone()
+        if not row and payload.knowledge_base_name == "售后工单系统":
+            with connect() as db:
+                row = db.execute("SELECT id FROM knowledge_bases WHERE name = ? ORDER BY created_at LIMIT 1", ("客服工单系统",)).fetchone()
         if not row:
-            raise HTTPException(status_code=404, detail="电商分析平台知识库尚未创建，请先同步后台数据")
+            raise HTTPException(status_code=404, detail=f"{payload.knowledge_base_name}知识库尚未创建，请先同步后台数据")
         requested_ids = [row["id"]]
     kb_ids = ensure_knowledge_bases_exist(requested_ids, allow_private=trusted)
     with connect() as db:
@@ -467,10 +484,10 @@ async def ecommerce_embedding_profile():
 
 async def _sync_ecommerce_records(payload: EcommerceSyncRequest | SupportSyncRequest, progress=None, *, source="ecommerce"):
     support = source == "support"
-    kb_name = "售后工单系统" if support else ECOMMERCE_KB_NAME
+    kb_name = "客服工单系统" if support else ECOMMERCE_KB_NAME
     default_kb_id = "after-sales-ticket-system" if support else ECOMMERCE_KB_ID
     project_id = "after-sales-ticket-system" if support else ECOMMERCE_PROJECT_ID
-    export_filename = "售后工单系统_知识与数据分析快照.csv" if support else ECOMMERCE_EXPORT_FILENAME
+    export_filename = "客服工单系统_知识与数据分析快照.csv" if support else ECOMMERCE_EXPORT_FILENAME
     access_level = "staff" if support else "public"
     description = "售后知识条目、数据分析与功能规则，已排除停用条目和买家身份信息" if support else "电商后台完整业务快照及功能规则，已排除凭证并脱敏个人信息"
     model_key = await ecommerce_embedding_profile()

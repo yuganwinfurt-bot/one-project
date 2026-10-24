@@ -212,7 +212,7 @@ def resolve_conversation(conversation_id: int, db: DbSession):
     if conversation.after_sale_id:
         raise HTTPException(409, "请在售后处理卡片中完成售后")
     if not conversation.closed:
-        support.add_message(db, conversation, "system", "客服已结束本次咨询；如有新问题，可以发起新咨询。", "售后工单系统")
+        support.add_message(db, conversation, "system", "客服已结束本次咨询；如有新问题，可以发起新咨询。", "客服工单系统")
         conversation.closed = True
     db.query(StaffInboxEvent).filter_by(event_type="human_support", target_id=conversation_id, is_read=False).update({"is_read": True}, synchronize_session=False)
     db.commit()

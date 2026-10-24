@@ -63,7 +63,7 @@ async def current_session(request):
     session = sessions.get(key)
     if session is None or session.expires <= time.time():
         sessions.pop(key, None)
-        raise HTTPException(401, '请登录售后工单系统')
+        raise HTTPException(401, '请登录客服工单系统')
     if time.monotonic() - session.checked >= 3:
         try:
             user = await commerce('/api/user/me', token=session.commerce_token)
@@ -74,7 +74,7 @@ async def current_session(request):
             raise
         if user.get('role') not in {'admin', 'user'} or user.get('status') != 1:
             sessions.pop(key, None)
-            raise HTTPException(403, '仅管理员和运营账号可以进入售后工单系统')
+            raise HTTPException(403, '仅管理员和运营账号可以进入客服工单系统')
         session.user, session.checked = user, time.monotonic()
     return session
 

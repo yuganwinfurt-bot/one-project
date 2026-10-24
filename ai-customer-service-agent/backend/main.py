@@ -63,7 +63,7 @@ from typing import Literal
 
 logger = logging.getLogger(__name__)
 
-app = FastAPI(title="AI Customer Service Agent", version="0.1.0")
+app = FastAPI(title="客服工单系统", version="0.1.0")
 
 from services.staff_auth import install_auth
 install_auth(app)

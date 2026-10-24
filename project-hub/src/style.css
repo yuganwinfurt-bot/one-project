@@ -181,3 +181,19 @@
   .art-heading .works-count { font-size: 27px; }
 }
 
+
+/* Four projects share the same entry catalogue; support has a conversation preview. */
+.hero-art { min-height: 490px; }
+.art-project-list { gap: 10px; }
+.overview-customer-service { --work-surface: #f1f5f0; }
+.overview-customer-service .overview-hero { grid-template-columns: minmax(0, 1fr) 310px; }
+.support-preview { width: 100%; padding: 21px; border: 1px solid var(--work-border); border-radius: 14px; background: var(--work-preview); }
+.support-preview-bubble { width: fit-content; max-width: 95%; margin-top: 22px; padding: 12px 14px; border-radius: 10px 10px 10px 2px; background: #fff; border: 1px solid #dbe8e1; color: #244d3b; font-size: 12px; }
+.support-preview-reply { margin: 12px 0 0 auto; border-radius: 10px 10px 2px 10px; background: #dceee4; }
+.support-preview-flow { display: flex; justify-content: space-between; gap: 6px; margin-top: 24px; font-size: 10px; color: #527161; }
+.support-preview-flow i { font-style: normal; }
+.support-preview-flow b { color: #147c69; }
+.support-preview p { font-size: 10px; color: #718e7d; margin: 18px 0 0; }
+.overview-customer-service .overview-features { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+@media(max-width:900px) { .overview-customer-service .overview-hero { grid-template-columns: minmax(0, 1fr); } }
+@media(max-width:640px) { .hero-art { min-height: 465px; } .overview-customer-service .overview-features { grid-template-columns: minmax(0, 1fr); } }

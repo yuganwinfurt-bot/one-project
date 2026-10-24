@@ -198,4 +198,4 @@ def search_assistant_knowledge(query: str) -> list[dict[str, Any]]:
             return {"知识库": name, "状态": "不可用或尚未同步", "原因": str(error)[:300], "资料": []}
 
     with ThreadPoolExecutor(max_workers=2) as pool:
-        return list(pool.map(retrieve, ("电商分析平台", "售后工单系统")))
+        return list(pool.map(retrieve, ("电商分析平台", "客服工单系统")))

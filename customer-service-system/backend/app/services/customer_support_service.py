@@ -167,7 +167,7 @@ def request_human(db, conversation, reason):
     user = db.get(User, conversation.user_id)
     db.add(StaffInboxEvent(event_type="human_support", target_id=conversation.id,
                           title="买家申请人工客服", content=f"{user.name or user.username} 申请人工接待：{conversation.human_reason}"))
-    add_message(db, conversation, "system", "已申请人工客服，AI自动回复已停止，请等待客服接待。", "售后工单系统")
+    add_message(db, conversation, "system", "已申请人工客服，AI自动回复已停止，请等待客服接待。", "客服工单系统")
 
 
 def claim(db, conversation):
@@ -177,7 +177,7 @@ def claim(db, conversation):
         raise HTTPException(409, "售后已结束")
     if conversation.handling_mode != "human":
         conversation.handling_mode = "human"
-        add_message(db, conversation, "system", "人工客服已接入，会继续为你处理问题。", "售后工单系统")
+        add_message(db, conversation, "system", "人工客服已接入，会继续为你处理问题。", "客服工单系统")
     db.query(StaffInboxEvent).filter_by(event_type="human_support", target_id=conversation.id, is_read=False).update({"is_read": True}, synchronize_session=False)
 
 
@@ -188,7 +188,7 @@ def end_conversation(db, conversation, actor, reason="问题已解决"):
     reason = reason.strip()[:1000] or "本次人工服务已结束"
     record = db.get(AfterSaleRequest, conversation.after_sale_id) if conversation.after_sale_id else None
     if not record or record.status not in {"completed", "rejected"}:
-        add_message(db, conversation, "system", f"{'买家' if actor == 'customer' else '客服'}已结束本次人工会话：{reason}。聊天记录已保留；如有新问题，可发起新的咨询。", "售后工单系统")
+        add_message(db, conversation, "system", f"{'买家' if actor == 'customer' else '客服'}已结束本次人工会话：{reason}。聊天记录已保留；如有新问题，可发起新的咨询。", "客服工单系统")
     conversation.closed = True
     conversation.update_time = datetime.now()
     db.query(SupportAIRequest).filter_by(conversation_id=conversation.id, reply_message_id=None).update({"error": "会话已结束，回复已取消"}, synchronize_session=False)

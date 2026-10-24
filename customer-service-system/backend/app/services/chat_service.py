@@ -98,7 +98,7 @@ def _stream_answer(
 
     rows_for_llm = _shrink_rows(evidence)
     signals = final_state.get("route_signals") or {}
-    yield _sse("status", {"stage": "retrieving_knowledge", "message": "正在检索电商分析平台和售后工单系统知识库…"})
+    yield _sse("status", {"stage": "retrieving_knowledge", "message": "正在检索电商分析平台和客服工单系统知识库…"})
     from app.services.semantic_search_service import search_assistant_knowledge
     knowledge_sources = search_assistant_knowledge(signals.get("retrieval_question") or question)
     _record_step(run_id, step_name="platform_knowledge", summary="自动检索电商与售后知识库",

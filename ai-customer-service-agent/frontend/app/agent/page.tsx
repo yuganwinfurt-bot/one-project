@@ -27,7 +27,7 @@ type ChatLine = {
 const welcomeMessage: ChatLine = {
   id: "welcome",
   role: "assistant",
-  content: "你好，我是售后工单助手。可以直接向我提问，也可以选择右侧工单查看问题、整理回复或执行工单处理。模型跟随Agent控制台当前选择。",
+  content: "你好，我是客服工单助手。可以直接向我提问，也可以选择右侧工单查看问题、整理回复或执行工单处理。模型跟随Agent控制台当前选择。",
   phase: "模型跟随Agent控制台",
 };
 

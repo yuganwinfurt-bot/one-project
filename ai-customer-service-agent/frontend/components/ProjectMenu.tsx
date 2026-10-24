@@ -7,7 +7,7 @@ import styles from "./ProjectMenu.module.css";
 // Keep the same local destinations as the commerce project's project menu.
 const projects = [
   { label: "电商分析平台", href: "http://127.0.0.1:35173/manager/home" },
-  { label: "售后工单系统", href: "http://127.0.0.1:3000/tickets" },
+  { label: "客服工单系统", href: "http://127.0.0.1:3000/tickets" },
   { label: "Agent 控制台", href: "http://127.0.0.1:8020/" },
   { label: "RAG 知识库", href: "http://127.0.0.1:4173/" },
   { label: "项目主页", href: "http://127.0.0.1:8030/" },
@@ -60,7 +60,7 @@ export default function ProjectMenu() {
     {open && createPortal(
       <nav ref={menuRef} id={menuId} className={styles.menu} style={position} aria-label="项目入口">
         <span className={styles.heading}>项目入口</span>
-        {projects.map((project) => project.label === "售后工单系统" ? <span key={project.href} className={styles.current}>售后工单系统 <small>当前页面</small></span> : <a key={project.href} href={project.href} className={styles.link} onClick={() => setOpen(false)}>{project.label}<span aria-hidden="true">→</span></a>)}
+        {projects.map((project) => project.label === "客服工单系统" ? <span key={project.href} className={styles.current}>客服工单系统 <small>当前页面</small></span> : <a key={project.href} href={project.href} className={styles.link} onClick={() => setOpen(false)}>{project.label}<span aria-hidden="true">→</span></a>)}
       </nav>, document.body
     )}
   </>;

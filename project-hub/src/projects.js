@@ -1,15 +1,43 @@
 // 在这里添加项目。首页卡片、入口列表和项目数量会自动更新。
 // publicUrl 留空表示只在本机展示入口；不要把管理后台直接填为公网地址。
-const projectOrder = { 'ecom-analysis': 0, agent: 1, rag: 2 }
+const projectOrder = { 'ecom-analysis': 0, 'customer-service': 1, agent: 2, rag: 3 }
 
 export const projects = [
+  {
+    id: 'customer-service',
+    name: '客服工单系统',
+    shortName: '客服工单系统',
+    mark: 'C',
+    category: '智能客服与工单协作',
+    introLabel: '02 / CUSTOMER SERVICE',
+    introTitle: '接住一个问题，',
+    introAccent: '跟进每一次沟通。',
+    intro: '连接买家的客服咨询与电商售后业务。AI 先接待，用户可申请人工；工作人员在同一张工单中查看上下文、回复消息并跟进处理进度。',
+    tags: ['AI 接待', '人工协作', '知识与数据分析'],
+    featureLabel: 'FROM QUESTION TO RESOLUTION',
+    featureTitle: '咨询有记录，处理有进度。',
+    features: [
+      { name: 'AI 与人工接待', detail: '默认由 AI 回答，申请人工后停止自动回复并提醒客服；聊天区独立滚动，双方都可结束人工服务并保留记录。' },
+      { name: '工单与电商协作', detail: '同步商城咨询、售后申请和聊天记录。在工单详情查看订单与处理进度，人工会话结束与退款、换货业务分开管理。' },
+      { name: '知识库与 RAG 同步', detail: '维护客服知识条目，将启用条目与统计快照同步到 RAG 知识库，供客服助手和电商智能运营助手检索。' },
+      { name: '分析与批量处理', detail: '查看工单分类、解决情况及人工升级原因，进入指标明细；批量处理符合条件且尚未回复的问题，记录处理结果。' },
+    ],
+    note: '使用电商分析平台的管理员或运营账号登录；模型跟随 Agent 控制台配置。RAG 数据是手动同步快照，具体订单和售后状态以业务记录为准。',
+    description: 'AI 接待与人工协作的客服工作台，连接商城咨询和售后业务，提供工单聊天、知识库、数据分析及 RAG 同步。',
+    caption: 'AI 接待 · 人工协作 · 工单处理',
+    tone: 'paper',
+    localUrl: 'http://127.0.0.1:3000/',
+    publicUrl: '',
+    githubUrl: 'https://github.com/yuganwinfurt-bot/ai-customer-service-agent',
+    action: '打开客服工单系统',
+  },
   {
     id: 'agent',
     name: 'yugan-agent',
     shortName: 'Agent 智能体',
     mark: 'A',
     category: '智能体框架',
-    introLabel: '02 / YUGAN-AGENT',
+    introLabel: '03 / YUGAN-AGENT',
     introTitle: '交代目标，',
     introAccent: '让工具接着做。',
     intro: '从“告诉我怎么做”走向实际执行。Agent 在工作区内拆解目标、调用工具、检查返回结果，将每一步保留在任务会话中。',
@@ -37,7 +65,7 @@ export const projects = [
     shortName: 'RAG 知识库',
     mark: 'R',
     category: '检索增强生成',
-    introLabel: '03 / RAG KNOWLEDGE',
+    introLabel: '04 / RAG KNOWLEDGE',
     introTitle: '带着问题读资料，',
     introAccent: '带着来源看答案。',
     intro: '把散落的文档整理成可检索的知识库。提问时先找相关片段，再组织回答；阅读答案时，可以回到引用内容核对依据。',

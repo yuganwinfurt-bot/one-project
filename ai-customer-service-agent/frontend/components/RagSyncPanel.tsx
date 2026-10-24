@@ -9,7 +9,7 @@ export default function RagSyncPanel() {
   const [job, setJob] = useState<RagSyncJob | null>(null);
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
-  const [ragUrl, setRagUrl] = useState("http://127.0.0.1:4173/rag/?manage=knowledge&knowledge_base_name=售后工单系统");
+  const [ragUrl, setRagUrl] = useState("http://127.0.0.1:4173/rag/?manage=knowledge&knowledge_base_name=客服工单系统");
   const alive = useRef(true);
   const refreshing = useRef(false);
   const active = job?.status === "queued" || job?.status === "running";
@@ -25,7 +25,7 @@ export default function RagSyncPanel() {
     const url = new URL("/rag/", window.location.href);
     if (["localhost", "127.0.0.1", "[::1]"].includes(url.hostname)) url.port = "4173";
     url.searchParams.set("manage", "knowledge");
-    url.searchParams.set("knowledge_base_name", "售后工单系统");
+    url.searchParams.set("knowledge_base_name", "客服工单系统");
     setRagUrl(url.href);
     void load();
     return () => { alive.current = false; };
@@ -46,7 +46,7 @@ export default function RagSyncPanel() {
   const result = job?.status === "succeeded" ? job.result : null;
   return <section className="mb-6 rounded-xl border border-slate-200 bg-white p-4 text-sm" aria-label="RAG知识库同步">
     <div className="flex flex-wrap items-center justify-between gap-3">
-      <div><h2 className="font-semibold text-slate-800">RAG 知识库 · 售后工单系统</h2><p className="mt-1 text-xs text-slate-500">同步启用的知识条目和数据分析；首次同步自动创建知识库，之后只为变化内容计算向量。</p></div>
+      <div><h2 className="font-semibold text-slate-800">RAG 知识库 · 客服工单系统</h2><p className="mt-1 text-xs text-slate-500">同步启用的知识条目和数据分析；首次同步自动创建知识库，之后只为变化内容计算向量。</p></div>
       <div className="flex flex-wrap gap-2">
         <button type="button" disabled={submitting || active} onClick={() => void sync()} className="rounded border border-blue-200 px-3 py-2 text-blue-600 hover:bg-blue-50 disabled:cursor-wait disabled:opacity-60">{submitting ? "正在提交…" : active ? "正在同步后台数据…" : "同步后台数据到 RAG"}</button>
         <a href={ragUrl} target="_blank" rel="noopener noreferrer" className="rounded border border-slate-200 px-3 py-2 text-slate-600 hover:bg-slate-50">打开 RAG 知识库 ↗</a>

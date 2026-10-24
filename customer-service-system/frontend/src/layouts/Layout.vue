@@ -37,7 +37,7 @@
             <span class="brand-switcher-heading">项目入口</span>
             <span class="brand-switcher-current">电商分析平台 <small>当前页面</small></span>
             <a class="brand-switcher-link" :href="customerServiceUrl" @click="closeBrandMenu">
-              售后工单系统 <span aria-hidden="true">→</span>
+              客服工单系统 <span aria-hidden="true">→</span>
             </a>
             <a class="brand-switcher-link" :href="agentUrl" @click="closeBrandMenu">
               Agent 控制台 <span aria-hidden="true">→</span>
