@@ -253,6 +253,7 @@ import {
   completeWithAgentModel,
   getAgentModelSettingsUrl,
   getActiveAgentModel,
+  getSupportModelStatus,
   isCloudAgentModel
 } from '@/utils/agentModel'
 
@@ -819,9 +820,11 @@ async function startResume(msg, profile, savedData = null) {
 }
 
 onMounted(async () => {
-  // Restore the shared customer-service model after an Agent restart as soon
-  // as a staff member opens this page, without requiring a chat question.
-  void getActiveAgentModel().catch(() => {})
+  // Shared customer service must be configured in the Agent console itself.
+  // Check readiness here without forwarding any model credential.
+  void getSupportModelStatus().then(status => {
+    if (!status.available) ElMessage.warning('AI客服尚未连接模型，请在 Agent 控制台以服务器管理员身份启用模型')
+  }).catch(() => {})
   const unfinished = messages.value.filter((msg) => msg.role === 'assistant' && msg.runId && msg.runState === 'interrupted').slice(-5)
   await Promise.allSettled(unfinished.map(async (msg) => {
     const response = await getRunAnswerContext(msg.runId)

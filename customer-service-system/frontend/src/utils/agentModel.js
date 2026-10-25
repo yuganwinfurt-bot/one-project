@@ -16,6 +16,16 @@ export function getAgentModelSettingsUrl() {
   return url.href
 }
 
+/** Read shared customer-service readiness without sending credentials. */
+export async function getSupportModelStatus() {
+  const response = await fetch(new URL('api/support-model/status', getAgentUrl()), {
+    method: 'GET', cache: 'no-store', credentials: 'omit',
+    signal: AbortSignal.timeout(5000)
+  })
+  if (!response.ok) throw new Error('无法读取客服模型状态')
+  return response.json()
+}
+
 /** 从同源 Agent 页面桥接读取控制台当前选中的模型配置。 */
 export function getActiveAgentModel() {
   const agentUrl = getAgentUrl()
