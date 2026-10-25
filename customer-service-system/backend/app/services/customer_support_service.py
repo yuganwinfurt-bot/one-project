@@ -239,7 +239,7 @@ def _claim_ai_request(key):
         return prepared if prepared and prepared["request_id"] == key else None
 
 
-def _save_ai_result(key, result=None):
+def _save_ai_result(key, result=None, error_message=None):
     from app.database import SessionLocal
     with SessionLocal() as db:
         job = db.query(SupportAIRequest).filter_by(request_key=key).first()
@@ -252,27 +252,28 @@ def _save_ai_result(key, result=None):
             except HTTPException:
                 job.error = "会话已更新或已转人工，未发送AI回复"
         else:
-            job.error = "AI客服暂时无法回复，可以重试或申请人工客服"
+            job.error = error_message or "AI客服暂时无法回复，可以重试或申请人工客服"
         db.commit()
 
 
 async def _run_ai_request(key):
     import asyncio
-    import httpx
-    from app.config import settings
+    import logging
+    from app.services.support_model_service import complete_support_reply, SupportModelError
     try:
         prepared = await asyncio.to_thread(_claim_ai_request, key)
         if not prepared:
             return
-        async with httpx.AsyncClient(timeout=115, trust_env=False) as client:
-            response = await client.post(settings.AGENT_SERVICE_URL.rstrip('/') + '/api/support-model/completions',
-                                         headers={'X-Support-Token': settings.SUPPORT_BRIDGE_TOKEN},
-                                         json={'messages': prepared['messages'], 'max_tokens': 1500})
-        response.raise_for_status()
-        await asyncio.to_thread(_save_ai_result, key, response.json())
+        result = await asyncio.wait_for(complete_support_reply(prepared['messages']), timeout=115)
+        await asyncio.to_thread(_save_ai_result, key, result)
     except asyncio.CancelledError:
         raise
+    except SupportModelError as exc:
+        await asyncio.to_thread(_save_ai_result, key, error_message=str(exc))
+    except TimeoutError:
+        await asyncio.to_thread(_save_ai_result, key, error_message='AI客服回复超时，请重试或申请人工客服')
     except Exception:
+        logging.getLogger(__name__).exception('客服AI任务处理失败')
         await asyncio.to_thread(_save_ai_result, key)
 
 

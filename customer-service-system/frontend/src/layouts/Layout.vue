@@ -226,7 +226,8 @@ watch([brandMenuOpen, effectiveSidebarCollapsed], async () => {
 const projectHomeUrl = new URL('/', window.location.href)
 const agentUrl = new URL('/', window.location.href)
 const ragUrl = new URL('/', window.location.href)
-const customerServiceUrl = new URL('http://127.0.0.1:3000/tickets')
+const customerServiceLocal = ['127.0.0.1', 'localhost', '[::1]'].includes(window.location.hostname)
+const customerServiceUrl = new URL(customerServiceLocal ? 'http://127.0.0.1:3000/tickets' : '/support/tickets', window.location.href)
 if (['127.0.0.1', 'localhost', '[::1]'].includes(window.location.hostname)) {
   projectHomeUrl.port = '8030'
   agentUrl.port = '8020'

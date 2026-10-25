@@ -27,7 +27,7 @@ export const projects = [
     caption: 'AI 接待 · 人工协作 · 工单处理',
     tone: 'paper',
     localUrl: 'http://127.0.0.1:3000/',
-    publicUrl: '',
+    publicUrl: '/support/',
     githubUrl: 'https://github.com/yuganwinfurt-bot/ai-customer-service-agent',
     action: '打开客服工单系统',
   },

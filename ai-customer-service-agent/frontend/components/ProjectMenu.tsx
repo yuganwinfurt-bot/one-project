@@ -4,14 +4,19 @@ import { useId, useLayoutEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import styles from "./ProjectMenu.module.css";
 
-// Keep the same local destinations as the commerce project's project menu.
 const projects = [
-  { label: "电商分析平台", href: "http://127.0.0.1:35173/manager/home" },
-  { label: "客服工单系统", href: "http://127.0.0.1:3000/tickets" },
-  { label: "Agent 控制台", href: "http://127.0.0.1:8020/" },
-  { label: "RAG 知识库", href: "http://127.0.0.1:4173/" },
-  { label: "项目主页", href: "http://127.0.0.1:8030/" },
+  { label: "电商分析平台", port: "35173", localPath: "/manager/home", publicPath: "/ecommerce/manager/home" },
+  { label: "客服工单系统", port: "3000", localPath: "/tickets", publicPath: "/support/tickets" },
+  { label: "Agent 控制台", port: "8020", localPath: "/", publicPath: "/agent/" },
+  { label: "RAG 知识库", port: "4173", localPath: "/", publicPath: "/rag/" },
+  { label: "项目主页", port: "8030", localPath: "/", publicPath: "/" },
 ];
+
+function projectHref(project: typeof projects[number]) {
+  const localHosts = new Set(["localhost", "127.0.0.1", "[::1]"]);
+  if (!localHosts.has(window.location.hostname)) return project.publicPath;
+  return `${window.location.protocol}//${window.location.hostname}:${project.port}${project.localPath}`;
+}
 
 export default function ProjectMenu() {
   const menuId = useId();
@@ -60,7 +65,7 @@ export default function ProjectMenu() {
     {open && createPortal(
       <nav ref={menuRef} id={menuId} className={styles.menu} style={position} aria-label="项目入口">
         <span className={styles.heading}>项目入口</span>
-        {projects.map((project) => project.label === "客服工单系统" ? <span key={project.href} className={styles.current}>客服工单系统 <small>当前页面</small></span> : <a key={project.href} href={project.href} className={styles.link} onClick={() => setOpen(false)}>{project.label}<span aria-hidden="true">→</span></a>)}
+        {projects.map((project) => project.label === "客服工单系统" ? <span key={project.label} className={styles.current}>客服工单系统 <small>当前页面</small></span> : <a key={project.label} href={projectHref(project)} className={styles.link} onClick={() => setOpen(false)}>{project.label}<span aria-hidden="true">→</span></a>)}
       </nav>, document.body
     )}
   </>;

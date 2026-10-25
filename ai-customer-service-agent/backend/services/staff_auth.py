@@ -14,6 +14,7 @@ from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
 
 COOKIE = 'support_staff_session'
+COOKIE_PATH = os.getenv('SUPPORT_COOKIE_PATH', '/api')
 router = APIRouter(prefix='/api/auth', tags=['电商账号登录'])
 
 
@@ -97,7 +98,7 @@ async def login(body: Login, request: Request, response: Response):
             sessions.pop(key, None)
     cookie = secrets.token_urlsafe(48)
     sessions[hashlib.sha256(cookie.encode()).hexdigest()] = StaffSession(data['token'], user, time.time()+86400, time.monotonic())
-    response.set_cookie(COOKIE, cookie, max_age=86400, httponly=True, secure=request.url.scheme == 'https', samesite='lax', path='/api')
+    response.set_cookie(COOKIE, cookie, max_age=86400, httponly=True, secure=request.url.scheme == 'https', samesite='lax', path=COOKIE_PATH)
     response.headers['Cache-Control'] = 'no-store'
     return {'user': user}
 
@@ -118,7 +119,7 @@ async def me(request: Request, response: Response):
 @router.post('/logout')
 async def logout(request: Request, response: Response):
     sessions.pop(session_key(request), None)
-    response.delete_cookie(COOKIE, path='/api')
+    response.delete_cookie(COOKIE, path=COOKIE_PATH)
     response.headers['Cache-Control'] = 'no-store'
     return {'ok': True}
 

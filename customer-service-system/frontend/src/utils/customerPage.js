@@ -3,8 +3,11 @@ import { loginAsUserApi } from '@/api/user'
 
 export function isCustomerPageCommand(question) {
   const text = String(question || '').trim()
-  if (text.length > 120 || /为什么|怎么|如何|不能|无法|失败|忘记|密码|不要|不想|别给|注册|创建.*(?:账号|用户)|新增.*(?:账号|用户)|删除|修改|重置|然后|并且|分析|查询|是否|能不能/.test(text)) return false
-  return /^(?:请|帮我|给我|麻烦|我想要|我想|我要|请你|再|新)*\s*(?:(?:打开|新开|开一个|开个|进入).*(?:用户端|买家端|客户端|(?:用户|买家|客户).*(?:页|界面|账号|账户))|(?:登录|登陆|切换到?).*(?:用户|买家|客户)|(?:打开|新开|进入).*(?:用户|买家|客户))/.test(text)
+  if (!text || text.length > 120 || /为什么|怎么|如何|无法|失败|忘记|密码|不要|不想|不需要|不用|别|注册|创建|新增|新建|删除|修改|编辑|更新|重置|权限|资料|信息|然后|并且|分析|查询|是否/.test(text)) return false
+  // Courtesy words and "随便/随机" are still requests to open an existing buyer.
+  // Only this navigation path bypasses the model; account mutations stay blocked.
+  const command = text.replace(/^(?:(?:请你|请|帮我|给我|为我|麻烦你|麻烦|我想要|我想|我要|可以|能不能|能否|随便|随机|任意|随意|再)\s*)+/, '')
+  return /^(?:(?:打开|新开|开一个|开个|进入).*(?:用户|买家|客户)|(?:登录|登陆|切换到?).*(?:用户|买家|客户))/.test(command)
 }
 
 function waitForMessage(popup, type) {

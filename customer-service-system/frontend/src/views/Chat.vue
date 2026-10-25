@@ -819,6 +819,9 @@ async function startResume(msg, profile, savedData = null) {
 }
 
 onMounted(async () => {
+  // Restore the shared customer-service model after an Agent restart as soon
+  // as a staff member opens this page, without requiring a chat question.
+  void getActiveAgentModel().catch(() => {})
   const unfinished = messages.value.filter((msg) => msg.role === 'assistant' && msg.runId && msg.runState === 'interrupted').slice(-5)
   await Promise.allSettled(unfinished.map(async (msg) => {
     const response = await getRunAnswerContext(msg.runId)
