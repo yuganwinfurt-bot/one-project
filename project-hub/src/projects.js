@@ -28,7 +28,6 @@ export const projects = [
     tone: 'paper',
     localUrl: 'http://127.0.0.1:3000/',
     publicUrl: '/support/',
-    githubUrl: 'https://github.com/yuganwinfurt-bot/ai-customer-service-agent',
     action: '打开客服工单系统',
   },
   {
@@ -56,7 +55,6 @@ export const projects = [
     tone: 'navy',
     localUrl: 'http://127.0.0.1:8020/',
     publicUrl: '',
-    githubUrl: 'https://github.com/yuganwinfurt-bot/yugan-agent',
     action: '进入 Agent 控制台',
   },
   {
@@ -83,7 +81,6 @@ export const projects = [
     tone: 'mint',
     localUrl: 'http://127.0.0.1:4173/',
     publicUrl: '',
-    githubUrl: 'https://github.com/yuganwinfurt-bot/rag-assistant',
     action: '进入 RAG 页面',
   },
   {
@@ -111,7 +108,6 @@ export const projects = [
     tone: 'paper',
     localUrl: 'http://127.0.0.1:35173/',
     publicUrl: '/ecommerce/',
-    githubUrl: 'https://github.com/yuganwinfurt-bot/customer-service-system',
     action: '进入电商分析平台',
   },
 ].sort((left, right) => (projectOrder[left.id] ?? 99) - (projectOrder[right.id] ?? 99))

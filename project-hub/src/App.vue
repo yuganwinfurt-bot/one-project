@@ -157,6 +157,9 @@ function cardTone(project, index) {
           <div class="eyebrow"><span class="live-dot"></span> {{ projects.length }} PROJECTS · ONE ENTRY</div>
           <h1 id="hero-title">智能应用实践，<br /><em>面向真实场景。</em></h1>
           <p class="hero-lead">从一笔订单、一次客服咨询，到一项任务、一份资料，探索 AI 在业务分析、客服协作、工具执行和知识问答中的具体用法。</p>
+          <div class="hero-actions">
+            <a class="button button-dark" href="https://github.com/yuganwinfurt-bot/one-project" target="_blank" rel="noopener noreferrer">查看 GitHub 源码 <span aria-hidden="true">↗</span></a>
+          </div>
           <div class="hero-note"><span>PROJECT INDEX</span><span>{{ String(projects.length).padStart(2, '0') }} / PROJECTS</span><span>ONE / HOME</span></div>
         </div>
         <div id="open" class="hero-art" aria-label="项目入口">
@@ -170,9 +173,6 @@ function cardTone(project, index) {
                 <span v-if="projectHref(project)" class="art-arrow" aria-hidden="true">↗</span>
                 <small v-else class="art-unavailable">暂未开放</small>
               </component>
-              <a v-if="project.githubUrl" class="art-github-link" :href="project.githubUrl" target="_blank" rel="noopener noreferrer" :aria-label="`打开 ${project.name} 的 GitHub 仓库`">
-                GitHub <span aria-hidden="true">↗</span>
-              </a>
             </div>
           </div>
           <div class="diagram-caption">YOUR PROJECTS, ONE PLACE</div>
