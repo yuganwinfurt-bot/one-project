@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>设置｜BOSS打招呼助手</title>
+    <link rel="stylesheet" href="settings.css">
+  </head>
+  <body>
+    <main class="settings-shell">
+      <span id="settings-notice" role="status" aria-live="polite"></span>
+      <nav class="settings-tabs" role="tablist" aria-label="设置内容">
+        <button type="button" role="tab" data-tab="basic">基础配置</button>
+        <button type="button" role="tab" data-tab="blocked">屏蔽岗位 <i id="blocked-count">0</i></button>
+        <button type="button" role="tab" data-tab="contacted">沟通记录 <i id="contacted-count">0</i></button>
+        <button type="button" role="tab" data-tab="records">识别记录</button>
+      </nav>
+      <section class="settings-panel" data-panel="basic"></section>
+      <section class="settings-panel" data-panel="blocked" hidden></section>
+      <section class="settings-panel" data-panel="contacted" hidden></section>
+      <section class="settings-panel" data-panel="records" hidden></section>
+    </main>
+    <script src="settings.js"></script>
+  </body>
+</html>

@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>识别记录｜BOSS打招呼助手</title>
+    <link rel="stylesheet" href="analysis.css">
+  </head>
+  <body>
+    <main class="records-shell">
+      <header class="records-hero">
+        <p class="records-kicker">BOSS打招呼助手｜AI 岗位筛选</p>
+        <h1>识别记录</h1>
+        <p>每次 AI 筛选都会保留判断结果，方便你回看每个岗位为什么被推荐或跳过。</p>
+      </header>
+      <section class="records-panel" aria-live="polite">
+        <div class="records-panel__heading">
+          <span>岗位分析</span>
+          <small id="records-count">载入中…</small>
+        </div>
+        <div id="records-list" class="records-list"></div>
+      </section>
+    </main>
+    <script src="analysis.js"></script>
+  </body>
+</html>
