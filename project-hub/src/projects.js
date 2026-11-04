@@ -1,8 +1,33 @@
 // 在这里添加项目。首页卡片、入口列表和项目数量会自动更新。
 // publicUrl 留空表示只在本机展示入口；不要把管理后台直接填为公网地址。
-const projectOrder = { 'ecom-analysis': 0, 'customer-service': 1, agent: 2, rag: 3 }
+const projectOrder = { 'ecom-analysis': 0, 'customer-service': 1, agent: 2, rag: 3, 'boss-helper': 4 }
 
 export const projects = [
+  {
+    id: 'boss-helper',
+    name: 'BOSS投递助手',
+    shortName: 'BOSS投递助手',
+    mark: 'B',
+    category: '浏览器求职扩展',
+    introLabel: '05 / BOSS HELPER',
+    introTitle: '找到合适岗位，',
+    introAccent: '跟进每一次沟通。',
+    intro: '根据简历与目标岗位要求筛选 BOSS 直聘职位，按选择的城市和关键词顺序搜索，记录岗位判断与沟通进度。',
+    tags: ['AI 岗位筛选', '顺序搜索', '沟通记录'],
+    featureLabel: 'FROM SEARCH TO CONVERSATION',
+    featureTitle: '筛选、搜索与沟通，进度随时可查。',
+    features: [
+      { name: '按简历匹配岗位', detail: '结合简历、目标岗位画像和自定义提示词，判断职位是否符合求职方向。' },
+      { name: '按方案顺序搜索', detail: '按选择的城市和岗位关键词依次检索，查看识别结果、投递队列与沟通记录。' },
+      { name: '选择招呼方式', detail: '支持 AI 生成招呼语，或使用 BOSS 直聘原生招呼设置发起沟通。' },
+    ],
+    note: '点击入口前往 GitHub，查看扩展源码与安装说明。',
+    description: '根据简历筛选 BOSS 岗位，按城市顺序搜索，并记录投递与沟通进度。',
+    caption: 'AI 岗位筛选 · 顺序搜索 · 沟通记录',
+    tone: 'navy',
+    publicUrl: 'https://github.com/yuganwinfurt-bot/one-project/tree/main/BOSS%E6%89%93%E6%8B%9B%E5%91%BC%E5%8A%A9%E6%89%8B',
+    action: '查看源码与安装说明',
+  },
   {
     id: 'customer-service',
     name: '客服工单系统',

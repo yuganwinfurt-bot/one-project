@@ -2,6 +2,8 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { projects } from './projects.js'
 
+const entryProjects = [...projects.filter(project => project.id === 'boss-helper'), ...projects.filter(project => project.id !== 'boss-helper')]
+
 const localPreview = ['127.0.0.1', 'localhost', '::1', '[::1]'].includes(window.location.hostname)
 const useGateway = import.meta.env.VITE_USE_GATEWAY === 'true'
 const psbNumber = import.meta.env.VITE_PSB_RECORD_NUMBER || ''
@@ -156,7 +158,7 @@ function cardTone(project, index) {
         <div class="hero-copy">
           <div class="eyebrow"><span class="live-dot"></span> {{ projects.length }} PROJECTS · ONE ENTRY</div>
           <h1 id="hero-title">智能应用实践，<br /><em>面向真实场景。</em></h1>
-          <p class="hero-lead">从一笔订单、一次客服咨询，到一项任务、一份资料，探索 AI 在业务分析、客服协作、工具执行和知识问答中的具体用法。</p>
+          <p class="hero-lead">从一笔订单、一次客服咨询，到一项任务、一份资料、一次岗位沟通，探索 AI 在真实场景中的具体用法。</p>
           <div class="hero-actions">
             <a class="button button-dark" href="https://github.com/yuganwinfurt-bot/one-project" target="_blank" rel="noopener noreferrer">查看 GitHub 源码 <span aria-hidden="true">↗</span></a>
           </div>
@@ -166,7 +168,7 @@ function cardTone(project, index) {
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
           <div class="art-heading"><span>SELECTED WORKS</span><b class="works-count">{{ String(projects.length).padStart(2, '0') }}</b></div>
           <div class="art-project-list">
-            <div v-for="(project, index) in projects" :key="project.id" class="art-project-row">
+            <div v-for="(project, index) in entryProjects" :key="project.id" class="art-project-row">
               <component :is="projectHref(project) ? 'a' : 'div'" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
                 <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
                 <div><b>{{ project.shortName || project.name }}</b><small>{{ project.caption || project.category }}</small></div>
@@ -180,7 +182,7 @@ function cardTone(project, index) {
       </section>
 
       <section id="projects" class="projects section-wrap" aria-labelledby="projects-title">
-        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">从场景出发，把应用做具体。</h2></div><p>用业务数据回答经营问题，用工单跟进客服咨询，用工具完成任务，用资料支持回答。四个应用，各有分工，也能相互协作。</p></div>
+        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">从场景出发，把应用做具体。</h2></div><p>用业务数据回答经营问题，用工单跟进客服咨询，用工具完成任务，用资料支持回答，用助手筛选求职岗位。{{ projects.length }} 个项目，各有侧重。</p></div>
         <div class="project-overviews">
           <article v-for="project in projects" :id="project.id" :key="project.id" class="project-overview" :class="`overview-${project.id}`">
             <div class="overview-hero">
@@ -210,6 +212,13 @@ function cardTone(project, index) {
                   <p class="task-prompt"><span>›</span> 描述目标，开始一项任务</p>
                   <ol class="task-steps"><li><span>01</span>理解目标 <b>PLAN</b></li><li><span>02</span>选择并调用工具 <b>ACT</b></li><li><span>03</span>检查结果，继续执行 <b>OBSERVE</b></li></ol>
                   <div class="task-tools"><span>FILES</span><span>HTTP</span><span>WORKSPACE</span></div>
+                </div>
+                <div v-else-if="project.id === 'boss-helper'" class="support-preview">
+                  <div class="preview-topline"><span class="preview-dot"></span> BOSS HELPER <small>流程示意</small></div>
+                  <div class="support-preview-bubble">根据简历，寻找合适岗位</div>
+                  <div class="support-preview-bubble support-preview-reply">识别岗位，选择招呼方式</div>
+                  <div class="support-preview-flow"><span>岗位筛选</span><i>→</i><span>顺序搜索</span><i>→</i><b>发起沟通</b></div>
+                  <p>源码与安装说明可在 GitHub 查看</p>
                 </div>
                 <div v-else class="knowledge-preview">
                   <div class="document-sheet sheet-back"></div>

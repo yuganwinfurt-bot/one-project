@@ -179,8 +179,8 @@
 }
 
 
-/* Four projects share the same entry catalogue; support has a conversation preview. */
-.hero-art { min-height: 490px; }
+/* Keep all five project entries visible in the hero catalogue. */
+.hero-art { min-height: 540px; }
 .art-project-list { gap: 10px; }
 .overview-customer-service { --work-surface: #f1f5f0; }
 .overview-customer-service .overview-hero { grid-template-columns: minmax(0, 1fr) 310px; }
