@@ -25,7 +25,7 @@ export const projects = [
     description: '根据简历筛选 BOSS 岗位，按城市顺序搜索，并记录投递与沟通进度。',
     caption: 'AI 岗位筛选 · 顺序搜索 · 沟通记录',
     tone: 'navy',
-    publicUrl: 'https://github.com/yuganwinfurt-bot/one-project/tree/main/BOSS%E6%89%93%E6%8B%9B%E5%91%BC%E5%8A%A9%E6%89%8B',
+    publicUrl: 'https://github.com/yuganwinfurt-bot/BOSS-greeting-assistant',
     action: '查看源码与安装说明',
   },
   {
