@@ -1,8 +1,8 @@
 # 电商数据分析 Agent
 
-基于 FastAPI + Vue3 脚手架扩展的教学项目：用自然语言提问，Agent 查询电商数据并给出诊断建议。
+基于 FastAPI 与 Vue 3 的电商管理和智能分析应用。提供商城、运营工作台、订单、评价与售后管理，也可通过自然语言查询业务数据。
 
-> 当前进度：**lesson-11 多模态**（图片描述接入语义检索）
+[线上入口](https://www.yuganwinfurt.top/ecommerce/) · [项目总览](../README.md) · [本地开发与联动](../docs/LOCAL_DEVELOPMENT.md#电商)
 
 ## 技术栈
 
@@ -20,23 +20,22 @@
 ## 环境要求
 
 - Node.js：见 `frontend/package.json` 的 `engines`（建议 Node 22 LTS）
-- Python 3.12+（本仓库本地亦可用 3.14）
+- Python 3.12+
 - MySQL 8.0+
 
 ## 1. 准备数据库
+
+在本机 MySQL 创建独立开发库。
 
 ```sql
 CREATE DATABASE ecom_analysis_agent DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 ```
 
-```powershell
+后端首次启动时会创建当前模型所需的表。若需要仓库提供的 SQL 快照用于演示，先确认目标是可丢弃的开发库。该文件包含 DROP TABLE 语句。
+
+```bash
 mysql -u root -p ecom_analysis_agent < sql/ecommerce.sql
 ```
-
-`sql/ecommerce.sql` 一次建好全部表：用户表（含 3 个演示账号 admin / aaa / bbb）、
-商品 / 订单 / 评价三张业务表，以及 Agent 的观测与产物表（运行记录、步骤、反馈、诊断报告、预警）。
-业务数据（20 商品 / 49 订单 / 46 评价）由下一节的种子脚本生成；
-也可以不执行这个脚本，直接依赖后端启动时的 `create_all` 建表。
 
 ## 2. 配置后端
 
@@ -47,7 +46,7 @@ python -m venv .venv
 pip install -r requirements.txt
 ```
 
-参考 `.env.example` 配置 `.env`（含 `DATABASE_URL`、`LLM_*`、`EMBEDDING_*` 和独立 RAG 服务地址）。改 `.env` 后需重启 uvicorn。`RAG_SYNC_TOKEN` 要与 `D:\one project\rag-assistant\backend\.env` 中的 `ECOM_RAG_SYNC_TOKEN` 一致。
+参考 `.env.example` 配置 `.env`（含 `DATABASE_URL`、`LLM_*`、`EMBEDDING_*` 和独立 RAG 服务地址）。改 `.env` 后需重启 uvicorn。`RAG_SYNC_TOKEN` 要与 RAG 后端 `.env` 中的 `ECOM_RAG_SYNC_TOKEN` 一致。
 
 ## 3. 导入示例数据
 
@@ -64,15 +63,20 @@ python -m data.seed.index_vectors
 
 ## 4. 启动后端 / 前端
 
+以下两组命令分别在项目目录下的两个终端执行。
+
 ```powershell
 # 后端
 cd backend
 .\.venv\Scripts\Activate.ps1
-uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
+uvicorn app.main:app --reload --host 127.0.0.1 --port 8001
 
+```
+
+```powershell
 # 前端
 cd frontend
-npm install
+npm ci
 npm run dev
 ```
 
@@ -88,26 +92,7 @@ python -m app.mcp_server.server
 
 ## 5. 演示账号
 
-登录页公开读取 `/api/auth/demo-accounts`，展示一个启用的管理员和按创建顺序排列的前两个启用运营账号。
-运营账号删除、停用或转为其他角色后，后面的启用运营账号自动补位；后台新增的运营账号也参与排序。
-普通用户自行注册的账号属于客户，不参与运营演示账号排序。
-
-用户登录模式读取 `/api/auth/demo-accounts?mode=user`，只展示一个专用演示买家。
-后端首次启动自动创建 `demo_customer` / `demo123456`（同名账号已存在时使用后缀，不覆盖已有账号）。
-该账号可体验浏览商品、购物车、下单与售后，改名、改密后展示内容同步更新；停用后不展示，删除后下一次后端启动会重新创建。
-
-新建、管理员重设密码及账号自行改密都会在同一事务中同步展示密码；账号改名后直接显示最新账号名。
-登录页每 10 秒刷新，在切回页面时也会更新。管理员账号同样展示数据库中的最新账号信息。
-
-这是公开演示平台，后台账号与专用演示买家的展示密码单独保存在 `demo_login_credentials`，仅公开接口选中的账号会被返回；
-其他客户账号不保存展示密码，演示凭据不进入 RAG、用户资料或修改日志。
-旧账号的未知密码无法从摘要还原：成功登录一次或重设密码后即可补齐。启动时只兼容下列原始演示口令，不会重设任何账号密码。
-
-| 用户名 | 密码 | 角色 |
-| --- | --- | --- |
-| `admin` | `admin` | 管理员 |
-| `aaa` | `123` | 运营 |
-| `bbb` | `123` | 运营 |
+后台与买家有独立的登录入口。后台管理使用测试库中的管理员或运营账号，买家端可使用页面显示的专用演示买家或注册一个测试买家。需要预置后台账号时，先核对 `sql/ecommerce.sql`，仅导入独立的测试库。登录页会按当前启用账号和演示凭据状态显示可用入口。
 
 ## 6. 如何验证
 
@@ -134,7 +119,7 @@ npm run build
 2. 语义检索验证：`POST /api/semantic/search` 用图片内容词查询（如“鞋底开胶”），应命中带图评价（含 `【晒图内容】`）
 3. 单测：`python -m pytest tests/test_multimodal.py -q`
 
-电商平台的「语义检索」现在通过本机 RAG 服务检索。管理员首次使用或商品/评价数据变更后，点击“同步商品/评价到 RAG”；新资料会出现在独立 RAG 的“电商商品与评价”知识库中。电商平台的 Agent 对话也复用此知识库。
+电商平台的「语义检索」现在通过本机 RAG 服务检索。管理员可以手动同步电商业务快照至独立 RAG。电商助手还可检索同步后的客服知识库。
 
 ### lesson-10：多智能体协作
 
@@ -177,7 +162,7 @@ backend/app/observability/  # 运行记录 + 反馈
 ## 说明
 
 - 新订单通知：立即购买和购物车结算成功后，每个新订单在同一事务内写入一条“新订单待发货”商家通知。后台铃铛、消息中心显示未读提醒；已打开的运营/管理员页面约每 5 秒同步，新收到的订单弹窗可点击定位，初次加载不重弹历史订单。发货或转入售后后该提醒自动已读；不对历史订单批量补发通知。
-- 只读诊断工具：禁止 Agent 改订单/库存/价格/上下架
+- 诊断查询按只读规则执行。受支持的业务写入按权限生成操作计划，等待对应用户确认后执行。
 - SQL 校验使用 SQLGlot 解析查询结构，支持白名单表的 SELECT、JOIN、分组统计和子查询；本课暂不支持 CTE / UNION、跨库查询、变量、锁定读取和优化器提示。执行时最多返回 200 行。
 - 人工确认采用单进程锁，避免同时确认重复执行。检查点使用 MemorySaver，重启后待确认任务失效；历史详情仅在当前检查点仍可恢复时显示确认入口。多进程部署需要共享检查点与动作幂等机制。
 - 调试接口 `/api/nl2sql`、`/api/semantic` 仍可直接调 service；**对话图内查询走 MCP**
