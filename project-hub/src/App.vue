@@ -2,8 +2,6 @@
 import { onBeforeUnmount, onMounted, ref } from 'vue'
 import { projects } from './projects.js'
 
-const entryProjects = [...projects.filter(project => project.id === 'boss-helper'), ...projects.filter(project => project.id !== 'boss-helper')]
-
 const localPreview = ['127.0.0.1', 'localhost', '::1', '[::1]'].includes(window.location.hostname)
 const useGateway = import.meta.env.VITE_USE_GATEWAY === 'true'
 const psbNumber = import.meta.env.VITE_PSB_RECORD_NUMBER || ''
@@ -160,7 +158,7 @@ function cardTone(project, index) {
           <h1 id="hero-title">智能应用实践，<br /><em>面向真实场景。</em></h1>
           <p class="hero-lead">从一笔订单、一次客服咨询，到一项任务、一份资料、一次岗位沟通，探索 AI 在真实场景中的具体用法。</p>
           <div class="hero-actions">
-            <a class="button button-dark" href="https://github.com/yuganwinfurt-bot/one-project" target="_blank" rel="noopener noreferrer">查看 GitHub 源码 <span aria-hidden="true">↗</span></a>
+            <a class="button button-dark" href="https://github.com/yuganwinfurt-bot" target="_blank" rel="noopener noreferrer">查看 GitHub 主页 <span aria-hidden="true">↗</span></a>
           </div>
           <div class="hero-note"><span>PROJECT INDEX</span><span>{{ String(projects.length).padStart(2, '0') }} / PROJECTS</span><span>ONE / HOME</span></div>
         </div>
@@ -168,8 +166,14 @@ function cardTone(project, index) {
           <div class="orbit orbit-one"></div><div class="orbit orbit-two"></div>
           <div class="art-heading"><span>SELECTED WORKS</span><b class="works-count">{{ String(projects.length).padStart(2, '0') }}</b></div>
           <div class="art-project-list">
-            <div v-for="(project, index) in entryProjects" :key="project.id" class="art-project-row">
-              <component :is="projectHref(project) ? 'a' : 'div'" :href="projectHref(project) || undefined" :class="['art-project', { 'art-project-link': !!projectHref(project) }]">
+            <div v-for="(project, index) in projects" :key="project.id" class="art-project-row">
+              <component
+                :is="projectHref(project) ? 'a' : 'div'"
+                :href="projectHref(project) || undefined"
+                :target="project.openInNewTab ? '_blank' : undefined"
+                :rel="project.openInNewTab ? 'noopener noreferrer' : undefined"
+                :class="['art-project', { 'art-project-link': !!projectHref(project) }]"
+              >
                 <span class="diagram-icon" :class="cardTone(project, index)">{{ project.mark || project.name.slice(0, 1).toUpperCase() }}</span>
                 <div><b>{{ project.shortName || project.name }}</b><small>{{ project.caption || project.category }}</small></div>
                 <span v-if="projectHref(project)" class="art-arrow" aria-hidden="true">↗</span>
@@ -182,12 +186,12 @@ function cardTone(project, index) {
       </section>
 
       <section id="projects" class="projects section-wrap" aria-labelledby="projects-title">
-        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">从场景出发，把应用做具体。</h2></div><p>用业务数据回答经营问题，用工单跟进客服咨询，用工具完成任务，用资料支持回答，用助手筛选求职岗位。{{ projects.length }} 个项目，各有侧重。</p></div>
+        <div class="section-heading"><div><p class="kicker">01 / THE PROJECTS</p><h2 id="projects-title">从场景出发，把应用做具体。</h2></div><p>用业务数据回答经营问题，用工单跟进客服咨询，用工具完成任务，用资料支持回答，用助手筛选岗位和转换媒体。{{ projects.length }} 个项目，各有侧重。</p></div>
         <div class="project-overviews">
-          <article v-for="project in projects" :id="project.id" :key="project.id" class="project-overview" :class="`overview-${project.id}`">
+          <article v-for="(project, index) in projects" :id="project.id" :key="project.id" class="project-overview" :class="`overview-${project.id}`">
             <div class="overview-hero">
               <div class="overview-copy">
-                <p class="kicker">{{ project.introLabel || project.name }}</p>
+                <p class="kicker">{{ String(index + 1).padStart(2, '0') }} / {{ project.introLabel || project.name }}</p>
                 <h3>{{ project.introTitle || project.name }}<em>{{ project.introAccent }}</em></h3>
                 <p class="overview-lead">{{ project.intro || project.description }}</p>
                 <div class="overview-tags"><span v-for="tag in project.tags || []" :key="tag">{{ tag }}</span></div>
@@ -199,6 +203,12 @@ function cardTone(project, index) {
                   <div class="business-sources"><span>商品</span><span>订单</span><span>评价</span></div>
                   <div class="business-output"><span class="business-line"></span><span class="business-line"></span><span class="business-line"></span></div>
                   <div class="business-result"><span>数据查询</span><i>→</i><b>有依据的分析</b></div>
+                </div>
+                <div v-else-if="project.id === 'frameflow'" class="support-preview">
+                  <div class="preview-topline"><span class="preview-dot"></span> FRAMEFLOW <small>桌面转换流程</small></div>
+                  <div class="support-preview-bubble">添加视频、音频或图片</div>
+                  <div class="support-preview-bubble support-preview-reply">核对输出格式与转换方案</div>
+                  <div class="support-preview-flow"><span>预览</span><i>→</i><span>确认方案</span><i>→</i><b>本地导出</b></div>
                 </div>
                 <div v-else-if="project.id === 'customer-service'" class="support-preview">
                   <div class="preview-topline"><span class="preview-dot"></span> SERVICE DESK <small>流程示意</small></div>
@@ -226,7 +236,16 @@ function cardTone(project, index) {
                 </div>
               </div>
             </div>
-            <div class="overview-heading"><div><p class="kicker">{{ project.featureLabel || '功能概览' }}</p><h4>{{ project.featureTitle || '核心模块' }}</h4></div><a v-if="projectHref(project)" class="overview-action" :href="projectHref(project)">{{ project.action || '打开项目页面' }} <span aria-hidden="true">→</span></a></div>
+            <div class="overview-heading">
+              <div><p class="kicker">{{ project.featureLabel || '功能概览' }}</p><h4>{{ project.featureTitle || '核心模块' }}</h4></div>
+              <a
+                v-if="projectHref(project)"
+                class="overview-action"
+                :href="projectHref(project)"
+                :target="project.openInNewTab ? '_blank' : undefined"
+                :rel="project.openInNewTab ? 'noopener noreferrer' : undefined"
+              >{{ project.action || '打开项目页面' }} <span aria-hidden="true">→</span></a>
+            </div>
             <div class="overview-features"><section v-for="(feature, index) in project.features || []" :key="feature.name" class="overview-feature"><span class="feature-index">{{ String(index + 1).padStart(2, '0') }}</span><div><h5>{{ feature.name }}</h5><p>{{ feature.detail }}</p></div></section></div>
             <p v-if="project.note" class="overview-note">{{ project.note }}</p>
           </article>
