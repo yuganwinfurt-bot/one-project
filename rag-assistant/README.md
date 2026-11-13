@@ -29,51 +29,32 @@
 
 ## 启动
 
-环境需要 Python 3.10+、Node.js/npm 和 Ollama。Windows 启动器使用 `D:\Python\python.exe` 创建项目内虚拟环境。不会往全局 Python 安装项目依赖。
+按[本地运行步骤](../docs/LOCAL_DEVELOPMENT.md#rag)启动 FastAPI 后端和 Vue 前端。在 Ollama 下载向量模型。
 
-1. 第一次使用时在 PowerShell 下载模型：
+```bash
+ollama pull bge-m3
+```
 
-   ```powershell
-   ollama pull qwen3.5:9b
-   ollama pull bge-m3
-   ```
+如果使用 RAG 后端问答，还需要下载与 `OLLAMA_CHAT_MODEL` 匹配的聊天模型。使用浏览器侧模型时，可在页面选择 Agent 控制台配置的模型。建立索引与查询时使用同一向量模型。
 
-   启动器检测到 `D:\Ollama\ollama.exe` 时会自动启动 Ollama；如果你的 Ollama 安装在其他位置，请先手动运行 `ollama serve`。
+网页 <http://127.0.0.1:4173/rag/>，API 文档 <http://127.0.0.1:8000/docs>。
 
-   如果已经有其他聊天模型，在 `backend/.env` 设置 `OLLAMA_CHAT_MODEL`。建库和提问要使用同一个 embedding 模型。
-
-2. 双击 `启动知识库.bat`。首次启动会自动创建 `.venv` 并安装 Python、npm 依赖，随后打开浏览器。
-
-3. 如果需要手动启动，分别在两个终端运行：
-
-   ```powershell
-   cd "D:\one project\rag-assistant\backend"
-   .\.venv\Scripts\python.exe -m uvicorn app.main:app --reload --host 127.0.0.1 --port 8000
-   ```
-
-   ```powershell
-   cd "D:\one project\rag-assistant\frontend"
-   npm run dev
-   ```
-
-网页：<http://127.0.0.1:4173>　API 文档：<http://127.0.0.1:8000/docs>
-
-游客默认进入只读管理模式。管理员账号由 Agent 和 RAG 后端 `.env` 中的 `YUGAN_ADMIN_USERNAME`、`YUGAN_ADMIN_PASSWORD_HASH`、`YUGAN_AUTH_SIGNING_SECRET` 配置；两端取值应一致。上线时将 `RAG_WEB_ORIGINS` 改为实际前端 Origin，并通过同一站点或反向代理提供前后端。
+游客可浏览和提问。管理员登录联动由 Agent 与 RAG 后端环境文件配置，管理员用户名、密码哈希和签名密钥需匹配。配置项见各自的 `.env.example`。
 
 ## 开始使用
 
-1. 选择左侧“嵌入式项目”。
+1. 选择项目，确认该项目关联的知识库。
 2. 管理员可把 PDF、DOCX、TXT、Markdown 或 CSV 拖到网页，或者点“添加资料”，再选择目标知识库并开始导入。游客没有资料管理权限。
-3. 游客可读取已有知识库并开始对话；回答时，浏览器使用从 Agent 连接的当前模型。API Key 只发往模型服务。资料导入及向量检索由 RAG 后端运行，需要后端能够访问 Ollama 的 embedding 模型 `bge-m3`。
+3. 游客可读取已有知识库并开始对话；问答可使用已配置的浏览器侧模型或 RAG 后端的 Ollama 模型。资料导入及向量检索由 RAG 后端运行，需要后端能够访问 Ollama 的 embedding 模型 `bge-m3`。
 4. 游客只能查看文件和分片；管理员可上传文件、删除文件或指定分片。删除后该资料不再参与新问题；历史回答仍保留原记录。
 5. 点顶部“自动检索”可让这段对话跟随项目，也可勾选知识库设置仅对当前对话生效的范围。创建其他项目时，在项目设置里组合对应知识库；不同项目和不同对话各自保存历史。
 
 ## 配置和文件位置
 
-复制配置模板：
+在 RAG 项目目录复制配置模板。
 
 ```powershell
-Copy-Item "D:\one project\rag-assistant\backend\.env.example" "D:\one project\rag-assistant\backend\.env"
+if (-not (Test-Path backend/.env)) { Copy-Item backend/.env.example backend/.env }
 ```
 
 - `OLLAMA_BASE_URL`：默认 `http://127.0.0.1:11434`
@@ -94,7 +75,6 @@ Copy-Item "D:\one project\rag-assistant\backend\.env.example" "D:\one project\ra
 先确保 Ollama 与 `bge-m3` 正常运行，再在项目根目录执行：
 
 ```powershell
-cd "D:\one project\rag-assistant"
 .\backend\.venv\Scripts\python.exe .\eval\run_retrieval.py
 ```
 
